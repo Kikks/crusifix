@@ -1,0 +1,95 @@
+import { ReactNode } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { Box, Typography } from "@mui/material";
+
+// Common
+import Button from "../../common/Button";
+
+// Comonents
+import Container from "../../components/Container";
+
+interface LinkProps {
+	href: string;
+	children: ReactNode;
+}
+
+const NavLink = ({ href, children }: LinkProps) => {
+	return (
+		<Link passHref href={href}>
+			<Typography
+				variant='body2'
+				component='a'
+				sx={{
+					mx: 2,
+					p: 0.5,
+					fontWeight: 600,
+					cursor: "pointer",
+					borderBottom: "2px solid transparent",
+
+					":hover": {
+						color: "secondary.main",
+						borderBottom: "2px solid #00b67a"
+					}
+				}}
+			>
+				{children}
+			</Typography>
+		</Link>
+	);
+};
+
+const Navigation = () => {
+	return (
+		<Box
+			component='nav'
+			sx={{
+				display: "flex",
+				justifyContent: "center",
+				alignItems: "center",
+				position: "sticky",
+				top: 0,
+				left: 0,
+				width: "100%",
+				bgcolor: "#fff",
+				zIndex: "tooltip"
+			}}
+		>
+			<Container>
+				<Box
+					sx={{
+						p: 2,
+						display: "flex",
+						justifyContent: "space-between",
+						alignItems: "center",
+						width: "100%"
+					}}
+				>
+					<Image
+						src='/assets/images/logo.png'
+						alt='Crusifix Logo'
+						width={50}
+						height={50}
+					/>
+					<Box
+						sx={{
+							display: "flex",
+							justifyContent: "center",
+							alignItems: "center"
+						}}
+					>
+						<NavLink href='/'>Home</NavLink>
+						<NavLink href='/'>About Us</NavLink>
+						<NavLink href='/'>Games</NavLink>
+						<NavLink href='/'>Location</NavLink>
+						<Box sx={{ ml: 5 }}>
+							<Button variant='outlined'>Sign Up</Button>
+						</Box>
+					</Box>
+				</Box>
+			</Container>
+		</Box>
+	);
+};
+
+export default Navigation;
