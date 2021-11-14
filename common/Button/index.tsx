@@ -44,15 +44,16 @@ const CustomButton = ({
 	variant = "contained",
 	sx,
 	...rest
-}: ButtonProps) =>
-	variant === "contained" ? (
-		<ContainedButton sx={{ m: 0 }} variant={variant} {...rest}>
+}: any) => {
+	return variant === "contained" ? (
+		<ContainedButton sx={sx} variant={variant} {...rest}>
 			{children}
 		</ContainedButton>
 	) : (
-		<OutlinedButton sx={{ m: 0 }} variant={variant} {...rest}>
+		<OutlinedButton sx={sx} variant={variant} {...rest}>
 			{children}
 		</OutlinedButton>
 	);
+};
 
 export default CustomButton;
