@@ -4,7 +4,7 @@ import GoogleIcon from "@mui/icons-material/Google";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import YoutubeIcon from "@mui/icons-material/Youtube";
+import YoutubeIcon from "@mui/icons-material/YouTube";
 
 // Common
 import Button from "../../common/Button";
