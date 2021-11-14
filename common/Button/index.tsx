@@ -42,14 +42,15 @@ const OutlinedButton = styled(Button)<ButtonProps>(({ theme }) => ({
 const CustomButton = ({
 	children,
 	variant = "contained",
+	sx,
 	...rest
 }: ButtonProps) =>
 	variant === "contained" ? (
-		<ContainedButton variant={variant} {...rest}>
+		<ContainedButton sx={{ m: 0 }} variant={variant} {...rest}>
 			{children}
 		</ContainedButton>
 	) : (
-		<OutlinedButton variant={variant} {...rest}>
+		<OutlinedButton sx={{ m: 0 }} variant={variant} {...rest}>
 			{children}
 		</OutlinedButton>
 	);
