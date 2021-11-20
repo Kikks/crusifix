@@ -1,10 +1,28 @@
 import Image from "next/image";
 import { Box, Stack, Typography, Grid } from "@mui/material";
+import Location from "@mui/icons-material/LocationOn";
+import GoogleMapReact from "google-map-react";
 
 // Components
 import Container from "../../../Container";
 
+const Marker = ({ text }: { text: string }) => (
+	<div style={{ display: "flex", alignItems: "center" }}>
+		<Location style={{ color: "#ff0000" }} />
+		<span style={{ color: "#fff" }}>{text}</span>
+	</div>
+);
+
 const Contact = () => {
+	const apiKey = process.env.MAP_API_KEY || "";
+	const mapOptions = {
+		center: {
+			lat: 6.4910959,
+			lng: 3.3563278
+		},
+		zoom: 17
+	};
+
 	return (
 		<Box
 			sx={{ mt: 15, width: "100%", display: "flex", justifyContent: "center" }}
@@ -70,16 +88,13 @@ const Contact = () => {
 						</Stack>
 
 						<Stack flex={0.7} sx={{ position: "relative", height: 400 }}>
-							<Image src='/assets/images/map.png' layout='fill' alt='map' />
-							<Box
-								sx={{
-									width: "100%",
-									height: "100%",
-									bgcolor: "#000",
-									opacity: 0.6,
-									position: "absolute"
-								}}
-							/>
+							<GoogleMapReact
+								bootstrapURLKeys={{ key: apiKey }}
+								defaultCenter={mapOptions.center}
+								defaultZoom={mapOptions.zoom}
+							>
+								<Marker text='Crusifix Games' />
+							</GoogleMapReact>
 						</Stack>
 					</Stack>
 				</Stack>

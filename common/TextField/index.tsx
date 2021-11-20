@@ -1,43 +1,22 @@
-import * as React from "react";
-import InputUnstyled, { InputUnstyledProps } from "@mui/core/InputUnstyled";
-import { styled } from "@mui/system";
+import { TextField as MUITextField, TextFieldProps } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
-const StyledInputElement = styled("input")`
-	width: 320px;
-	font-size: 1rem;
-	font-family: Open Sans, sans-serif;
-	font-weight: 400;
-	line-height: 1.4375em;
-	background: #fff;
-	border: 1px solid #e5e8ec;
-	border-radius: 8px;
-	padding: 15px;
-	color: #20262d;
-	transition: width 300ms ease;
+const useStyles = makeStyles({
+	root: {
+		backgroundColor: "transparent",
 
-	&:hover {
-		background: #eaeef3;
-		border-color: #e5e8ec;
+		"& .MuiOutlinedInput-root": {
+			borderRadius: 18,
+			padding: ".1rem .5rem",
+			boxShadow: "0 15px 25px rgba(0,0,0,.05)"
+		}
 	}
-
-	&:focus {
-		outline: none;
-		width: 340px;
-		transition: width 200ms ease-out;
-	}
-`;
-
-const CustomInput = React.forwardRef(function CustomInput(
-	props: InputUnstyledProps,
-	ref: React.ForwardedRef<HTMLDivElement>
-) {
-	return (
-		<InputUnstyled
-			components={{ Input: StyledInputElement }}
-			{...props}
-			ref={ref}
-		/>
-	);
 });
 
-export default CustomInput;
+const TextField = ({ ...props }: TextFieldProps) => {
+	const classes = useStyles();
+
+	return <MUITextField className={classes.root} size='small' {...props} />;
+};
+
+export default TextField;

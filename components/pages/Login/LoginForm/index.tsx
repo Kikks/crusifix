@@ -1,6 +1,5 @@
 import { FC, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import {
 	Box,
 	Stack,
@@ -9,7 +8,6 @@ import {
 	Grid,
 	InputAdornment,
 	IconButton,
-	TextField as MUITextField,
 	TextFieldProps,
 	Checkbox,
 	Hidden,
@@ -17,30 +15,25 @@ import {
 	useTheme
 } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { makeStyles } from "@mui/styles";
+import ArrowBackwardIcon from "@mui/icons-material/ArrowBack";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
+import Lottie from "react-lottie";
+
+// Lottie
+import * as loginAnimation from "../../../../assets/lottie/Login Colored.json";
 
 // Common
-// import TextField from "../../../../common/TextField";
+import TextField from "../../../../common/TextField";
 import Button from "../../../../common/Button";
 
-const useStyles = makeStyles({
-	root: {
-		backgroundColor: "transparent",
-
-		"& .MuiOutlinedInput-root": {
-			borderRadius: 18,
-			padding: ".1rem .5rem",
-			boxShadow: "0 15px 25px rgba(0,0,0,.05)"
-		}
+const lottieOptions = {
+	loop: true,
+	autoplay: true,
+	animationData: loginAnimation,
+	renderSettings: {
+		preserveAspectRatio: "xMidYMid slice"
 	}
-});
-
-const TextField = ({ ...props }: TextFieldProps) => {
-	const classes = useStyles();
-
-	return <MUITextField className={classes.root} size='small' {...props} />;
 };
 
 const LoginForm: FC = () => {
@@ -75,11 +68,7 @@ const LoginForm: FC = () => {
 						</Typography>
 					</div>
 					<Box sx={{ position: "relative", height: "50%", width: "100%" }}>
-						<Image
-							src='/assets/svg/login.svg'
-							alt='Girl waving'
-							layout='fill'
-						/>
+						<Lottie options={lottieOptions} />
 					</Box>
 				</Stack>
 			</Hidden>
@@ -94,23 +83,34 @@ const LoginForm: FC = () => {
 					overflowY: "auto"
 				}}
 			>
-				<Typography sx={{ alignSelf: "flex-end" }}>
-					Don&apos;t have an account?{" "}
-					<Link href='/register' passHref>
-						<MUILink
-							color='secondary.main'
-							underline='hover'
-							component='span'
-							sx={{
-								":hover": {
-									cursor: "pointer"
-								}
-							}}
-						>
-							Get Started
-						</MUILink>
+				<Stack
+					direction='row'
+					justifyContent='space-between'
+					sx={{ width: "100%" }}
+				>
+					<Link href='/' passHref>
+						<IconButton>
+							<ArrowBackwardIcon />
+						</IconButton>
 					</Link>
-				</Typography>
+					<Typography>
+						Don&apos;t have an account?{" "}
+						<Link href='/register' passHref>
+							<MUILink
+								color='secondary.main'
+								underline='hover'
+								component='span'
+								sx={{
+									":hover": {
+										cursor: "pointer"
+									}
+								}}
+							>
+								Get Started
+							</MUILink>
+						</Link>
+					</Typography>
+				</Stack>
 
 				<Stack
 					spacing={3}
@@ -138,7 +138,6 @@ const LoginForm: FC = () => {
 								fullWidth
 								placeholder='Password'
 								type={showPassword ? "text" : "password"}
-								helperText='Must be 8 characters'
 								InputProps={{
 									endAdornment: (
 										<InputAdornment position='end'>

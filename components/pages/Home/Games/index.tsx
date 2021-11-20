@@ -152,7 +152,7 @@ const psGames = [
 const vrGames = [
 	{
 		platform: "vr",
-		bgImage: "/assets/images/games/beat-saber-bg.jpg",
+		bgImage: "/assets/images/games/beat-saber-bg.png",
 		mainImage: "/assets/images/games/beat-saber-main.jpg",
 		name: "Beat Saber",
 		tags: ["NGN 1000"],

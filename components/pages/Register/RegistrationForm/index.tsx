@@ -1,6 +1,5 @@
 import { FC, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import {
 	Box,
 	Stack,
@@ -9,7 +8,6 @@ import {
 	Grid,
 	InputAdornment,
 	IconButton,
-	TextField as MUITextField,
 	TextFieldProps,
 	Checkbox,
 	Hidden,
@@ -17,30 +15,25 @@ import {
 	useTheme
 } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { makeStyles } from "@mui/styles";
+import ArrowBackwardIcon from "@mui/icons-material/ArrowBack";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
+import Lottie from "react-lottie";
+
+// Lottie
+import * as registerAnimation from "../../../../assets/lottie/Growth Animation.json";
 
 // Common
-// import TextField from "../../../../common/TextField";
+import TextField from "../../../../common/TextField";
 import Button from "../../../../common/Button";
 
-const useStyles = makeStyles({
-	root: {
-		backgroundColor: "transparent",
-
-		"& .MuiOutlinedInput-root": {
-			borderRadius: 18,
-			padding: ".1rem .5rem",
-			boxShadow: "0 15px 25px rgba(0,0,0,.05)"
-		}
+const lottieOptions = {
+	loop: true,
+	autoplay: true,
+	animationData: registerAnimation,
+	renderSettings: {
+		preserveAspectRatio: "xMidYMid slice"
 	}
-});
-
-const TextField = ({ ...props }: TextFieldProps) => {
-	const classes = useStyles();
-
-	return <MUITextField className={classes.root} size='small' {...props} />;
 };
 
 const RegistrationForm: FC = () => {
@@ -76,11 +69,7 @@ const RegistrationForm: FC = () => {
 						</Typography>
 					</div>
 					<Box sx={{ position: "relative", height: "50%", width: "100%" }}>
-						<Image
-							src='/assets/svg/register.svg'
-							alt='Girl waving'
-							layout='fill'
-						/>
+						<Lottie options={lottieOptions} />
 					</Box>
 				</Stack>
 			</Hidden>
@@ -95,23 +84,34 @@ const RegistrationForm: FC = () => {
 					overflowY: "auto"
 				}}
 			>
-				<Typography sx={{ alignSelf: "flex-end" }}>
-					Already have an account?{" "}
-					<Link href='/login' passHref>
-						<MUILink
-							color='secondary.main'
-							underline='hover'
-							component='span'
-							sx={{
-								":hover": {
-									cursor: "pointer"
-								}
-							}}
-						>
-							Login
-						</MUILink>
+				<Stack
+					direction='row'
+					justifyContent='space-between'
+					sx={{ width: "100%" }}
+				>
+					<Link href='/' passHref>
+						<IconButton>
+							<ArrowBackwardIcon />
+						</IconButton>
 					</Link>
-				</Typography>
+					<Typography sx={{ alignSelf: "flex-end" }}>
+						Already have an account?{" "}
+						<Link href='/login' passHref>
+							<MUILink
+								color='secondary.main'
+								underline='hover'
+								component='span'
+								sx={{
+									":hover": {
+										cursor: "pointer"
+									}
+								}}
+							>
+								Login
+							</MUILink>
+						</Link>
+					</Typography>
+				</Stack>
 
 				<Stack
 					spacing={5}
@@ -179,12 +179,37 @@ const RegistrationForm: FC = () => {
 						/>
 						<Typography>
 							By creating an account means you agree to the{" "}
-							<Typography component='span' sx={{ fontWeight: "bold" }}>
-								Terms and Conditions
+							<Typography component='span'>
+								<MUILink
+									color='primary.main'
+									underline='hover'
+									href='https://drive.google.com/file/d/1gX2ihW0ubXv7S3nA4g5gM-cEEcR4V3A3/view?usp=sharing'
+									target='_blank'
+									rel='noopener'
+									sx={{
+										fontWeight: "bold",
+										":hover": {
+											cursor: "pointer"
+										}
+									}}
+								>
+									Terms and Conditions
+								</MUILink>
 							</Typography>
 							, and our{" "}
-							<Typography component='span' sx={{ fontWeight: "bold" }}>
-								Privacy Policy
+							<Typography component='span'>
+								<MUILink
+									color='primary.main'
+									underline='hover'
+									sx={{
+										fontWeight: "bold",
+										":hover": {
+											cursor: "pointer"
+										}
+									}}
+								>
+									Privacy Policy
+								</MUILink>
 							</Typography>
 						</Typography>
 					</Stack>

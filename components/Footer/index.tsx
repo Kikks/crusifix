@@ -114,11 +114,46 @@ const Footer = () => {
 							</Typography>
 
 							<Stack direction='row' spacing={2}>
-								<GoogleIcon sx={{ fontSize: 18, color: "#5A7184" }} />
-								<TwitterIcon sx={{ fontSize: 18, color: "#5A7184" }} />
-								<InstagramIcon sx={{ fontSize: 18, color: "#5A7184" }} />
-								<LinkedInIcon sx={{ fontSize: 18, color: "#5A7184" }} />
-								<YoutubeIcon sx={{ fontSize: 18, color: "#5A7184" }} />
+								<GoogleIcon
+									sx={{
+										fontSize: 18,
+										color: "#5A7184",
+										transition: 'color .2s',
+										":hover": { color: "secondary.main" }
+									}}
+								/>
+								<TwitterIcon
+									sx={{
+										fontSize: 18,
+										color: "#5A7184",
+										transition: 'color .2s',
+										":hover": { color: "secondary.main" }
+									}}
+								/>
+								<InstagramIcon
+									sx={{
+										fontSize: 18,
+										color: "#5A7184",
+										transition: 'color .2s',
+										":hover": { color: "secondary.main" }
+									}}
+								/>
+								<LinkedInIcon
+									sx={{
+										fontSize: 18,
+										color: "#5A7184",
+										transition: 'color .2s',
+										":hover": { color: "secondary.main" }
+									}}
+								/>
+								<YoutubeIcon
+									sx={{
+										fontSize: 18,
+										color: "#5A7184",
+										transition: 'color .2s',
+										":hover": { color: "secondary.main" }
+									}}
+								/>
 							</Stack>
 						</Stack>
 					</Stack>
