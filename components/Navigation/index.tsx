@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { Box, Typography } from "@mui/material";
 
 // Common
@@ -29,7 +30,7 @@ const NavLink = ({ href, children }: LinkProps) => {
 
 					":hover": {
 						color: "secondary.main",
-						borderBottom: "2px solid #00b67a"
+						borderBottom: "2px solid #ec615b"
 					}
 				}}
 			>
@@ -40,6 +41,8 @@ const NavLink = ({ href, children }: LinkProps) => {
 };
 
 const Navigation = () => {
+	const router = useRouter();
+
 	return (
 		<Box
 			component='nav'
@@ -83,7 +86,12 @@ const Navigation = () => {
 						<NavLink href='/'>Games</NavLink>
 						<NavLink href='/'>Location</NavLink>
 						<Box sx={{ ml: 5 }}>
-							<Button variant='outlined'>Sign Up</Button>
+							<Button
+								variant='outlined'
+								onClick={() => router.push("/register")}
+							>
+								Sign Up
+							</Button>
 						</Box>
 					</Box>
 				</Box>

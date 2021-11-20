@@ -20,7 +20,7 @@ const ListItem: FC = ({ children }) => (
 	<Stack direction='row' spacing={2}>
 		<Box
 			sx={{
-				bgcolor: "secondary.main",
+				bgcolor: "#36be7e",
 				borderRadius: 100,
 				height: 24,
 				width: 24,

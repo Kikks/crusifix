@@ -1,5 +1,8 @@
+import * as React from "react";
 import Image from "next/image";
 import { Box, Typography, Stack, Paper } from "@mui/material";
+import InputUnstyled, { InputUnstyledProps } from "@mui/core/InputUnstyled";
+import { styled } from "@mui/system";
 import GoogleIcon from "@mui/icons-material/Google";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import InstagramIcon from "@mui/icons-material/Instagram";
@@ -8,10 +11,47 @@ import YoutubeIcon from "@mui/icons-material/YouTube";
 
 // Common
 import Button from "../../common/Button";
-import TextField from "../../common/TextField";
 
 // Components
 import Container from "../Container";
+
+const StyledInputElement = styled("input")`
+	width: 320px;
+	font-size: 1rem;
+	font-family: Open Sans, sans-serif;
+	font-weight: 400;
+	line-height: 1.4375em;
+	background: #fff;
+	border: 1px solid #e5e8ec;
+	border-radius: 8px;
+	padding: 15px;
+	color: #20262d;
+	transition: width 300ms ease;
+
+	&:hover {
+		background: #eaeef3;
+		border-color: #e5e8ec;
+	}
+
+	&:focus {
+		outline: none;
+		width: 340px;
+		transition: width 200ms ease-out;
+	}
+`;
+
+const TextField = React.forwardRef(function CustomInput(
+	props: InputUnstyledProps,
+	ref: React.ForwardedRef<HTMLDivElement>
+) {
+	return (
+		<InputUnstyled
+			components={{ Input: StyledInputElement }}
+			{...props}
+			ref={ref}
+		/>
+	);
+});
 
 const Footer = () => {
 	return (

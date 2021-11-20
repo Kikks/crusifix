@@ -4,24 +4,29 @@ let theme = createTheme({
 	typography: {
 		fontFamily: ["Open Sans", "Roboto", "sans-serif"].join(","),
 		allVariants: {
-			color: "#183B56"
+			color: "#5a7184"
 		},
 		h1: {
 			fontFamily: ["HK Grotesk", "sans-serif"].join(","),
-			fontWeight: "bold"
+			fontWeight: "bold",
+			color: "#183B56"
 		},
 		h2: {
 			fontFamily: ["HK Grotesk", "sans-serif"].join(","),
-			fontWeight: "bold"
+			fontWeight: "bold",
+			color: "#183B56"
 		},
 		h3: {
-			fontFamily: ["HK Grotesk", "sans-serif"].join(",")
+			fontFamily: ["HK Grotesk", "sans-serif"].join(","),
+			color: "#183B56"
 		},
 		h4: {
-			fontFamily: ["HK Grotesk", "sans-serif"].join(",")
+			fontFamily: ["HK Grotesk", "sans-serif"].join(","),
+			color: "#183B56"
 		},
 		h5: {
-			fontFamily: ["HK Grotesk", "sans-serif"].join(",")
+			fontFamily: ["HK Grotesk", "sans-serif"].join(","),
+			color: "#183B56"
 		}
 	},
 	palette: {
@@ -32,9 +37,9 @@ let theme = createTheme({
 			contrastText: "#fff"
 		},
 		secondary: {
-			light: "#59e9a9",
-			main: "#00b67a",
-			dark: "#00854e",
+			light: "#ef807b",
+			main: "#ec615b",
+			dark: "#a5433f",
 			contrastText: "#000"
 		}
 	}

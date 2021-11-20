@@ -32,7 +32,7 @@ const TestimonialCard = ({
 						<Box
 							key={index}
 							sx={{
-								bgcolor: "secondary.main",
+								bgcolor: "#36be7e",
 								p: 1.5,
 								height: 14,
 								width: 14,
