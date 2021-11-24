@@ -41,12 +41,25 @@ const OutlinedButton = styled(Button)<ButtonProps>(({ theme }) => ({
 
 const CustomButton = ({
 	children,
+	color = "primary",
 	variant = "contained",
 	sx,
 	...rest
 }: any) => {
+	const containedStyles =
+		color === "secondary"
+			? {
+					...sx,
+					bgcolor: "#ec615b",
+					color: "#fff",
+					":hover": {
+						bgcolor: "#ef807b"
+					}
+			  }
+			: sx;
+
 	return variant === "contained" ? (
-		<ContainedButton sx={sx} variant={variant} {...rest}>
+		<ContainedButton sx={containedStyles} variant={variant} {...rest}>
 			{children}
 		</ContainedButton>
 	) : (

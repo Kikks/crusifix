@@ -61,7 +61,6 @@ const Navigation = () => {
 			<Container>
 				<Box
 					sx={{
-						p: 2,
 						display: "flex",
 						justifyContent: "space-between",
 						alignItems: "center",
@@ -71,8 +70,8 @@ const Navigation = () => {
 					<Image
 						src='/assets/images/logo.png'
 						alt='Crusifix Logo'
-						width={50}
-						height={50}
+						width={80}
+						height={80}
 					/>
 					<Box
 						sx={{
