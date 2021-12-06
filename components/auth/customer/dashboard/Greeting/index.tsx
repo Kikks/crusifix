@@ -1,8 +1,8 @@
 import { Grid } from "@mui/material";
 
 // Components
-import GreetingCard from "../../GreetingCard";
-import MostPlayed from "../../MostPlayed";
+import GreetingCard from "../../../GreetingCard";
+import MostPlayed from "../../../MostPlayed";
 
 const Greeting = () => {
 	return (

@@ -24,7 +24,7 @@ const Sidebar = () => {
 	const mediumScreen = useMediaQuery(theme.breakpoints.down("md"));
 	const [drawerIsOpen, setDrawerIsOpen] = useState(true);
 
-	let role = "customer";
+	let role = "admin";
 
 	useEffect(() => {
 		if (!mediumScreen) {

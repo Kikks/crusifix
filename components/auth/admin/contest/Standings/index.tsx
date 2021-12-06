@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 
 // Components
-import Card from "../../Card";
+import Card from "../../../Card";
 
 // dummydata
 import { standings } from "./standings";

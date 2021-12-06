@@ -2,7 +2,7 @@ import { Box, Typography, Grid, Avatar, Stack } from "@mui/material";
 import StarsIcon from "@mui/icons-material/Stars";
 
 // Components
-import Card from "../../Card";
+import Card from "../../../Card";
 
 type WinnerCardProps = {
 	name: string;
@@ -10,6 +10,11 @@ type WinnerCardProps = {
 	image: string;
 	points: number;
 	rank: number;
+};
+
+type ToppersProps = {
+	contestHasEnded: boolean;
+	winners: WinnerCardProps[];
 };
 
 const WinnerCard = ({ name, email, image, points, rank }: WinnerCardProps) => {
@@ -58,35 +63,13 @@ const WinnerCard = ({ name, email, image, points, rank }: WinnerCardProps) => {
 	);
 };
 
-const winners = [
-	{
-		name: "Matt Damon",
-		email: "matt@mail.com",
-		image: "/assets/images/avatar-1.png",
-		points: 540,
-		rank: 1
-	},
-	{
-		name: "John Doe",
-		email: "john@mail.com",
-		image: "/assets/images/avatar-1.png",
-		points: 510,
-		rank: 2
-	},
-	{
-		name: "Laty Doe",
-		email: "larry@mail.com",
-		image: "/assets/images/avatar-1.png",
-		points: 410,
-		rank: 3
-	}
-];
-
-const PotentialWinners = () => {
+const Toppers = ({ contestHasEnded, winners }: ToppersProps) => {
 	return (
 		<Box sx={{ mt: 5 }}>
 			<Typography variant='h4' sx={{ mb: 3, fontWeight: "bold" }}>
-				Potential winners for November Dream Contest
+				{contestHasEnded
+					? "Winner"
+					: "Potential winners"}
 			</Typography>
 
 			<Grid container spacing={3}>
@@ -98,4 +81,4 @@ const PotentialWinners = () => {
 	);
 };
 
-export default PotentialWinners;
+export default Toppers;

@@ -3,10 +3,10 @@ import Head from "next/head";
 import { Box, Stack } from "@mui/material";
 
 // Components
-import Greeting from "../../../../components/auth/customer/Greeting";
-import Statistics from "../../../../components/auth/customer/Statistics";
-import PotentialWinners from "../../../../components/auth/customer/PotentialWinners";
-import Standings from "../../../../components/auth/customer/Standings";
+import Greeting from "../../../../components/auth/customer/dashboard/Greeting";
+import Statistics from "../../../../components/auth/customer/dashboard/Statistics";
+import PotentialWinners from "../../../../components/auth/customer/dashboard/PotentialWinners";
+import Standings from "../../../../components/auth/customer/dashboard/Standings";
 
 const Dashboard: NextPage = () => {
 	return (

@@ -5,7 +5,7 @@ import { Box, Stack, IconButton } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 // Components
-import PaymentHistory from "../../../../components/auth/customer/PaymentHistory";
+import PaymentHistory from "../../../../components/auth/customer/payments/PaymentHistory";
 
 const Payments: NextPage = () => {
 	const router = useRouter();

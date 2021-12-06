@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import {
 	ListItem,
 	ListItemButton,
@@ -14,15 +15,21 @@ type SidebarItemProps = {
 };
 
 const Item = ({ icon, name, href }: SidebarItemProps) => {
+	const { pathname } = useRouter();
+	const linkIsActive = pathname.split("/")[3] === href.split("/")[3];
+
 	return (
 		<Link href={href} passHref>
 			<ListItem disablePadding>
 				<ListItemButton sx={{ justifyContent: "center" }}>
-					<ListItemIcon sx={{ color: "#5a7184" }}>{icon}</ListItemIcon>
+					<ListItemIcon sx={{ color: linkIsActive ? "secondary.main" : "#5a7184" }}>
+						{icon}
+					</ListItemIcon>
 					<ListItemText
 						sx={{
 							"& span": {
-								fontWeight: "600 !important"
+								fontWeight: "600 !important",
+								color: linkIsActive ? "secondary.main" : "#5a7184"
 							}
 						}}
 						primary={name}
