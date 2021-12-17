@@ -7,53 +7,30 @@ import {
 	TableContainer,
 	TableHead,
 	TableRow,
-	Stack,
 	Typography,
-	Checkbox
 } from "@mui/material";
+import moment from "moment";
 
 // Components
 import Card from "../../../Card";
 
-// dummydata
-import { paymentHistory } from "./history";
+export type PaymentProps = {
+	_id: string;
+	name: string;
+	amount: number;
+	createdAt: string;
+	pointsAwarded: number;
+};
 
-const headings = [
-	"",
-	"games played",
-	"amount",
-	"date",
-	"year",
-	"points awarded"
-];
+type PaymentHistoryProps = {
+	payments: PaymentProps[];
+};
+
+const headings = ["games played", "amount", "date", "year", "points awarded"];
 
 const TableWrapper: FC = ({ children }) => <Card>{children}</Card>;
 
-const PaymentHistory = () => {
-	const [selectedPayment, setSelectedPayment] = useState<string[]>([]);
-
-	const handleChanged = (id: string) => {
-		// console.log(selectedPayment);
-		if (selectedPayment.includes(id)) {
-			setSelectedPayment(prevState => {
-				const customerArrayIndex = prevState.findIndex(
-					customerIndex => customerIndex === id
-				);
-				const newItems = prevState;
-				newItems.splice(customerArrayIndex, 1);
-
-				// console.log(newItems);
-				return newItems;
-			});
-		} else {
-			setSelectedPayment(prevState => {
-				prevState.push(id);
-				// console.log(prevState);
-				return prevState;
-			});
-		}
-	};
-
+const PaymentHistory = ({ payments }: PaymentHistoryProps) => {
 	return (
 		<>
 			<Typography variant='h4' sx={{ fontWeight: "bold", mt: 5, mb: 3 }}>
@@ -79,52 +56,56 @@ const PaymentHistory = () => {
 						</TableRow>
 					</TableHead>
 
-					<TableBody>
-						{paymentHistory.map(
-							({ id, name, amount, date, year, pointsAwarded }) => (
-								<TableRow key={id}>
-									<TableCell sx={{ width: "7%", minWidth: 74 }}>
-										<Typography sx={{ fontWeight: "bold" }}>
-											<Checkbox
-												checked={selectedPayment.includes(id)}
-												onClick={() => handleChanged(id)}
-												// onChange={ }
-											/>
-										</Typography>
-									</TableCell>
+					{payments.length !== 0 && (
+						<TableBody>
+							{payments.map(
+								({ _id, name, amount, createdAt, pointsAwarded }) => (
+									<TableRow key={_id}>
+										<TableCell>
+											<Typography
+												sx={{ fontWeight: "bold", textTransform: "uppercase" }}
+											>
+												{name}
+											</Typography>
+										</TableCell>
 
-									<TableCell>
-										<Typography
-											sx={{ fontWeight: "bold", textTransform: "uppercase" }}
-										>
-											{name}
-										</Typography>
-									</TableCell>
+										<TableCell>
+											<Typography sx={{ fontWeight: "bold" }}>
+												{amount}
+											</Typography>
+										</TableCell>
 
-									<TableCell>
-										<Typography sx={{ fontWeight: "bold" }}>
-											{amount}
-										</Typography>
-									</TableCell>
+										<TableCell>
+											<Typography sx={{ fontWeight: "bold" }}>
+												{moment(createdAt).format("DD/MM/YYYY")}
+											</Typography>
+										</TableCell>
 
-									<TableCell>
-										<Typography sx={{ fontWeight: "bold" }}>{date}</Typography>
-									</TableCell>
+										<TableCell>
+											<Typography sx={{ fontWeight: "bold" }}>
+												{moment(createdAt).format("YYYY")}
+											</Typography>
+										</TableCell>
 
-									<TableCell>
-										<Typography sx={{ fontWeight: "bold" }}>{year}</Typography>
-									</TableCell>
-
-									<TableCell>
-										<Typography sx={{ fontWeight: "bold" }}>
-											{pointsAwarded}
-										</Typography>
-									</TableCell>
-								</TableRow>
-							)
-						)}
-					</TableBody>
+										<TableCell>
+											<Typography sx={{ fontWeight: "bold" }}>
+												{pointsAwarded}
+											</Typography>
+										</TableCell>
+									</TableRow>
+								)
+							)}
+						</TableBody>
+					)}
 				</Table>
+
+				{payments.length === 0 && (
+					<Box sx={{ width: "100%", p: 5 }}>
+						<Typography sx={{ fontWeight: "bold", textAlign: "center" }}>
+							This customer has not made any payment
+						</Typography>
+					</Box>
+				)}
 			</TableContainer>
 		</>
 	);

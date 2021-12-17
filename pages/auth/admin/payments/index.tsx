@@ -2,23 +2,77 @@ import { useState } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { Box, Stack, IconButton } from "@mui/material";
+import {
+	Box,
+	Stack,
+	IconButton,
+	Alert,
+	AlertColor,
+	Snackbar
+} from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { useQuery } from "react-query";
+import { useSelector } from "react-redux";
 
 // Components
 import Statistics from "../../../../components/auth/admin/payments/Statistics";
-import PaymentList from "../../../../components/auth/admin/payments/PaymentList";
+import PaymentList, {
+	PaymentProps
+} from "../../../../components/auth/admin/payments/PaymentList";
 import Drawer from "../../../../components/auth/admin/payments/Drawer";
 import MVC from "../../../../components/auth/admin/payments/MVC";
 
 // Common
 import Button from "../../../../common/Button";
 
+// Utils
+import { getRequest } from "../../../../utils/api/calls";
+import { GET_PAYMENTS } from "../../../../utils/api/urls";
+import queryKeys from "../../../../utils/api/queryKeys";
+
+// Store
+import { RootState } from "../../../../store";
+
+export type AlertProps = {
+	isOpen: boolean;
+	message: string;
+	severity: AlertColor;
+};
+
 const Payments: NextPage = () => {
+	const { user } = useSelector((state: RootState) => state.user);
 	const router = useRouter();
 	const [drawerIsOpen, setDrawerIsOpen] = useState(false);
 	const [showMVC, setShowMVC] = useState(false);
+	const [payments, setPayments] = useState<PaymentProps[]>([]);
+	const [alertData, setAlertData] = useState<AlertProps>({
+		isOpen: false,
+		message: "",
+		severity: "success"
+	});
+
+	const { isLoading, isFetching, refetch } = useQuery(
+		queryKeys.getAllPayments,
+		() => getRequest({ url: GET_PAYMENTS }),
+		{
+			onSuccess(data) {
+				setPayments(data?.data || []);
+			},
+			onError(error: any) {
+				console.error(error?.response);
+			},
+			enabled: !!user?._id,
+			refetchOnWindowFocus: false
+		}
+	);
+
+	const handleAlertClose = () => {
+		setAlertData({
+			...alertData,
+			isOpen: false
+		});
+	};
 
 	return (
 		<Box sx={{ p: 3 }}>
@@ -67,11 +121,29 @@ const Payments: NextPage = () => {
 				) : (
 					<>
 						<Statistics />
-						<PaymentList />
+						<PaymentList
+							{...{ isLoading: isLoading || isFetching, payments }}
+						/>
 					</>
 				)}
-				<Drawer {...{ drawerIsOpen, setDrawerIsOpen }} />
+				<Drawer {...{ drawerIsOpen, setDrawerIsOpen, setAlertData, refetch }} />
 			</Stack>
+
+			<Snackbar
+				anchorOrigin={{ vertical: "top", horizontal: "right" }}
+				open={alertData.isOpen}
+				autoHideDuration={6000}
+				onClose={handleAlertClose}
+			>
+				<Alert
+					variant='filled'
+					onClose={handleAlertClose}
+					severity={alertData.severity}
+					sx={{ width: "100%" }}
+				>
+					{alertData.message}
+				</Alert>
+			</Snackbar>
 		</Box>
 	);
 };

@@ -22,7 +22,7 @@ export const patchRequest = async ({ url, data }: CallArguments) => {
 
 export const getRequest = async (
 	{ url }: any,
-	formatResponse: (arg0: any) => any
+	formatResponse?: (arg0: any) => any
 ) => {
 	const response = await baseAxiosMethod.get(url);
 	if (formatResponse) {

@@ -1,5 +1,6 @@
-import { FC, useState } from "react";
+import { FC, ChangeEvent, useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import {
 	Box,
 	Stack,
@@ -8,9 +9,12 @@ import {
 	Grid,
 	InputAdornment,
 	IconButton,
-	TextFieldProps,
 	Checkbox,
+	CircularProgress,
 	Hidden,
+	Snackbar,
+	Alert,
+	Backdrop,
 	useMediaQuery,
 	useTheme
 } from "@mui/material";
@@ -19,6 +23,8 @@ import ArrowBackwardIcon from "@mui/icons-material/ArrowBack";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
 import Lottie from "react-lottie";
+import { useMutation, useQuery } from "react-query";
+import { useSelector, useDispatch } from "react-redux";
 
 // Lottie
 import * as loginAnimation from "../../../../assets/lottie/Login Colored.json";
@@ -26,6 +32,16 @@ import * as loginAnimation from "../../../../assets/lottie/Login Colored.json";
 // Common
 import TextField from "../../../../common/TextField";
 import Button from "../../../../common/Button";
+
+// Utils
+import { postRequest, getRequest } from "../../../../utils/api/calls";
+import { LOGIN, GET_ME } from "../../../../utils/api/urls";
+import queryKeys from "../../../../utils/api/queryKeys";
+import { validateLoginInputs } from "../../../../utils/validators";
+
+// Store
+import { login } from "../../../../store/user";
+import { RootState } from "../../../../store";
 
 const lottieOptions = {
 	loop: true,
@@ -36,11 +52,112 @@ const lottieOptions = {
 	}
 };
 
+const initialState = {
+	email: "",
+	password: ""
+};
+
 const LoginForm: FC = () => {
+	const user = useSelector((state: RootState) => state.user);
 	const [showPassword, setShowPassword] = useState(false);
+	const [alertIsOpen, setAlertIsOpen] = useState(false);
+	const [backdropIsOpen, setBackdropIsOpen] = useState(false);
+	const [errorMessage, setErrorMessage] = useState("");
 	const [isChecked, setIsChecked] = useState(false);
 	const theme = useTheme();
 	const isMediumScreen = useMediaQuery(theme.breakpoints.down("lg"));
+	const [payload, setPayload] = useState(initialState);
+	const [errors, setErrors] = useState(initialState);
+	const dispatch = useDispatch();
+	const router = useRouter();
+
+	let token: string | null = null;
+
+	if (typeof window !== "undefined") {
+		token = localStorage.getItem("token");
+	}
+
+	useEffect(() => {
+		if (user.user) {
+			router.push(
+				user?.user?.role === "admin"
+					? "/auth/admin/dashboard"
+					: "/auth/customer/dashboard"
+			);
+		}
+	}, [user.user, router]);
+
+	const { refetch } = useQuery(
+		queryKeys.getMe,
+		() => getRequest({ url: GET_ME }),
+		{
+			onSuccess(data: any) {
+				setBackdropIsOpen(false);
+				dispatch(login(data?.data));
+				router.push(
+					data?.data?.role === "admin"
+						? "/auth/admin/dashboard"
+						: "/auth/customer/dashboard"
+				);
+			},
+			onError(error: any) {
+				console.error(error?.response);
+				setBackdropIsOpen(false);
+				setErrorMessage(error?.response?.data?.error || "An error occured");
+				setAlertIsOpen(true);
+			},
+			enabled: !!token
+		}
+	);
+
+	const { mutate, isLoading } = useMutation(postRequest, {
+		onSuccess(data: any) {
+			localStorage.setItem("token", data?.token);
+			setErrors(initialState);
+			refetch();
+			setBackdropIsOpen(true);
+		},
+		onError(error: any) {
+			setErrorMessage(error?.response?.data?.error || "An error occured");
+			setAlertIsOpen(true);
+			setErrors(initialState);
+			console.error(error?.response?.data);
+		}
+	});
+
+	const onChangeHandler = (
+		event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+	) => {
+		setPayload({
+			...payload,
+			[event.target.name]: event.target.value
+		});
+	};
+
+	const handleClose = () => {
+		setAlertIsOpen(false);
+	};
+
+	const onSubmit = () => {
+		const { valid, errors: validationErrors } = validateLoginInputs(
+			payload.email,
+			payload.password
+		);
+
+		if (!valid) {
+			setErrors({
+				...initialState,
+				...validationErrors
+			});
+		} else {
+			mutate({
+				data: {
+					...payload
+				},
+				url: LOGIN
+			});
+		}
+	};
 
 	return (
 		<Box
@@ -130,12 +247,25 @@ const LoginForm: FC = () => {
 
 					<Grid container spacing={5}>
 						<Grid item lg={12} md={12} sm={12} xs={12}>
-							<TextField fullWidth placeholder='Email address' />
+							<TextField
+								fullWidth
+								placeholder='Email address'
+								name='email'
+								value={payload.email}
+								onChange={event => onChangeHandler(event)}
+								error={errors.email.trim() !== ""}
+								helperText={errors.email}
+							/>
 						</Grid>
 
 						<Grid item lg={12} md={12} sm={12} xs={12}>
 							<TextField
 								fullWidth
+								value={payload.password}
+								onChange={event => onChangeHandler(event)}
+								error={errors.password.trim() !== ""}
+								helperText={errors.password}
+								name='password'
 								placeholder='Password'
 								type={showPassword ? "text" : "password"}
 								InputProps={{
@@ -187,10 +317,40 @@ const LoginForm: FC = () => {
 					<Button
 						variant='outlined'
 						endIcon={<ArrowForwardIcon />}
-						sx={{ alignSelf: "flex-start" }}
+						sx={{
+							alignSelf: "flex-start",
+							display: "flex",
+							alignItems: "center",
+							justifyContent: "center"
+						}}
+						onClick={onSubmit}
+						disabled={isLoading}
 					>
-						Login
+						{isLoading ? <CircularProgress size={30} /> : "Login"}
 					</Button>
+
+					<Snackbar
+						anchorOrigin={{ vertical: "top", horizontal: "right" }}
+						open={alertIsOpen}
+						autoHideDuration={6000}
+						onClose={handleClose}
+					>
+						<Alert
+							variant='filled'
+							onClose={handleClose}
+							severity='error'
+							sx={{ width: "100%" }}
+						>
+							{errorMessage}
+						</Alert>
+					</Snackbar>
+
+					<Backdrop
+						sx={{ color: "#fff", zIndex: theme => theme.zIndex.drawer + 1 }}
+						open={backdropIsOpen}
+					>
+						<CircularProgress color='inherit' />
+					</Backdrop>
 				</Stack>
 			</Stack>
 		</Box>

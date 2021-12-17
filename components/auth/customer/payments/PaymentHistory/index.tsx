@@ -8,20 +8,24 @@ import {
 	TableRow,
 	Stack,
 	Avatar,
-	Typography
+	Typography,
+	Box
 } from "@mui/material";
 
 // Components
 import Card from "../../../Card";
 
-// dummydata
-import { history } from "./history";
+export type PaymentsProps = {
+	gamePlayed: string;
+	amount: number;
+	createdAt: string;
+}[];
 
 const TableWrapper: FC = ({ children }) => (
 	<Card sx={{ mt: 5 }}>{children}</Card>
 );
 
-const PaymentHistory = () => {
+const PaymentHistory = ({ payments }: { payments: PaymentsProps }) => {
 	return (
 		<>
 			<Typography variant='h4' sx={{ fontWeight: "bold" }}>
@@ -68,24 +72,38 @@ const PaymentHistory = () => {
 						</TableRow>
 					</TableHead>
 
-					<TableBody>
-						{history.map(({ name, amount, timeStamp }, index) => (
-							<TableRow key={index}>
-								<TableCell align='center' sx={{ border: "none", py: 3 }}>
-									<Typography sx={{ fontWeight: "bold" }}>{name}</Typography>
-								</TableCell>
-								<TableCell align='center' sx={{ border: "none", py: 3 }}>
-									<Typography sx={{ fontWeight: "bold" }}>{amount}</Typography>
-								</TableCell>
-								<TableCell align='center' sx={{ border: "none", py: 3 }}>
-									<Typography sx={{ fontWeight: "bold" }}>
-										{timeStamp}
-									</Typography>
-								</TableCell>
-							</TableRow>
-						))}
-					</TableBody>
+					{payments.length !== 0 && (
+						<TableBody>
+							{payments.map(({ gamePlayed, amount, createdAt }, index) => (
+								<TableRow key={index}>
+									<TableCell align='center' sx={{ border: "none", py: 3 }}>
+										<Typography sx={{ fontWeight: "bold" }}>
+											{gamePlayed}
+										</Typography>
+									</TableCell>
+									<TableCell align='center' sx={{ border: "none", py: 3 }}>
+										<Typography sx={{ fontWeight: "bold" }}>
+											{amount}
+										</Typography>
+									</TableCell>
+									<TableCell align='center' sx={{ border: "none", py: 3 }}>
+										<Typography sx={{ fontWeight: "bold" }}>
+											{createdAt}
+										</Typography>
+									</TableCell>
+								</TableRow>
+							))}
+						</TableBody>
+					)}
 				</Table>
+
+				{payments.length === 0 && (
+					<Box sx={{ width: "100%", p: 5 }}>
+						<Typography sx={{ fontWeight: "bold", textAlign: "center" }}>
+							You have not made any payment
+						</Typography>
+					</Box>
+				)}
 			</TableContainer>
 		</>
 	);

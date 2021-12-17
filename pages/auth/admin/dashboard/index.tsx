@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { Box, Stack } from "@mui/material";
@@ -18,7 +19,7 @@ const Dashboard: NextPage = () => {
 
 			<Stack>
 				<Greeting />
-				<Statistics />
+				<Statistics sx={{ mt: 4 }} />
 				<RecentCustomers />
 				<ContestList />
 			</Stack>

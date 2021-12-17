@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
 import Sidebar from "../components/Sidebar";
+import CheckAuth from "../components/CheckAuth";
 
 // Utils
 import { routesWithNavAndFooter } from "../utils/constants";
@@ -17,10 +18,12 @@ const Layout: FC = ({ children }) => {
 	const isAuthRoute = pathname.split("/")[1] === "auth";
 
 	return isAuthRoute ? (
-		<div className={styles.auth__container}>
-			<Sidebar />
-			<main className={styles.auth__main}>{children}</main>
-		</div>
+		<CheckAuth>
+			<div className={styles.auth__container}>
+				<Sidebar />
+				<main className={styles.auth__main}>{children}</main>
+			</div>
+		</CheckAuth>
 	) : routesWithNavAndFooter.includes(pathname) ? (
 		<>
 			<Navigation />

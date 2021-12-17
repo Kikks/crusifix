@@ -4,11 +4,16 @@ import StarsIcon from "@mui/icons-material/Stars";
 // Components
 import Card from "../../../Card";
 
-type WinnerCardProps = {
-	name: string;
+// Utils
+import { getInitials } from "../../../../../utils/formatters";
+
+export type WinnerCardProps = {
+	_id: string;
+	firstName: string;
+	lastName: string;
 	email: string;
-	image: string;
-	points: number;
+	image?: string;
+	points?: number;
 	rank: number;
 };
 
@@ -17,7 +22,14 @@ type ToppersProps = {
 	winners: WinnerCardProps[];
 };
 
-const WinnerCard = ({ name, email, image, points, rank }: WinnerCardProps) => {
+const WinnerCard = ({
+	firstName,
+	lastName,
+	email,
+	image,
+	points,
+	rank
+}: WinnerCardProps) => {
 	let formattedRank = "";
 	let color = "";
 
@@ -37,12 +49,14 @@ const WinnerCard = ({ name, email, image, points, rank }: WinnerCardProps) => {
 			<Card>
 				<Stack spacing={3}>
 					<Stack direction='row' spacing={2} alignItems='center'>
-						<Avatar src={image} />
+						<Avatar src={image}>
+							{getInitials(`${firstName || ""} ${lastName || ""}`)}
+						</Avatar>
 						<Stack>
 							<Typography
 								sx={{ textTransform: "capitalize", fontWeight: "bold" }}
 							>
-								{name}
+								{`${firstName || ""} ${lastName || ""}`}
 							</Typography>
 							<Typography>{email}</Typography>
 						</Stack>
@@ -50,9 +64,9 @@ const WinnerCard = ({ name, email, image, points, rank }: WinnerCardProps) => {
 
 					<Stack direction='row' alignItems='center'>
 						<Stack flex={1}>
-							<Typography
-								sx={{ fontWeight: "bold" }}
-							>{`${points} points`}</Typography>
+							<Typography sx={{ fontWeight: "bold" }}>{`${
+								points || ""
+							} points`}</Typography>
 							<Typography>{`For ${formattedRank} place in rank`}</Typography>
 						</Stack>
 						<StarsIcon sx={{ color, fontSize: 50 }} />
@@ -67,15 +81,18 @@ const Toppers = ({ contestHasEnded, winners }: ToppersProps) => {
 	return (
 		<Box sx={{ mt: 5 }}>
 			<Typography variant='h4' sx={{ mb: 3, fontWeight: "bold" }}>
-				{contestHasEnded
-					? "Winner"
-					: "Potential winners"}
+				{contestHasEnded ? "Winner" : "Potential winners"}
 			</Typography>
 
 			<Grid container spacing={3}>
-				{winners.map(({ name, email, image, points, rank }) => (
-					<WinnerCard key={name} {...{ name, email, image, points, rank }} />
-				))}
+				{winners.map(
+					({ _id, firstName, lastName, email, image, points, rank }) => (
+						<WinnerCard
+							key={_id}
+							{...{ _id, firstName, lastName, email, image, points, rank }}
+						/>
+					)
+				)}
 			</Grid>
 		</Box>
 	);

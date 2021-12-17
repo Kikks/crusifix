@@ -9,47 +9,71 @@ import {
 	Stack,
 	Avatar,
 	Typography,
-	Checkbox
+	Skeleton,
+	Box
 } from "@mui/material";
+import { useQuery } from "react-query";
+import { useSelector } from "react-redux";
 
 // Components
 import Card from "../../../Card";
 
-// dummydata
-import { customers } from "./customers";
+// Utils
+import { getRequest } from "../../../../../utils/api/calls";
+import { GET_MVCS } from "../../../../../utils/api/urls";
+import queryKeys from "../../../../../utils/api/queryKeys";
+import { getInitials } from "../../../../../utils/formatters";
 
-const headings = ["", "full name", "total games", "total spend", "last played"];
+// Store
+import { RootState } from "../../../../../store";
+
+type MVCProps = {
+	_id: string;
+	totalPoints: number;
+	totalSpent: number;
+	totalGames: number;
+	user_info: {
+		firstName: string;
+		lastName: string;
+		image?: string;
+	}[];
+	lastPlayed?: string;
+};
+
+const headings = ["full name", "total games", "total spend", "last played"];
 
 const TableWrapper: FC = ({ children }) => (
 	<Card sx={{ mt: 5 }}>{children}</Card>
 );
 
 const MVC = () => {
-	const [selectedCustomers, setSelectedCustomers] = useState<string[]>([]);
+	const { user } = useSelector((state: RootState) => state.user);
+	const [customers, setCustomers] = useState<MVCProps[]>([]);
 
-	const handleChanged = (id: string) => {
-		// console.log(selectedCustomers);
-		if (selectedCustomers.includes(id)) {
-			setSelectedCustomers(prevState => {
-				const customerArrayIndex = prevState.findIndex(
-					customerIndex => customerIndex === id
-				);
-				const newItems = prevState;
-				newItems.splice(customerArrayIndex, 1);
-
-				// console.log(newItems);
-				return newItems;
-			});
-		} else {
-			setSelectedCustomers(prevState => {
-				prevState.push(id);
-				// console.log(prevState);
-				return prevState;
-			});
+	const { isLoading } = useQuery(
+		queryKeys.getAllMVCs,
+		() => getRequest({ url: GET_MVCS }),
+		{
+			onSuccess(data) {
+				console.log(data);
+				setCustomers(data?.data || []);
+			},
+			onError(error: any) {
+				console.error(error?.response);
+			},
+			enabled: !!user?._id
 		}
-	};
+	);
 
-	return (
+	return isLoading ? (
+		<Skeleton
+			animation='wave'
+			variant='rectangular'
+			width='100%'
+			height='60vh'
+			sx={{ borderRadius: 5, mt: 5 }}
+		/>
+	) : (
 		<>
 			<Typography variant='h4' sx={{ fontWeight: "bold", my: 1 }}>
 				Most valuable customers
@@ -74,51 +98,64 @@ const MVC = () => {
 						</TableRow>
 					</TableHead>
 
-					<TableBody>
-						{customers.map(
-							({ id, name, image, totalGames, totalSpend, lastPlayed }) => (
-								<TableRow key={id}>
-									<TableCell>
-										<Typography sx={{ fontWeight: "bold" }}>
-											<Checkbox
-												checked={selectedCustomers.includes(id)}
-												onClick={() => handleChanged(id)}
-												// onChange={ }
-											/>
-										</Typography>
-									</TableCell>
+					{customers.length !== 0 && (
+						<TableBody>
+							{customers.map(
+								({ _id, user_info, totalGames, totalSpent, lastPlayed }) => (
+									<TableRow key={_id}>
+										<TableCell>
+											<Stack direction='row' alignItems='center' spacing={3}>
+												<Avatar src={user_info[0]?.image}>
+													{getInitials(
+														`${user_info[0]?.firstName || ""} ${
+															user_info[0]?.lastName || ""
+														}`
+													)}
+												</Avatar>
+												<Typography
+													sx={{
+														fontWeight: "bold",
+														textTransform: "capitalize"
+													}}
+												>
+													{`${user_info[0]?.firstName || ""} ${
+														user_info[0]?.lastName || ""
+													}`}
+												</Typography>
+											</Stack>
+										</TableCell>
 
-									<TableCell>
-										<Stack direction='row' alignItems='center' spacing={3}>
-											<Avatar src={image} />
+										<TableCell>
 											<Typography sx={{ fontWeight: "bold" }}>
-												{name}
+												{totalGames}
 											</Typography>
-										</Stack>
-									</TableCell>
+										</TableCell>
 
-									<TableCell>
-										<Typography sx={{ fontWeight: "bold" }}>
-											{totalGames}
-										</Typography>
-									</TableCell>
+										<TableCell>
+											<Typography sx={{ fontWeight: "bold" }}>
+												{totalSpent}
+											</Typography>
+										</TableCell>
 
-									<TableCell>
-										<Typography sx={{ fontWeight: "bold" }}>
-											{totalSpend}
-										</Typography>
-									</TableCell>
-
-									<TableCell>
-										<Typography sx={{ fontWeight: "bold" }}>
-											{lastPlayed}
-										</Typography>
-									</TableCell>
-								</TableRow>
-							)
-						)}
-					</TableBody>
+										<TableCell>
+											<Typography sx={{ fontWeight: "bold" }}>
+												{lastPlayed}
+											</Typography>
+										</TableCell>
+									</TableRow>
+								)
+							)}
+						</TableBody>
+					)}
 				</Table>
+
+				{customers.length === 0 && (
+					<Box sx={{ width: "100%", p: 5 }}>
+						<Typography sx={{ fontWeight: "bold", textAlign: "center" }}>
+							There are no customers
+						</Typography>
+					</Box>
+				)}
 			</TableContainer>
 		</>
 	);

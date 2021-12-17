@@ -1,5 +1,7 @@
 import { useEffect, useState, ReactNode } from "react";
+import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import {
 	Stack,
 	Drawer,
@@ -7,9 +9,15 @@ import {
 	Hidden,
 	List,
 	useTheme,
+	ListItem,
+	ListItemButton,
+	ListItemIcon,
+	ListItemText,
 	useMediaQuery
 } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { useSelector, useDispatch } from "react-redux";
 
 // Components
 import SidebarLink from "./Link";
@@ -17,14 +25,19 @@ import SidebarLink from "./Link";
 // Links
 import { customerLinks, adminLinks } from "./links";
 
+// Store
+import { RootState } from "../../store";
+import { logout } from "../../store/user";
+
 const DRAWER_WIDTH = 250;
 
 const Sidebar = () => {
+	const user = useSelector((state: RootState) => state.user);
+	const dispatch = useDispatch();
 	const theme = useTheme();
 	const mediumScreen = useMediaQuery(theme.breakpoints.down("md"));
 	const [drawerIsOpen, setDrawerIsOpen] = useState(true);
-
-	let role = "admin";
+	const router = useRouter();
 
 	useEffect(() => {
 		if (!mediumScreen) {
@@ -41,6 +54,8 @@ const Sidebar = () => {
 				width: DRAWER_WIDTH,
 				boxShadow: "15px 15px 35px rgba(0,0,0,0.1)",
 				zIndex: 20,
+				display: "flex",
+				flexDirection: "column",
 
 				"& .MuiDrawer-paper": {
 					width: DRAWER_WIDTH,
@@ -69,8 +84,8 @@ const Sidebar = () => {
 				</Hidden>
 			</Stack>
 
-			<List sx={{ px: 4 }}>
-				{role === "admin"
+			<List sx={{ px: 4, flex: 1 }}>
+				{user?.user?.role === "admin"
 					? adminLinks.map(({ name, icon, href }) => (
 							<SidebarLink
 								key={name}
@@ -88,6 +103,32 @@ const Sidebar = () => {
 							/>
 					  ))}
 			</List>
+
+			<Stack sx={{ px: 4, mb: 2 }}>
+				<ListItem disablePadding>
+					<ListItemButton
+						sx={{ justifyContent: "center" }}
+						onClick={() => {
+							localStorage.removeItem("token");
+							dispatch(logout());
+								router.push("/login");
+						}}
+					>
+						<ListItemIcon sx={{ color: "secondary.main" }}>
+							<LogoutIcon />
+						</ListItemIcon>
+						<ListItemText
+							sx={{
+								"& span": {
+									fontWeight: "600 !important",
+									color: "secondary.main"
+								}
+							}}
+							primary='Logout'
+						/>
+					</ListItemButton>
+				</ListItem>
+			</Stack>
 		</Drawer>
 	);
 };

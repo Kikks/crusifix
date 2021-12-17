@@ -3,7 +3,7 @@ import { Grid, Stack, Typography } from "@mui/material";
 // Components
 import Card from "../../../Card";
 
-type StatProps = {
+export type StatProps = {
 	title: string;
 	value: string;
 };
@@ -19,25 +19,10 @@ const Stat = ({ title, value }: StatProps) => (
 	</Card>
 );
 
-const stats = [
-	{
-		title: "Total games played",
-		value: "177,836"
-	},
-	{
-		title: "Total points earned",
-		value: "540 pts"
-	},
-	{
-		title: "Current position",
-		value: "#105"
-	}
-];
-
-const Statistics = () => {
+const Statistics = ({ statistics }: { statistics: StatProps[] }) => {
 	return (
 		<Grid container spacing={3} sx={{ mt: 4 }}>
-			{stats.map(({ title, value }) => (
+			{statistics.map(({ title, value }) => (
 				<Grid key={title} item lg={4} md={4} sm={6} xs={12}>
 					<Stat title={title} value={value} />
 				</Grid>

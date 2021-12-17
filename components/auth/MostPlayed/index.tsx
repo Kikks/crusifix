@@ -2,7 +2,7 @@ import { Box, Stack, Typography } from "@mui/material";
 
 type MostPlayedProps = {
 	image: string;
-	role: "customer" | "admin";
+	role: string;
 	name: string;
 	frequency: number;
 	days: number;

@@ -9,47 +9,53 @@ import {
 	Stack,
 	Avatar,
 	Typography,
-	Checkbox
+	Checkbox,
+	Box,
+	Skeleton
 } from "@mui/material";
+import moment from "moment";
 
 // Components
 import Card from "../../../Card";
 
-// dummydata
-import { payments } from "./payments";
+// Utils
+import { getInitials } from "../../../../../utils/formatters";
 
-const headings = ["", "full name", "game played", "amount(ngn)", "timestamp"];
+export type PaymentProps = {
+	_id: string;
+	user: {
+		firstName: string;
+		lastName: string;
+		image?: string;
+	};
+	gamePlayed: {
+		name: string;
+	};
+	amount: number;
+	createdAt: string;
+};
+
+type PaymentsProps = {
+	payments: PaymentProps[];
+	isLoading: boolean;
+};
+
+const headings = ["full name", "game played", "amount(ngn)", "timestamp"];
 
 const TableWrapper: FC = ({ children }) => (
 	<Card sx={{ mt: 5 }}>{children}</Card>
 );
 
-const Payments = () => {
-	const [selectedPayments, setSelectedPayments] = useState<string[]>([]);
-
-	const handleChanged = (id: string) => {
-		// console.log(selectedPayments);
-		if (selectedPayments.includes(id)) {
-			setSelectedPayments(prevState => {
-				const customerArrayIndex = prevState.findIndex(
-					customerIndex => customerIndex === id
-				);
-				const newItems = prevState;
-				newItems.splice(customerArrayIndex, 1);
-
-				// console.log(newItems);
-				return newItems;
-			});
-		} else {
-			setSelectedPayments(prevState => {
-				prevState.push(id);
-				// console.log(prevState);
-				return prevState;
-			});
-		}
-	};
-
-	return (
+const Payments = ({ payments, isLoading }: PaymentsProps) => {
+	return isLoading ? (
+		<Skeleton
+			animation='wave'
+			variant='rectangular'
+			width='100%'
+			height='60vh'
+			sx={{ borderRadius: 5, mt: 5 }}
+		/>
+	) : (
 		<TableContainer component={TableWrapper}>
 			<Table sx={{ minWidth: 400, mt: 5 }}>
 				<TableHead>
@@ -70,30 +76,28 @@ const Payments = () => {
 					</TableRow>
 				</TableHead>
 
-				<TableBody>
-					{payments.map(
-						({ id, name, image, gamePlayed, amount, timestamp }) => (
-							<TableRow key={id}>
-								<TableCell>
-									<Typography sx={{ fontWeight: "bold" }}>
-										<Checkbox
-											checked={selectedPayments.includes(id)}
-											onClick={() => handleChanged(id)}
-											// onChange={ }
-										/>
-									</Typography>
-								</TableCell>
-
+				{payments.length !== 0 && (
+					<TableBody>
+						{payments.map(({ _id, user, gamePlayed, amount, createdAt }) => (
+							<TableRow key={_id}>
 								<TableCell>
 									<Stack direction='row' alignItems='center' spacing={3}>
-										<Avatar src={image} />
-										<Typography sx={{ fontWeight: "bold" }}>{name}</Typography>
+										<Avatar src={user?.image}>
+											{getInitials(
+												`${user?.firstName || ""} ${user?.lastName || ""}`
+											)}
+										</Avatar>
+										<Typography
+											sx={{ fontWeight: "bold", textTransform: "capitalize" }}
+										>
+											{`${user?.firstName || ""} ${user?.lastName || ""}`}
+										</Typography>
 									</Stack>
 								</TableCell>
 
 								<TableCell>
 									<Typography sx={{ fontWeight: "bold" }}>
-										{gamePlayed}
+										{gamePlayed.name}
 									</Typography>
 								</TableCell>
 
@@ -103,14 +107,22 @@ const Payments = () => {
 
 								<TableCell>
 									<Typography sx={{ fontWeight: "bold" }}>
-										{timestamp}
+										{moment(createdAt).format("DD/MM/YYY hh:mm A")}
 									</Typography>
 								</TableCell>
 							</TableRow>
-						)
-					)}
-				</TableBody>
+						))}
+					</TableBody>
+				)}
 			</Table>
+
+			{payments.length === 0 && (
+				<Box sx={{ width: "100%", p: 5 }}>
+					<Typography sx={{ fontWeight: "bold", textAlign: "center" }}>
+						There are no payments
+					</Typography>
+				</Box>
+			)}
 		</TableContainer>
 	);
 };

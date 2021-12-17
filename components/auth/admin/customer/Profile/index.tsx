@@ -19,22 +19,26 @@ import Card from "../../../Card";
 // Common
 import Button from "../../../../../common/Button";
 
+// Utils
+import { getInitials } from "../../../../../utils/formatters";
+
 type ProfileCardProps = {
 	icon: ReactNode;
 	title: string;
 	value: string;
+	capitalize?: boolean;
 };
 
-type ProfileProps = {
+export type ProfileProps = {
 	image?: string;
-	lastPlayed: string;
+	lastPlayed?: string;
 	firstName: string;
 	lastName: string;
 	phoneNumber: string;
 	email: string;
 };
 
-const ProfileCard = ({ icon, title, value }: ProfileCardProps) => {
+const ProfileCard = ({ icon, title, value, capitalize }: ProfileCardProps) => {
 	return (
 		<Grid item lg={4} md={4} sm={6} xs={12}>
 			<Card sx={{ height: "100%" }}>
@@ -46,7 +50,14 @@ const ProfileCard = ({ icon, title, value }: ProfileCardProps) => {
 							{title}
 						</Typography>
 
-						<Typography sx={{ fontWeight: "bold" }}>{value}</Typography>
+						<Typography
+							sx={{
+								fontWeight: "bold",
+								textTransform: capitalize ? "capitalize" : "none"
+							}}
+						>
+							{value}
+						</Typography>
 					</Stack>
 				</Stack>
 			</Card>
@@ -79,7 +90,9 @@ const Profile = ({
 							sx={{ bgcolor: "green" }}
 							alt={`${firstName} ${lastName}`}
 							src={image}
-						/>
+						>
+							{getInitials(`${firstName} ${lastName}`)}
+						</Avatar>
 						<Typography
 							variant='h6'
 							sx={{ textTransform: "capitalize", color: "#9fa2b4" }}
@@ -112,12 +125,14 @@ const Profile = ({
 					icon={<AccountIcon sx={{ color: "#9fa2b4" }} />}
 					title='First name'
 					value={firstName}
+					capitalize
 				/>
 
 				<ProfileCard
 					icon={<AccountIcon sx={{ color: "#9fa2b4" }} />}
 					title='Last name'
 					value={lastName}
+					capitalize
 				/>
 
 				<ProfileCard

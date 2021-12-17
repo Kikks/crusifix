@@ -8,59 +8,71 @@ import {
 	TableRow,
 	Stack,
 	Avatar,
-	Typography,
-	Checkbox
+	Box,
+	Skeleton,
+	Typography
 } from "@mui/material";
+import moment from "moment";
+import { useQuery } from "react-query";
+import { useSelector } from "react-redux";
 
 // Components
 import Card from "../../../Card";
 
-// dummydata
-import { customers } from "./customers";
+// Utils
+import { getInitials } from "../../../../../utils/formatters";
+import { getRequest } from "../../../../../utils/api/calls";
+import { GET_RECENT_CUSTOMERS } from "../../../../../utils/api/urls";
+import queryKeys from "../../../../../utils/api/queryKeys";
 
-const headings = [
-	"",
-	"full name",
-	"email",
-	"phone",
-	"no. of games",
-	"register date"
-];
+// Store
+import { RootState } from "../../../../../store";
+
+export type CustomerProps = {
+	_id: string;
+	fullname: string;
+	email: string;
+	month: number;
+	image?: string;
+};
+
+const headings = ["full name", "email", "joined"];
 
 const TableWrapper: FC = ({ children }) => (
 	<Card sx={{ mt: 5 }}>{children}</Card>
 );
 
 const RecentCustomers = () => {
-	const [selectedCustomers, setSelectedCustomers] = useState<string[]>([]);
-	console.log(selectedCustomers);
+	const { user } = useSelector((state: RootState) => state.user);
+	const [customers, setCustomers] = useState<CustomerProps[]>([]);
 
-	const handleChanged = (id: string) => {
-		// console.log(selectedCustomers);
-		if (selectedCustomers.includes(id)) {
-			setSelectedCustomers(prevState => {
-				const customerArrayIndex = prevState.findIndex(
-					customerIndex => customerIndex === id
-				);
-				const newItems = prevState;
-				newItems.splice(customerArrayIndex, 1);
-
-				// console.log(newItems);
-				return newItems;
-			});
-		} else {
-			setSelectedCustomers(prevState => {
-				prevState.push(id);
-				// console.log(prevState);
-				return prevState;
-			});
+	const { isLoading, isFetching } = useQuery(
+		queryKeys.getRecentCustomers,
+		() => getRequest({ url: GET_RECENT_CUSTOMERS }),
+		{
+			onSuccess(data) {
+				setCustomers(data?.data);
+			},
+			onError(error: any) {
+				console.error(error?.response);
+			},
+			enabled: !!user?._id,
+			refetchOnWindowFocus: false
 		}
-	};
+	);
 
-	return (
+	return isLoading || isFetching ? (
+		<Skeleton
+			animation='wave'
+			variant='rectangular'
+			width='100%'
+			height='60vh'
+			sx={{ borderRadius: 5, mt: 5 }}
+		/>
+	) : (
 		<TableContainer component={TableWrapper}>
 			<Typography variant='h4' sx={{ fontWeight: "bold", my: 3 }}>
-				Recent Customers in last 30 days
+				Recent Cutomers in last 30 days
 			</Typography>
 			<Table sx={{ minWidth: 400 }}>
 				<TableHead>
@@ -81,32 +93,21 @@ const RecentCustomers = () => {
 					</TableRow>
 				</TableHead>
 
-				<TableBody>
-					{customers.map(
-						({
-							id,
-							name,
-							image,
-							noOfGames,
-							email,
-							phoneNumber,
-							registerDate
-						}) => (
-							<TableRow key={id}>
-								<TableCell>
-									<Typography sx={{ fontWeight: "bold" }}>
-										<Checkbox
-											checked={selectedCustomers.includes(id)}
-											onClick={() => handleChanged(id)}
-											// onChange={ }
-										/>
-									</Typography>
-								</TableCell>
-
+				{customers.length !== 0 && (
+					<TableBody>
+						{customers.map(({ _id, image, fullname, month, email }) => (
+							<TableRow key={_id}>
 								<TableCell>
 									<Stack direction='row' alignItems='left' spacing={3}>
-										<Avatar src={image} />
-										<Typography sx={{ fontWeight: "bold" }}>{name}</Typography>
+										<Avatar src={image}>{getInitials(fullname)}</Avatar>
+										<Typography
+											sx={{
+												fontWeight: "bold",
+												textTransform: "capitalize"
+											}}
+										>
+											{fullname}
+										</Typography>
 									</Stack>
 								</TableCell>
 
@@ -116,26 +117,23 @@ const RecentCustomers = () => {
 
 								<TableCell>
 									<Typography sx={{ fontWeight: "bold" }}>
-										{phoneNumber}
-									</Typography>
-								</TableCell>
-
-								<TableCell align='center'>
-									<Typography sx={{ fontWeight: "bold" }}>
-										{noOfGames}
-									</Typography>
-								</TableCell>
-
-								<TableCell>
-									<Typography sx={{ fontWeight: "bold" }}>
-										{registerDate}
+										{moment()
+											.month(month - 1)
+											.format("MMM")}
 									</Typography>
 								</TableCell>
 							</TableRow>
-						)
-					)}
-				</TableBody>
+						))}
+					</TableBody>
+				)}
 			</Table>
+			{customers.length === 0 && (
+				<Box sx={{ width: "100%", p: 5 }}>
+					<Typography sx={{ fontWeight: "bold", textAlign: "center" }}>
+						There are no customers
+					</Typography>
+				</Box>
+			)}
 		</TableContainer>
 	);
 };

@@ -8,20 +8,30 @@ import {
 	TableRow,
 	Stack,
 	Avatar,
+	Box,
 	Typography
 } from "@mui/material";
 
 // Components
 import Card from "../../../Card";
 
-// dummydata
-import { standings } from "./standings";
+// Utils
+import { getInitials } from "../../../../../utils/formatters";
+
+export type StandingsProps = {
+	totalPoints: number;
+	user_info: {
+		image?: string;
+		firstName: string;
+		lastName: string;
+	}[];
+}[];
 
 const TableWrapper: FC = ({ children }) => (
 	<Card sx={{ mt: 5 }}>{children}</Card>
 );
 
-const Standings = () => {
+const Standings = ({ standings }: { standings: StandingsProps }) => {
 	return (
 		<TableContainer component={TableWrapper}>
 			<Table sx={{ minWidth: 400 }}>
@@ -53,27 +63,46 @@ const Standings = () => {
 					</TableRow>
 				</TableHead>
 
-				<TableBody>
-					{standings.map(({ name, image, points }, index) => (
-						<TableRow key={index}>
-							<TableCell>
-								<Typography sx={{ fontWeight: "bold" }}>{index + 1}</Typography>
-							</TableCell>
-							<TableCell sx={{ width: "80%" }}>
-								<Stack direction='row' alignItems='center' spacing={3}>
-									<Avatar src={image} />
-									<Typography sx={{ fontWeight: "bold" }}>{name}</Typography>
-								</Stack>
-							</TableCell>
-							<TableCell>
-								<Typography
-									sx={{ fontWeight: "bold" }}
-								>{`${points} pt.`}</Typography>
-							</TableCell>
-						</TableRow>
-					))}
-				</TableBody>
+				{standings.length !== 0 && (
+					<TableBody>
+						{standings.map(({ totalPoints, user_info }, index) => (
+							<TableRow key={index}>
+								<TableCell>
+									<Typography sx={{ fontWeight: "bold" }}>
+										{index + 1}
+									</Typography>
+								</TableCell>
+								<TableCell sx={{ width: "80%" }}>
+									<Stack direction='row' alignItems='center' spacing={3}>
+										<Avatar src={user_info[0]?.image}>
+											{getInitials(
+												`${user_info[0]?.firstName} ${user_info[0]?.lastName}`
+											)}
+										</Avatar>
+										<Typography
+											sx={{ fontWeight: "bold", textTransform: "capitalize" }}
+										>
+											{`${user_info[0]?.firstName} ${user_info[0]?.lastName}`}
+										</Typography>
+									</Stack>
+								</TableCell>
+								<TableCell>
+									<Typography
+										sx={{ fontWeight: "bold" }}
+									>{`${totalPoints} pt.`}</Typography>
+								</TableCell>
+							</TableRow>
+						))}
+					</TableBody>
+				)}
 			</Table>
+			{standings.length === 0 && (
+				<Box sx={{ width: "100%", p: 5 }}>
+					<Typography sx={{ fontWeight: "bold", textAlign: "center" }}>
+						There are no contestants
+					</Typography>
+				</Box>
+			)}
 		</TableContainer>
 	);
 };

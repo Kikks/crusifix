@@ -1,7 +1,11 @@
 import { Grid, Stack, Typography } from "@mui/material";
+import { useSelector } from "react-redux";
 
 // Components
 import Card from "../../../Card";
+
+// Store
+import { RootState } from "../../../../../store";
 
 type StatProps = {
 	title: string;
@@ -19,29 +23,14 @@ const Stat = ({ title, value }: StatProps) => (
 	</Card>
 );
 
-const stats = [
-	{
-		title: "Total customers",
-		value: "177,836"
-	},
-	{
-		title: "Total games played",
-		value: "540 pts"
-	},
-	{
-		title: "Most Valuable Customer",
-		value: "Matt Daemon"
-	},
-	{
-		title: "New customers in last 30 days",
-		value: "35"
-	}
-];
-
 const Statistics = () => {
+	const { statistics } = useSelector(
+		(state: RootState) => state.adminStatistics
+	);
+
 	return (
 		<Grid container spacing={3} alignItems='stretch'>
-			{stats.map(({ title, value }) => (
+			{statistics.map(({ title, value }) => (
 				<Grid key={title} item lg={3} md={4} sm={6} xs={12}>
 					<Stat title={title} value={value} />
 				</Grid>

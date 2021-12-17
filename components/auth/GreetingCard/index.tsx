@@ -1,8 +1,12 @@
 import Image from "next/image";
 import { Typography, Stack } from "@mui/material";
+import { useSelector } from "react-redux";
 
 // Component
 import Button from "../../../common/Button";
+
+// Store
+import { RootState } from "../../../store";
 
 type GreetingCardProps = {
 	name: string;
@@ -11,6 +15,8 @@ type GreetingCardProps = {
 };
 
 const GreetingCard = ({ name, action, buttonLabel }: GreetingCardProps) => {
+	const { user } = useSelector((state: RootState) => state.user);
+
 	return (
 		<Stack
 			direction='row'
@@ -36,7 +42,11 @@ const GreetingCard = ({ name, action, buttonLabel }: GreetingCardProps) => {
 			</Stack>
 
 			<Image
-				src='/assets/svg/greeting-card-illustration.svg'
+				src={
+					user?.role === "admin"
+						? "/assets/svg/admin-greeting-card-illustration.svg"
+						: "/assets/svg/greeting-card-illustration.svg"
+				}
 				height={220}
 				width={220}
 				alt='Bonding moments'

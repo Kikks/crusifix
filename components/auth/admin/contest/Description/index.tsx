@@ -6,20 +6,22 @@ import moment from "moment";
 // Components
 import Card from "../../../Card";
 
-type DescriptionProps = {
+export type DescriptionProps = {
 	name: string;
-	price: number;
-	cashToPoints: string;
+	contestAmount: number;
 	endDate: string;
 	description: string;
+	amountToPoints: number;
+	pointsToAmount: number;
 };
 
 const Description = ({
 	name,
-	price,
-	cashToPoints,
+	contestAmount,
 	endDate,
-	description
+	description,
+	amountToPoints,
+	pointsToAmount
 }: DescriptionProps) => {
 	return (
 		<Card>
@@ -54,7 +56,7 @@ const Description = ({
 								<Typography
 									variant='subtitle2'
 									sx={{ fontWeight: "bold" }}
-								>{`NGN ${price}`}</Typography>
+								>{`NGN ${contestAmount}`}</Typography>
 							</Stack>
 
 							<Stack spacing={1} direction='row' alignItems='center'>
@@ -72,7 +74,7 @@ const Description = ({
 									<StarIcon sx={{ fontSize: 15, color: "primary.main" }} />
 								</Box>
 								<Typography variant='subtitle2' sx={{ fontWeight: "bold" }}>
-									{cashToPoints}
+									{`${amountToPoints || ""}:${pointsToAmount || ""}`}
 								</Typography>
 							</Stack>
 						</Stack>

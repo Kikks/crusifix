@@ -1,8 +1,17 @@
-import { createStore, applyMiddleware } from "redux";
+import { configureStore } from "@reduxjs/toolkit";
 import thunk from "redux-thunk";
 
-import reducers from "./reducers";
+import userReducer from "./user";
+import adminStatisticsReducer from "./adminStatistics";
 
-const store = createStore(reducers, {}, applyMiddleware(thunk));
+const store = configureStore({
+	reducer: {
+		user: userReducer,
+		adminStatistics: adminStatisticsReducer
+	},
+	middleware: [thunk]
+});
+
+export type RootState = ReturnType<typeof store.getState>;
 
 export default store;
