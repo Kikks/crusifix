@@ -1,14 +1,31 @@
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Box, Typography } from "@mui/material";
+import {
+	Box,
+	Typography,
+	IconButton,
+	Stack,
+	Drawer,
+	List,
+	ListItem,
+	ListItemButton,
+	ListItemText,
+	useMediaQuery,
+	useTheme
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 
 // Common
 import Button from "../../common/Button";
 
 // Comonents
 import Container from "../../components/Container";
+
+// Links
+import links from "./links";
 
 interface LinkProps {
 	href: string;
@@ -42,6 +59,9 @@ const NavLink = ({ href, children }: LinkProps) => {
 
 const Navigation = () => {
 	const router = useRouter();
+	const theme = useTheme();
+	const smallScreens = useMediaQuery(theme.breakpoints.down("sm"));
+	const [drawerIsOpen, setDrawerIsOpen] = useState(false);
 
 	return (
 		<Box
@@ -58,32 +78,103 @@ const Navigation = () => {
 				zIndex: "tooltip"
 			}}
 		>
-			<Container>
-				<Box
-					sx={{
-						display: "flex",
-						justifyContent: "space-between",
-						alignItems: "center",
-						width: "100%"
-					}}
-				>
-					<Image
-						src='/assets/images/logo.png'
-						alt='Crusifix Logo'
-						width={80}
-						height={80}
-					/>
+			{smallScreens ? (
+				<Stack direction='row' alignItems='center' justifyContent="space-between" sx={{ p: 1 }}>
+					<div />
+					<IconButton onClick={() => setDrawerIsOpen(true)}>
+						<MenuIcon />
+					</IconButton>
+				</Stack>
+			) : (
+				<Container>
 					<Box
 						sx={{
 							display: "flex",
-							justifyContent: "center",
-							alignItems: "center"
+							justifyContent: "space-between",
+							alignItems: "center",
+							width: "100%"
 						}}
 					>
-						<NavLink href='/'>Home</NavLink>
-						<NavLink href='/'>About Us</NavLink>
-						<NavLink href='/'>Games</NavLink>
-						<NavLink href='/'>Location</NavLink>
+						<Image
+							src='/assets/images/logo.png'
+							alt='Crusifix Logo'
+							width={80}
+							height={80}
+						/>
+						<Box
+							sx={{
+								display: "flex",
+								justifyContent: "center",
+								alignItems: "center"
+							}}
+						>
+							{links.map(({ title, url }) => (
+								<NavLink href={url} key={title}>
+									{title}
+								</NavLink>
+							))}
+							<Box sx={{ ml: 5 }}>
+								<Button
+									variant='outlined'
+									onClick={() => router.push("/register")}
+								>
+									Sign Up
+								</Button>
+							</Box>
+						</Box>
+					</Box>
+				</Container>
+			)}
+
+			<Drawer
+				variant='temporary'
+				anchor='left'
+				open={drawerIsOpen}
+				sx={{
+					width: "100%",
+					boxShadow: "15px 15px 35px rgba(0,0,0,0.1)",
+					zIndex: 20,
+					display: "flex",
+					flexDirection: "column",
+
+					"& .MuiDrawer-paper": {
+						width: "100%",
+						boxSizing: "border-box",
+						border: "none"
+					}
+				}}
+			>
+				<Stack
+					direction='row'
+					justifyContent='space-between'
+					alignItems='center'
+					sx={{ p: 2, pb: 0 }}
+				>
+					<div />
+					<IconButton onClick={() => setDrawerIsOpen(false)}>
+						<ChevronLeftIcon />
+					</IconButton>
+				</Stack>
+
+				<List>
+					{links.map(({ title, url }) => (
+						<Link href={url} passHref key={title}>
+							<ListItem disablePadding>
+								<ListItemButton sx={{ justifyContent: "center" }}>
+									<ListItemText
+										sx={{
+											"& span": {
+												fontWeight: "600 !important",
+												color: "#5a7184"
+											}
+										}}
+										primary={title}
+									/>
+								</ListItemButton>
+							</ListItem>
+						</Link>
+					))}
+					<ListItem disablePadding>
 						<Box sx={{ ml: 5 }}>
 							<Button
 								variant='outlined'
@@ -92,9 +183,9 @@ const Navigation = () => {
 								Sign Up
 							</Button>
 						</Box>
-					</Box>
-				</Box>
-			</Container>
+					</ListItem>
+				</List>
+			</Drawer>
 		</Box>
 	);
 };

@@ -47,7 +47,6 @@ const emptyData = {
 	lastName: "",
 	email: "",
 	phoneNumber: "",
-	password: ""
 };
 
 const Drawer = ({
@@ -58,7 +57,6 @@ const Drawer = ({
 	refetch,
 	setAlertData
 }: DrawerProps) => {
-	const [showPassword, setShowPassword] = useState(false);
 	const [errors, setErrors] = useState(emptyData);
 	const [payload, setPayload] = useState({
 		_id: "",
@@ -68,8 +66,7 @@ const Drawer = ({
 	useEffect(() => {
 		if (drawerData) {
 			setPayload({
-				...drawerData,
-				password: ""
+				...drawerData
 			});
 		}
 	}, [drawerData]);
@@ -152,8 +149,7 @@ const Drawer = ({
 						firstName: payload.firstName,
 						lastName: payload.lastName,
 						email: payload.email,
-						phoneNumber: payload.phoneNumber,
-						password: payload.password
+						phoneNumber: payload.phoneNumber
 					}
 				});
 			}
@@ -236,34 +232,6 @@ const Drawer = ({
 						onChange={event => onChangeHandler(event)}
 						error={errors.phoneNumber.trim() !== ""}
 						helperText={errors.phoneNumber}
-					/>
-				</Grid>
-
-				<Grid item lg={12} md={12} sm={12} xs={12}>
-					<TextField
-						fullWidth
-						placeholder='Password'
-						type={showPassword ? "text" : "password"}
-						name='password'
-						value={payload.password}
-						onChange={event => onChangeHandler(event)}
-						error={errors.password.trim() !== ""}
-						helperText={
-							errors.password.trim() !== ""
-								? errors.password
-								: "Must be 8 characters"
-						}
-						InputProps={{
-							endAdornment: (
-								<InputAdornment position='end'>
-									<IconButton
-										onClick={() => setShowPassword(prevState => !prevState)}
-									>
-										{showPassword ? <VisibilityOff /> : <Visibility />}
-									</IconButton>
-								</InputAdornment>
-							)
-						}}
 					/>
 				</Grid>
 			</Grid>

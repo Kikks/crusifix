@@ -100,20 +100,17 @@ export const validateRegisterInputs = ({
 
 export const validateCreateAccountInput = ({
 	email,
-	password,
 	firstName,
 	lastName,
 	phoneNumber
 }: {
 	email: string;
-	password: string;
 	firstName: string;
 	lastName: string;
 	phoneNumber: string;
 }) => {
 	const errors = {
 		email: "",
-		password: "",
 		firstName: "",
 		lastName: "",
 		phoneNumber: ""
@@ -127,10 +124,6 @@ export const validateCreateAccountInput = ({
 		errors.email = "Email field cannot be empty";
 	} else if (!email.match(regex)) {
 		errors.email = "Invalid Email supplied";
-	}
-
-	if (password.trim() === "") {
-		errors.password = "Password field cannot be empty";
 	}
 
 	if (firstName.trim() === "") {
