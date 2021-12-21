@@ -133,7 +133,7 @@ const ContestList = () => {
 
 										<TableCell>
 											<Typography sx={{ fontWeight: "bold" }}>
-												{rewardAmount}
+												{rewardAmount.toLocaleString("en-US")}
 											</Typography>
 										</TableCell>
 

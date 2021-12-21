@@ -297,21 +297,23 @@ const LoginForm: FC = () => {
 							<Typography>Remember me</Typography>
 						</Stack>
 
-						<Typography>
-							<MUILink
-								color='primary.main'
-								underline='hover'
-								component='span'
-								sx={{
-									fontWeight: "bold",
-									":hover": {
-										cursor: "pointer"
-									}
-								}}
-							>
-								Forgot Password?
-							</MUILink>
-						</Typography>
+						<Link href='/forgot-password' passHref>
+							<Typography>
+								<MUILink
+									color='primary.main'
+									underline='hover'
+									component='span'
+									sx={{
+										fontWeight: "bold",
+										":hover": {
+											cursor: "pointer"
+										}
+									}}
+								>
+									Forgot Password?
+								</MUILink>
+							</Typography>
+						</Link>
 					</Stack>
 
 					<Button

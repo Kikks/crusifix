@@ -4,7 +4,9 @@ import {
 	Stack,
 	Grid,
 	IconButton,
+	Backdrop,
 	MenuItem,
+	Avatar,
 	Typography,
 	CircularProgress
 } from "@mui/material";
@@ -12,6 +14,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import FileIcon from "@mui/icons-material/InsertDriveFileOutlined";
 import { useMutation } from "react-query";
+import axios from "axios";
 
 // Components
 import TextField from "../../../../../common/TextField";
@@ -19,7 +22,7 @@ import Button from "../../../../../common/Button";
 
 // Utils
 import { postRequest } from "../../../../../utils/api/calls";
-import { CREATE_GAME } from "../../../../../utils/api/urls";
+import { CREATE_GAME, UPLOAD_IMAGE } from "../../../../../utils/api/urls";
 import { validateCreateGameInput } from "../../../../../utils/validators";
 
 // Types
@@ -46,16 +49,21 @@ const platforms = [
 const emptyData = {
 	name: "",
 	platform: "Platform",
-	durationInMinutes: 0,
-	amount: 0
+	durationInMins: 0,
+	psFourCost: 0,
+	psFiveCost: 0,
+	vrCost: 0
 };
 
 const emptyErrors = {
 	name: "",
 	platform: "",
-	durationInMinutes: "",
+	durationInMins: "",
 	amount: "",
-	image: ""
+	image: "",
+	psFourCost: "",
+	psFiveCost: "",
+	vrCost: ""
 };
 
 const DRAWER_WIDTH = 450;
@@ -70,7 +78,11 @@ const Drawer = ({
 	const [payload, setPayload] = useState({
 		...emptyData
 	});
-	const [image, setImage] = useState<any | null>(null);
+	const [gameImageInfo, setGameImageInfo] = useState({
+		gameImage: "",
+		cloudinaryId: ""
+	});
+	const [backdropIsOpen, setBackdropIsOpen] = useState(false);
 
 	const { mutate, isLoading } = useMutation(postRequest, {
 		onSuccess(data) {
@@ -94,16 +106,32 @@ const Drawer = ({
 		}
 	});
 
-	const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
-		const files = event?.target?.files;
+	const uploadImage = (url: string, formData: FormData) => {
+		axios
+			.post(url, formData)
+			.then(res => {
+				setGameImageInfo({
+					gameImage: res.data?.secure_url || "",
+					cloudinaryId: res.data?.asset_id || ""
+				});
+				setBackdropIsOpen(false);
+			})
+			.catch(err => {
+				setGameImageInfo({
+					gameImage: "",
+					cloudinaryId: ""
+				});
+				setBackdropIsOpen(false);
+				console.error(err?.response);
+			});
+	};
 
-		if (files![0]) {
-			if (files![0].type.split("/")[0] !== "image") {
-				alert("Please select an image file");
-			} else {
-				setImage(files![0]);
-			}
-		}
+	const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+		setBackdropIsOpen(true);
+		const data = new FormData();
+		data.append("file", event?.target?.files![0]);
+		data.append("upload_preset", "ece3ntzr");
+		uploadImage(UPLOAD_IMAGE, data);
 	};
 
 	const onChangeHandler = (
@@ -118,22 +146,32 @@ const Drawer = ({
 	const onSubmit = () => {
 		const { valid, errors: validationErrors } = validateCreateGameInput({
 			...payload,
-			image
+			image: gameImageInfo.gameImage
 		});
 		if (!valid) {
 			setErrors(validationErrors);
 		} else {
-			const formData = new FormData();
-			formData.append('gameImage', image)
-			formData.append("name", payload.name);
-			formData.append("platform", payload.platform);
-			formData.append("durationInMinutes", payload.durationInMinutes.toString());
-			formData.append('amount', payload.amount.toString())
-			// formData.append("durationInMinutes", payload.platform);
-
 			mutate({
 				url: CREATE_GAME,
-				data: formData
+				data:
+					payload.platform === "vr"
+						? {
+								gameImage: gameImageInfo.gameImage,
+								cloudinaryId: gameImageInfo.cloudinaryId,
+								name: payload.name,
+								vrCost: payload.vrCost,
+								durationInMins: payload.durationInMins,
+								platform: payload.platform
+						  }
+						: {
+								gameImage: gameImageInfo.gameImage,
+								cloudinaryId: gameImageInfo.cloudinaryId,
+								name: payload.name,
+								psFourCost: payload.psFourCost,
+								psFiveCost: payload.psFiveCost,
+								durationInMins: payload.durationInMins,
+								platform: payload.platform
+						  }
 			});
 		}
 	};
@@ -192,10 +230,16 @@ const Drawer = ({
 									cursor: "pointer"
 								}}
 							>
-								{image ? (
-									<>
-										<Typography>{image?.name}</Typography>
-									</>
+								{gameImageInfo.gameImage.trim() !== "" ? (
+									<Stack
+										direction='row'
+										sx={{ width: "100%", justifyContent: "center" }}
+									>
+										<Avatar
+											src={gameImageInfo.gameImage}
+											sx={{ width: 70, height: 70 }}
+										/>
+									</Stack>
 								) : (
 									<>
 										<FileIcon />
@@ -270,25 +314,78 @@ const Drawer = ({
 						fullWidth
 						placeholder='Duration(in mins)'
 						type='number'
-						name='durationInMinutes'
-						value={payload.durationInMinutes}
-						onChange={event => onChangeHandler(event)}
-						error={errors.durationInMinutes.trim() !== ""}
-						helperText={errors.durationInMinutes}
+						name='durationInMins'
+						value={payload.durationInMins === 0 ? "" : payload.durationInMins}
+						onChange={event =>
+							setPayload({
+								...payload,
+								durationInMins: Number(event.target.value)
+							})
+						}
+						error={errors.durationInMins.trim() !== ""}
+						helperText={errors.durationInMins}
 					/>
 				</Grid>
 
-				<Grid item lg={12} md={12} sm={12} xs={12}>
-					<TextField
-						fullWidth
-						placeholder='Amount'
-						name='amount'
-						value={payload.amount}
-						onChange={event => onChangeHandler(event)}
-						error={errors.amount.trim() !== ""}
-						helperText={errors.amount}
-					/>
-				</Grid>
+				{payload.platform === "vr" && (
+					<Grid item lg={12} md={12} sm={12} xs={12}>
+						<TextField
+							fullWidth
+							placeholder='VR Amount'
+							type='number'
+							name='vrCost'
+							value={payload.vrCost === 0 ? "" : payload.vrCost}
+							onChange={event =>
+								setPayload({
+									...payload,
+									vrCost: Number(event.target.value)
+								})
+							}
+							error={errors.vrCost.trim() !== ""}
+							helperText={errors.vrCost}
+						/>
+					</Grid>
+				)}
+
+				{payload.platform === "ps" && (
+					<>
+						<Grid item lg={12} md={12} sm={12} xs={12}>
+							<TextField
+								fullWidth
+								placeholder='PS4 Amount'
+								type='number'
+								name='psFourCost'
+								value={payload.psFourCost === 0 ? "" : payload.psFourCost}
+								onChange={event =>
+									setPayload({
+										...payload,
+										psFourCost: Number(event.target.value)
+									})
+								}
+								error={errors.psFourCost.trim() !== ""}
+								helperText={errors.psFourCost}
+							/>
+						</Grid>
+
+						<Grid item lg={12} md={12} sm={12} xs={12}>
+							<TextField
+								fullWidth
+								placeholder='PS5 Amount'
+								type='number'
+								name='psFiveCost'
+								value={payload.psFiveCost === 0 ? "" : payload.psFiveCost}
+								onChange={event =>
+									setPayload({
+										...payload,
+										psFiveCost: Number(event.target.value)
+									})
+								}
+								error={errors.psFiveCost.trim() !== ""}
+								helperText={errors.psFiveCost}
+							/>
+						</Grid>
+					</>
+				)}
 			</Grid>
 			<Stack
 				direction='row'
@@ -306,6 +403,13 @@ const Drawer = ({
 					{isLoading ? <CircularProgress /> : "Create"}
 				</Button>
 			</Stack>
+
+			<Backdrop
+				sx={{ color: "#fff", zIndex: theme => theme.zIndex.drawer + 1 }}
+				open={backdropIsOpen}
+			>
+				<CircularProgress color='inherit' />
+			</Backdrop>
 		</MUIDrawer>
 	);
 };

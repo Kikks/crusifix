@@ -43,15 +43,19 @@ const Customer: NextPage = () => {
 		{
 			onSuccess(data) {
 				setProfile(
-					data?.data || {
+					{
+						...data?.data,
+						lastPlayed: data?.paymentHistory[0]?.createdAt
+					} || {
 						firstName: "",
 						lastName: "",
 						phoneNumber: "",
-						email: ""
+						email: "",
+						lastPlayed: ""
 					}
 				);
 
-				setPayments(data?.data?.payments || []);
+				setPayments(data?.paymentHistory || []);
 			},
 			onError(error: any) {
 				console.error(error?.response);

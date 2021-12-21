@@ -16,7 +16,14 @@ const useStyles = makeStyles({
 const TextField = ({ ...props }: TextFieldProps) => {
 	const classes = useStyles();
 
-	return <MUITextField className={classes.root} size='small' {...props} />;
+	return (
+		<MUITextField
+			className={classes.root}
+			size='small'
+			autoComplete='off'
+			{...props}
+		/>
+	);
 };
 
 export default TextField;

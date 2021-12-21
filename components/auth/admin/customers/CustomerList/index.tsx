@@ -54,7 +54,6 @@ const headings = [
 	"full name",
 	"email",
 	"phone",
-	"no. of games",
 	"register date"
 ];
 
@@ -179,14 +178,6 @@ const CustomerList = ({
 										<TableCell>
 											<Typography sx={{ fontWeight: "bold" }}>
 												{phoneNumber}
-											</Typography>
-										</TableCell>
-									</Link>
-
-									<Link href={`/auth/admin/customers/${_id}`} passHref>
-										<TableCell align='center'>
-											<Typography sx={{ fontWeight: "bold" }}>
-												{noOfGames}
 											</Typography>
 										</TableCell>
 									</Link>

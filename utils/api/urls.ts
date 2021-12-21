@@ -4,7 +4,10 @@ export const REGISTER = `${process.env.API_URL}/auth/register`;
 export const LOGOUT = `${process.env.API_URL}/auth/logout`;
 export const GET_ME = `${process.env.API_URL}/auth/me`;
 export const FORGOT_PASSWORD = `${process.env.API_URL}/auth/forgotpassword`;
-//// Confirm user and resetpassword routes are not clear yet
+export const CONFIRM_EMAIL = ({ token }: { token: string }) =>
+	`${process.env.API_URL}/auth/confirmemail/${token}`;
+export const RESET_PASSWORD = ({ token }: { token: string }) =>
+	`${process.env.API_URL}/auth/resetpassword/${token}`;
 
 // User
 export const GET_USERS = `${process.env.API_URL}/users`;
@@ -57,3 +60,6 @@ export const GET_MOST_VALUABLE_CUSTOMER = `${process.env.API_URL}/dashboards/mos
 export const GET_DASHBOARD_CONTESTS = `${process.env.API_URL}/dashboards/contestlist`;
 export const GET_MOST_PLAYED_GAMES = `${process.env.API_URL}/dashboards/mostplayedgames`;
 export const GET_TOTAL_GAMES = `${process.env.API_URL}/dashboards/totalgames`;
+
+// Upload image
+export const UPLOAD_IMAGE = `https://api.cloudinary.com/v1_1/dh2w0dqug/image/upload`;

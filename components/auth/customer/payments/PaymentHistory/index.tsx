@@ -11,6 +11,7 @@ import {
 	Typography,
 	Box
 } from "@mui/material";
+import moment from "moment";
 
 // Components
 import Card from "../../../Card";
@@ -83,12 +84,12 @@ const PaymentHistory = ({ payments }: { payments: PaymentsProps }) => {
 									</TableCell>
 									<TableCell align='center' sx={{ border: "none", py: 3 }}>
 										<Typography sx={{ fontWeight: "bold" }}>
-											{amount}
+											{amount.toLocaleString("en-US")}
 										</Typography>
 									</TableCell>
 									<TableCell align='center' sx={{ border: "none", py: 3 }}>
 										<Typography sx={{ fontWeight: "bold" }}>
-											{createdAt}
+											{moment(createdAt).format("DD/MM/YYYY")}
 										</Typography>
 									</TableCell>
 								</TableRow>

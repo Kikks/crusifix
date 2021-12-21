@@ -38,8 +38,6 @@ const Payments: NextPage = () => {
 		}
 	);
 
-	console.log(user?.role);
-
 	return (
 		<Box sx={{ p: 3 }}>
 			<Head>

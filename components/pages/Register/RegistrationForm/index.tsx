@@ -15,6 +15,7 @@ import {
 	CircularProgress,
 	Alert,
 	Snackbar,
+	Modal,
 	useMediaQuery,
 	useTheme
 } from "@mui/material";
@@ -23,8 +24,8 @@ import ArrowBackwardIcon from "@mui/icons-material/ArrowBack";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
 import Lottie from "react-lottie";
-import { useMutation, useQuery } from "react-query";
-import { useSelector, useDispatch } from "react-redux";
+import { useMutation } from "react-query";
+import { useSelector } from "react-redux";
 
 // Lottie
 import * as registerAnimation from "../../../../assets/lottie/Growth Animation.json";
@@ -34,13 +35,11 @@ import TextField from "../../../../common/TextField";
 import Button from "../../../../common/Button";
 
 // Utils
-import { postRequest, getRequest } from "../../../../utils/api/calls";
-import { REGISTER, GET_ME } from "../../../../utils/api/urls";
-import queryKeys from "../../../../utils/api/queryKeys";
+import { postRequest } from "../../../../utils/api/calls";
+import { REGISTER } from "../../../../utils/api/urls";
 import { validateRegisterInputs } from "../../../../utils/validators";
 
 // Store
-import { login } from "../../../../store/user";
 import { RootState } from "../../../../store";
 
 const lottieOptions = {
@@ -65,20 +64,13 @@ const RegistrationForm: FC = () => {
 	const [showPassword, setShowPassword] = useState(false);
 	const [isChecked, setIsChecked] = useState(false);
 	const [alertIsOpen, setAlertIsOpen] = useState(false);
-	const [backdropIsOpen, setBackdropIsOpen] = useState(false);
+	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
 	const theme = useTheme();
 	const isMediumScreen = useMediaQuery(theme.breakpoints.down("lg"));
 	const [payload, setPayload] = useState(initialState);
 	const [errors, setErrors] = useState({ ...initialState, checkbox: "" });
-	const dispatch = useDispatch();
 	const router = useRouter();
-
-	let token: string | null = null;
-
-	if (typeof window !== "undefined") {
-		token = localStorage.getItem("token");
-	}
 
 	useEffect(() => {
 		if (user.user) {
@@ -90,35 +82,10 @@ const RegistrationForm: FC = () => {
 		}
 	}, [user.user, router]);
 
-	const { refetch } = useQuery(
-		queryKeys.getMe,
-		() => getRequest({ url: GET_ME }),
-		{
-			onSuccess(data: any) {
-				setBackdropIsOpen(false);
-				dispatch(login(data?.data));
-				router.push(
-					data?.data?.role === "admin"
-						? "/auth/admin/dashboard"
-						: "/auth/customer/dashboard"
-				);
-			},
-			onError(error: any) {
-				console.error(error?.response);
-				setBackdropIsOpen(false);
-				setErrorMessage(error?.response?.data?.error || "An error occured");
-				setAlertIsOpen(true);
-			},
-			enabled: !!token
-		}
-	);
-
 	const { mutate, isLoading } = useMutation(postRequest, {
-		onSuccess(data: any) {
-			localStorage.setItem("token", data?.token);
+		onSuccess() {
 			setErrors({ ...initialState, checkbox: "" });
-			refetch();
-			setBackdropIsOpen(true);
+			setModalIsOpen(true);
 		},
 		onError(error: any) {
 			setErrorMessage(error?.response?.data?.error || "An error occured");
@@ -424,12 +391,45 @@ const RegistrationForm: FC = () => {
 				</Alert>
 			</Snackbar>
 
-			<Backdrop
-				sx={{ color: "#fff", zIndex: theme => theme.zIndex.drawer + 1 }}
-				open={backdropIsOpen}
-			>
-				<CircularProgress color='inherit' />
-			</Backdrop>
+			<Modal open={modalIsOpen}>
+				<Stack
+					spacing={2}
+					sx={{
+						position: "absolute",
+						top: "50%",
+						left: "50%",
+						transform: "translate(-50%, -50%)",
+						width: "95%",
+						maxWidth: 600,
+						bgcolor: "background.paper",
+						boxShadow: 24,
+						borderRadius: 5,
+						p: 4
+					}}
+				>
+					<Typography
+						variant='h5'
+						sx={{ fontWeight: "bold", textAlign: "center" }}
+					>
+						Registered Successfully
+					</Typography>
+
+					<Typography>
+						You have craeted an account successfully. Kindly check your email
+						for a link to verify your account.
+					</Typography>
+
+					<Stack justifyContent='center'>
+						<Button
+							variant='contained'
+							color='primary'
+							onClick={() => router.push("/login")}
+						>
+							Continue
+						</Button>
+					</Stack>
+				</Stack>
+			</Modal>
 		</Box>
 	);
 };

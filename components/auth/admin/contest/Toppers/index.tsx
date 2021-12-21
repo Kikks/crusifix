@@ -65,7 +65,7 @@ const WinnerCard = ({
 					<Stack direction='row' alignItems='center'>
 						<Stack flex={1}>
 							<Typography sx={{ fontWeight: "bold" }}>{`${
-								points || ""
+								points?.toLocaleString("en-US") || ""
 							} points`}</Typography>
 							<Typography>{`For ${formattedRank} place in rank`}</Typography>
 						</Stack>

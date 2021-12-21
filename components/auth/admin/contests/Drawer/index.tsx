@@ -160,7 +160,7 @@ const Drawer = ({
 						placeholder='Reward Amount'
 						type='number'
 						name='contestAmount'
-						value={payload.contestAmount}
+						value={payload.contestAmount === 0 ? '' : payload.contestAmount}
 						onChange={event => onChangeHandler(event)}
 						error={errors.contestAmount.trim() !== ""}
 						helperText={errors.contestAmount}
@@ -215,7 +215,7 @@ const Drawer = ({
 						placeholder='Cash'
 						type='number'
 						name='amountToPoints'
-						value={payload.amountToPoints}
+						value={payload.amountToPoints === 0 ? '' : payload.amountToPoints}
 						onChange={event => onChangeHandler(event)}
 						error={errors.amountToPoints.trim() !== ""}
 						helperText={errors.amountToPoints}
@@ -228,7 +228,7 @@ const Drawer = ({
 						placeholder='Points'
 						type='number'
 						name='pointsToAmount'
-						value={payload.pointsToAmount}
+						value={payload.pointsToAmount === 0 ? '' : payload.pointsToAmount}
 						onChange={event => onChangeHandler(event)}
 						error={errors.pointsToAmount.trim() !== ""}
 						helperText={errors.pointsToAmount}

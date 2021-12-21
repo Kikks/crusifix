@@ -231,22 +231,29 @@ export const validateCreateContestInput = ({
 export const validateCreateGameInput = ({
 	name,
 	platform,
-	durationInMinutes,
-	amount,
-	image
+	durationInMins,
+	image,
+	psFourCost,
+	psFiveCost,
+	vrCost
 }: {
 	name: string;
 	platform: string;
-	durationInMinutes: number;
-	amount: number;
-	image: any;
+	durationInMins: number;
+	image: string;
+	psFourCost: number;
+	psFiveCost: number;
+	vrCost: number;
 }) => {
 	const errors = {
 		name: "",
 		platform: "",
-		durationInMinutes: "",
+		durationInMins: "",
 		amount: "",
-		image: ""
+		image: "",
+		psFourCost: "",
+		psFiveCost: "",
+		vrCost: ""
 	};
 	let valid = true;
 
@@ -257,18 +264,28 @@ export const validateCreateGameInput = ({
 		errors.platform = "Please slect a platform";
 	}
 
-	if (durationInMinutes <= 0) {
-		errors.durationInMinutes = "Duration must be greater than 0";
+	if (durationInMins <= 0) {
+		errors.durationInMins = "Duration must be greater than 0";
 	}
 
-	if (amount <= 0) {
-		errors.amount = "Amount be greater than 0";
+	if (image.trim() === "") {
+		errors.image = "Please select an image";
 	}
 
-	if (!image) {
-		errors.image = "Please select an image";
-	} else if (image[0]?.name?.trim() === "") {
-		errors.image = "Please select an image";
+	if (platform === "ps") {
+		if (psFourCost <= 0) {
+			errors.psFourCost = "Amount be greater than 0";
+		}
+
+		if (psFiveCost <= 0) {
+			errors.psFiveCost = "Amount be greater than 0";
+		}
+	}
+
+	if (platform === "vr") {
+		if (vrCost <= 0) {
+			errors.vrCost = "Amount be greater than 0";
+		}
 	}
 
 	for (const item of Object.values(errors)) {
@@ -368,6 +385,64 @@ export const validateCreatePaymentInput = ({
 
 	if (contestForPoints === "Select Contest" || contestForPoints.trim() === "") {
 		errors.contestForPoints = "Please select a contest";
+	}
+
+	for (const item of Object.values(errors)) {
+		if (item.trim() !== "") {
+			valid = false;
+		}
+	}
+
+	return {
+		valid,
+		errors
+	};
+};
+
+export const validateForgotPasswordInput = ({ email }: { email: string }) => {
+	const errors = {
+		email: ""
+	};
+	let valid = true;
+
+	const regex =
+		/^([a-zA-Z0-9\.-_]+)@([a-zA-Z0-9-]+)\.([a-z]{2,20})(\.[a-z]{2,20})?$/;
+
+	if (email.trim() === "") {
+		errors.email = "Email field cannot be empty";
+	} else if (!email.match(regex)) {
+		errors.email = "Invalid Email supplied";
+	}
+
+	for (const item of Object.values(errors)) {
+		if (item.trim() !== "") {
+			valid = false;
+		}
+	}
+
+	return {
+		valid,
+		errors
+	};
+};
+
+export const validateResetPasswordInput = ({
+	password,
+	confirmPassword
+}: {
+	password: string;
+	confirmPassword: string;
+}) => {
+	const errors = {
+		password: "",
+		confirmPassword: ""
+	};
+	let valid = true;
+
+	if (password.trim() === "") {
+		errors.password = "Password must not be empty";
+	} else if (password !== confirmPassword) {
+		errors.confirmPassword = "Passwords must match";
 	}
 
 	for (const item of Object.values(errors)) {

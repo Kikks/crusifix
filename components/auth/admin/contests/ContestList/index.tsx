@@ -109,7 +109,7 @@ const ContestList = ({ contests }: { contests: ContestProps[] }) => {
 										<Link href={`/auth/admin/contests/${_id}`} passHref>
 											<TableCell sx={{ cursor: "pointer" }}>
 												<Typography sx={{ fontWeight: "bold" }}>
-													{`${contestAmount}`}
+													{`${contestAmount.toLocaleString("en-US")}`}
 												</Typography>
 											</TableCell>
 										</Link>
@@ -118,7 +118,9 @@ const ContestList = ({ contests }: { contests: ContestProps[] }) => {
 											<TableCell sx={{ cursor: "pointer" }}>
 												<Stack direction='row' alignItems='center' spacing={1}>
 													<Typography sx={{ fontWeight: "bold" }}>
-														{`${amountToPoints || ""}:${pointsToAmount || ""}`}
+														{`${amountToPoints.toLocaleString("en-US") || ""}:${
+															pointsToAmount.toLocaleString("en-US") || ""
+														}`}
 													</Typography>
 													<Box
 														sx={{

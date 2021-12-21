@@ -7,7 +7,7 @@ import {
 	TableContainer,
 	TableHead,
 	TableRow,
-	Typography,
+	Typography
 } from "@mui/material";
 import moment from "moment";
 
@@ -16,7 +16,9 @@ import Card from "../../../Card";
 
 export type PaymentProps = {
 	_id: string;
-	name: string;
+	gamePlayed: {
+		name: string;
+	};
 	amount: number;
 	createdAt: string;
 	pointsAwarded: number;
@@ -59,19 +61,19 @@ const PaymentHistory = ({ payments }: PaymentHistoryProps) => {
 					{payments.length !== 0 && (
 						<TableBody>
 							{payments.map(
-								({ _id, name, amount, createdAt, pointsAwarded }) => (
+								({ _id, gamePlayed, amount, createdAt, pointsAwarded }) => (
 									<TableRow key={_id}>
 										<TableCell>
 											<Typography
 												sx={{ fontWeight: "bold", textTransform: "uppercase" }}
 											>
-												{name}
+												{gamePlayed?.name || ""}
 											</Typography>
 										</TableCell>
 
 										<TableCell>
 											<Typography sx={{ fontWeight: "bold" }}>
-												{amount}
+												{amount.toLocaleString("en-US")}
 											</Typography>
 										</TableCell>
 
@@ -89,7 +91,7 @@ const PaymentHistory = ({ payments }: PaymentHistoryProps) => {
 
 										<TableCell>
 											<Typography sx={{ fontWeight: "bold" }}>
-												{pointsAwarded}
+												{pointsAwarded.toLocaleString("en-US")}
 											</Typography>
 										</TableCell>
 									</TableRow>

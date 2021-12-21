@@ -91,7 +91,7 @@ const Standings = ({ standings }: { standings: StandingsProps[] }) => {
 								</TableCell>
 								<TableCell>
 									<Typography sx={{ fontWeight: "bold" }}>{`${
-										totalPoints || ""
+										totalPoints?.toLocaleString("en-US") || ""
 									} pt.`}</Typography>
 								</TableCell>
 							</TableRow>

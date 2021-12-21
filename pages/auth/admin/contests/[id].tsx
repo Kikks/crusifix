@@ -92,20 +92,23 @@ const Contest: NextPage = () => {
 				if (
 					data?.potentialFirstWinner &&
 					data?.potentialSecondWinner &&
-					data?.potentialSecondWinner
+					data?.potentialThirdWinner
 				) {
 					setWinners([
 						{
 							rank: 1,
+							points: data?.potentialFirstWinner?.FirstWinnerTotalPoints,
 							...data?.potentialFirstWinner[0]
 						},
 						{
 							rank: 2,
+							points: data?.potentialSecondWinner?.FirstWinnerTotalPoints,
 							...data?.potentialSecondWinner[0]
 						},
 						{
 							rank: 3,
-							...data?.potentialSecondWinner[0]
+							points: data?.potentialThirdWinner?.FirstWinnerTotalPoints,
+							...data?.potentialThirdWinner[0]
 						}
 					]);
 				}

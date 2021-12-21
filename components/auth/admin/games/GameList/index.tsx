@@ -83,7 +83,7 @@ const GameList = ({
 									vrCost
 								}) => (
 									<TableRow key={_id}>
-										<TableCell sx={{ cursor: "pointer" }}>
+										<TableCell>
 											<Stack direction='row' alignItems='center' spacing={3}>
 												<Avatar
 													src={gameImage}
@@ -102,27 +102,27 @@ const GameList = ({
 											</Stack>
 										</TableCell>
 
-										<TableCell sx={{ cursor: "pointer" }}>
+										<TableCell>
 											<Typography sx={{ fontWeight: "bold" }}>
 												{getPlatform(platform)}
 											</Typography>
 										</TableCell>
 
-										<TableCell sx={{ cursor: "pointer" }}>
+										<TableCell>
 											<Typography sx={{ fontWeight: "bold" }}>
-												{psFourCost || "-"}
+												{psFourCost?.toLocaleString("en-US") || "-"}
 											</Typography>
 										</TableCell>
 
-										<TableCell sx={{ cursor: "pointer" }}>
+										<TableCell>
 											<Typography sx={{ fontWeight: "bold" }}>
-												{psFiveCost || "-"}
+												{psFiveCost?.toLocaleString("en-US") || "-"}
 											</Typography>
 										</TableCell>
 
-										<TableCell sx={{ cursor: "pointer" }}>
+										<TableCell>
 											<Typography sx={{ fontWeight: "bold" }}>
-												{vrCost || "-"}
+												{vrCost?.toLocaleString("en-US") || "-"}
 											</Typography>
 										</TableCell>
 									</TableRow>

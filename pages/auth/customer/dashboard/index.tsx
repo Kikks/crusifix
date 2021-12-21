@@ -45,7 +45,7 @@ const Dashboard: NextPage = () => {
 					},
 					{
 						title: "Current position",
-						value: "#105"
+						value: `#${data?.myCurrentPosition || ""}`
 					}
 				]);
 				setStandings(data?.leaderBoard || []);

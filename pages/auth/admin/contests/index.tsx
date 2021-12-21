@@ -64,13 +64,17 @@ const Contests: NextPage = () => {
 						{
 							title: "Total Contests",
 							value: `${
-								data?.totalRewardMoneyAndNumOfContest[0]?.numContest || ""
+								data?.totalRewardMoneyAndNumOfContest[0]?.numContest?.toLocaleString(
+									"en-US"
+								) || ""
 							}`
 						},
 						{
 							title: "Total Reward Money",
 							value: `${
-								data?.totalRewardMoneyAndNumOfContest[0]?.totalRewardMoney || ""
+								data?.totalRewardMoneyAndNumOfContest[0]?.totalRewardMoney?.toLocaleString(
+									"en-US"
+								) || ""
 							}`
 						},
 						{

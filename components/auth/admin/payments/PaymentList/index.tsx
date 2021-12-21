@@ -102,7 +102,9 @@ const Payments = ({ payments, isLoading }: PaymentsProps) => {
 								</TableCell>
 
 								<TableCell>
-									<Typography sx={{ fontWeight: "bold" }}>{amount}</Typography>
+									<Typography sx={{ fontWeight: "bold" }}>
+										{amount.toLocaleString("en-US")}
+									</Typography>
 								</TableCell>
 
 								<TableCell>

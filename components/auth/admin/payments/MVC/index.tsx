@@ -1,4 +1,5 @@
 import { FC, useState } from "react";
+import Link from "next/link";
 import {
 	Table,
 	TableBody,
@@ -32,15 +33,15 @@ type MVCProps = {
 	totalPoints: number;
 	totalSpent: number;
 	totalGames: number;
+	user_id: string;
 	user_info: {
 		firstName: string;
 		lastName: string;
 		image?: string;
 	}[];
-	lastPlayed?: string;
 };
 
-const headings = ["full name", "total games", "total spend", "last played"];
+const headings = ["full name", "total games", "total spend"];
 
 const TableWrapper: FC = ({ children }) => (
 	<Card sx={{ mt: 5 }}>{children}</Card>
@@ -55,7 +56,6 @@ const MVC = () => {
 		() => getRequest({ url: GET_MVCS }),
 		{
 			onSuccess(data) {
-				console.log(data);
 				setCustomers(data?.data || []);
 			},
 			onError(error: any) {
@@ -101,47 +101,47 @@ const MVC = () => {
 					{customers.length !== 0 && (
 						<TableBody>
 							{customers.map(
-								({ _id, user_info, totalGames, totalSpent, lastPlayed }) => (
+								({ _id, user_info, user_id, totalGames, totalSpent }) => (
 									<TableRow key={_id}>
-										<TableCell>
-											<Stack direction='row' alignItems='center' spacing={3}>
-												<Avatar src={user_info[0]?.image}>
-													{getInitials(
-														`${user_info[0]?.firstName || ""} ${
+										<Link href={`/auth/admin/customers/${user_id}`} passHref>
+											<TableCell sx={{ cursor: "pointer" }}>
+												<Stack direction='row' alignItems='center' spacing={3}>
+													<Avatar src={user_info[0]?.image}>
+														{getInitials(
+															`${user_info[0]?.firstName || ""} ${
+																user_info[0]?.lastName || ""
+															}`
+														)}
+													</Avatar>
+													<Typography
+														sx={{
+															fontWeight: "bold",
+															textTransform: "capitalize"
+														}}
+													>
+														{`${user_info[0]?.firstName || ""} ${
 															user_info[0]?.lastName || ""
-														}`
-													)}
-												</Avatar>
-												<Typography
-													sx={{
-														fontWeight: "bold",
-														textTransform: "capitalize"
-													}}
-												>
-													{`${user_info[0]?.firstName || ""} ${
-														user_info[0]?.lastName || ""
-													}`}
+														}`}
+													</Typography>
+												</Stack>
+											</TableCell>
+										</Link>
+
+										<Link href={`/auth/admin/customers/${user_id}`} passHref>
+											<TableCell sx={{ cursor: "pointer" }}>
+												<Typography sx={{ fontWeight: "bold" }}>
+													{totalGames.toLocaleString("en-US")}
 												</Typography>
-											</Stack>
-										</TableCell>
+											</TableCell>
+										</Link>
 
-										<TableCell>
-											<Typography sx={{ fontWeight: "bold" }}>
-												{totalGames}
-											</Typography>
-										</TableCell>
-
-										<TableCell>
-											<Typography sx={{ fontWeight: "bold" }}>
-												{totalSpent}
-											</Typography>
-										</TableCell>
-
-										<TableCell>
-											<Typography sx={{ fontWeight: "bold" }}>
-												{lastPlayed}
-											</Typography>
-										</TableCell>
+										<Link href={`/auth/admin/customers/${user_id}`} passHref>
+											<TableCell sx={{ cursor: "pointer" }}>
+												<Typography sx={{ fontWeight: "bold" }}>
+													{totalSpent.toLocaleString("en-US")}
+												</Typography>
+											</TableCell>
+										</Link>
 									</TableRow>
 								)
 							)}

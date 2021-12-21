@@ -56,7 +56,7 @@ const Description = ({
 								<Typography
 									variant='subtitle2'
 									sx={{ fontWeight: "bold" }}
-								>{`NGN ${contestAmount}`}</Typography>
+								>{`NGN ${contestAmount?.toLocaleString("en-US")}`}</Typography>
 							</Stack>
 
 							<Stack spacing={1} direction='row' alignItems='center'>
@@ -74,7 +74,9 @@ const Description = ({
 									<StarIcon sx={{ fontSize: 15, color: "primary.main" }} />
 								</Box>
 								<Typography variant='subtitle2' sx={{ fontWeight: "bold" }}>
-									{`${amountToPoints || ""}:${pointsToAmount || ""}`}
+									{`${amountToPoints?.toLocaleString("en-US") || ""}:${
+										pointsToAmount?.toLocaleString("en-US") || ""
+									}`}
 								</Typography>
 							</Stack>
 						</Stack>

@@ -364,7 +364,7 @@ const Drawer = ({
 							fullWidth
 							placeholder='Amount'
 							type='number'
-							value={payload.amount}
+							value={payload.amount === 0 ? "" : payload?.amount}
 							onChange={event => {
 								setPayload({
 									...payload,

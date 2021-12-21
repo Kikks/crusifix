@@ -46,7 +46,7 @@ export type PaginationProps = {
 	limit: number;
 	page: number;
 	count: number;
-  end: boolean;
+	end: boolean;
 };
 
 const Games: NextPage = () => {

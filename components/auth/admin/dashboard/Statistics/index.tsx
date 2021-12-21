@@ -112,12 +112,12 @@ const Statistics = ({ sx }: { sx?: any }) => {
 		<Grid container spacing={3} sx={sx} alignItems='stretch'>
 			<Stat
 				title='Total customers'
-				value={`${totalCustomers}`}
+				value={`${totalCustomers.toLocaleString("en-US")}`}
 				loading={totalGamesIsLoading || totalGamesIsFetching}
 			/>
 			<Stat
 				title='Total games played'
-				value={`${totalGames}`}
+				value={`${totalGames.toLocaleString("en-US")}`}
 				loading={totalGamesIsLoading || totalGamesIsFetching}
 			/>
 			<Stat
@@ -127,7 +127,7 @@ const Statistics = ({ sx }: { sx?: any }) => {
 			/>
 			<Stat
 				title='New customers in last 30 days'
-				value={`${recentCustomers}`}
+				value={`${recentCustomers.toLocaleString("en-US")}`}
 				loading={recentCustomersIsLoading || recentCustomFetching}
 			/>
 		</Grid>
