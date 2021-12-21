@@ -11,7 +11,8 @@ import { getRequest } from "../../../../../utils/api/calls";
 import {
 	GET_RECENT_CUSTOMERS_COUNT,
 	GET_TOTAL_GAMES_PLAYED,
-	GET_MOST_VALUABLE_CUSTOMER
+	GET_MOST_VALUABLE_CUSTOMER,
+	GET_TOTAL_CUSTOMERS
 } from "../../../../../utils/api/urls";
 import queryKeys from "../../../../../utils/api/queryKeys";
 
@@ -40,7 +41,9 @@ const Stat = ({ title, value, loading }: StatProps) => (
 					<Typography sx={{ color: "#9fa2b4", fontWeight: "bold" }}>
 						{title}
 					</Typography>
-					<Typography sx={{ fontWeight: "bold" }}>{value}</Typography>
+					<Typography sx={{ fontWeight: "bold", textTransform: "capitalize" }}>
+						{value}
+					</Typography>
 				</Stack>
 			</Card>
 		)}
@@ -53,6 +56,22 @@ const Statistics = ({ sx }: { sx?: any }) => {
 	const [totalGames, setTotalGames] = useState(0);
 	const [mvc, setMvc] = useState("");
 	const [recentCustomers, setRecentCustomers] = useState(0);
+
+const { isLoading: totalCustomersIsLoading, isFetching: totalCustomersIsFetching } =
+	useQuery(
+		queryKeys.getTotalCustomers,
+		() => getRequest({ url: GET_TOTAL_CUSTOMERS }),
+		{
+			onSuccess(data) {
+				setTotalCustomers(data?.data || 0);
+			},
+			onError(error: any) {
+				console.error(error?.response);
+			},
+			enabled: !!user?._id,
+			refetchOnWindowFocus: false
+		}
+	);
 
 	const { isLoading: totalGamesIsLoading, isFetching: totalGamesIsFetching } =
 		useQuery(
@@ -78,8 +97,8 @@ const Statistics = ({ sx }: { sx?: any }) => {
 				onSuccess(data) {
 					if (data?.data) {
 						setMvc(
-							`${data?.data?.user_info?.firstName || ""} ${
-								data?.data?.user_info?.lastName || ""
+							`${data?.data?.user_info[0]?.firstName || ""} ${
+								data?.data?.user_info[0]?.lastName || ""
 							}`
 						);
 					}
@@ -113,7 +132,7 @@ const Statistics = ({ sx }: { sx?: any }) => {
 			<Stat
 				title='Total customers'
 				value={`${totalCustomers.toLocaleString("en-US")}`}
-				loading={totalGamesIsLoading || totalGamesIsFetching}
+				loading={totalCustomersIsLoading || totalCustomersIsFetching}
 			/>
 			<Stat
 				title='Total games played'

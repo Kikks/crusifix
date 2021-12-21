@@ -14,7 +14,10 @@ const queryKeys = {
 	getUser: "getUser",
 	getContests: "getContests",
 	getContest: "getContest",
-	getGames: "getGames"
+	getGames: "getGames",
+	getTotalCustomers: "getTotalCustomers",
+	getMostProfitableGame: "getMostProfitableGame",
+	getTotalAmountEarned: "getTotalAmountEarned"
 };
 
 export default queryKeys;

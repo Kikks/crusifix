@@ -3,7 +3,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import { useQuery } from "react-query";
 import jwt_decode from "jwt-decode";
-import { Backdrop, CircularProgress } from "@mui/material";
+import {
+	Backdrop,
+	CircularProgress,
+	Modal,
+	Typography,
+	Stack
+} from "@mui/material";
 
 // Utils
 import { getRequest } from "../../utils/api/calls";
@@ -17,6 +23,7 @@ import { RootState } from "../../store";
 const CheckAuth: FC = ({ children }) => {
 	const user = useSelector((state: RootState) => state.user);
 	const [backdropIsOpen, setBackdropIsOpen] = useState(false);
+	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const dispatch = useDispatch();
 	const router = useRouter();
 
@@ -32,7 +39,11 @@ const CheckAuth: FC = ({ children }) => {
 		{
 			onSuccess(data: any) {
 				setBackdropIsOpen(false);
-				dispatch(login(data?.data));
+				if (data?.data?.isEmailVerified) {
+					dispatch(login(data?.data));
+				} else {
+					setModalIsOpen(true);
+				}
 			},
 			onError(error: any) {
 				console.error(error?.response);
@@ -79,6 +90,38 @@ const CheckAuth: FC = ({ children }) => {
 			>
 				<CircularProgress color='inherit' />
 			</Backdrop>
+
+			<Modal open={modalIsOpen} sx={{ outline: "none" }}>
+				<Stack
+					spacing={2}
+					sx={{
+						position: "absolute",
+						top: "50%",
+						left: "50%",
+						transform: "translate(-50%, -50%)",
+						width: "95%",
+						maxWidth: 600,
+						bgcolor: "background.paper",
+						boxShadow: 24,
+						borderRadius: 5,
+						p: 4,
+						textAlign: "center"
+					}}
+				>
+					<Typography
+						variant='h5'
+						sx={{ fontWeight: "bold", textAlign: "center" }}
+					>
+						Confirm Email
+					</Typography>
+
+					<Typography>
+						You need to confirm you email address to continue. Check your email
+						for a link to confirm your email address. If you do not see the
+						email, kindly check your spam folder.
+					</Typography>
+				</Stack>
+			</Modal>
 		</>
 	);
 };

@@ -60,6 +60,9 @@ export const GET_MOST_VALUABLE_CUSTOMER = `${process.env.API_URL}/dashboards/mos
 export const GET_DASHBOARD_CONTESTS = `${process.env.API_URL}/dashboards/contestlist`;
 export const GET_MOST_PLAYED_GAMES = `${process.env.API_URL}/dashboards/mostplayedgames`;
 export const GET_TOTAL_GAMES = `${process.env.API_URL}/dashboards/totalgames`;
+export const GET_MOST_PROFITABLE_GAME = `${process.env.API_URL}/dashboards/mostprofitablegame`;
+export const GET_TOTAL_CUSTOMERS = `${process.env.API_URL}/dashboards/totalcustomers`;
+export const GET_TOTAL_AMOUNT_EARNED = `${process.env.API_URL}/dashboards/totalamountearned`;
 
 // Upload image
 export const UPLOAD_IMAGE = `https://api.cloudinary.com/v1_1/dh2w0dqug/image/upload`;

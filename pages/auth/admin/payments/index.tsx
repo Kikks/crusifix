@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -51,6 +51,13 @@ const Payments: NextPage = () => {
 		message: "",
 		severity: "success"
 	});
+
+	useEffect(() => {
+		if (router.query?.drawerIsOpen) {
+			console.log(router.query?.drawerIsOpen);
+			setDrawerIsOpen(true);
+		}
+	}, [router]);
 
 	const { isLoading, isFetching, refetch } = useQuery(
 		queryKeys.getAllPayments,

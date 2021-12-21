@@ -14,6 +14,7 @@ import {
 	Hidden,
 	Snackbar,
 	Alert,
+	Modal,
 	Backdrop,
 	useMediaQuery,
 	useTheme
@@ -64,6 +65,7 @@ const LoginForm: FC = () => {
 	const [backdropIsOpen, setBackdropIsOpen] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
 	const [isChecked, setIsChecked] = useState(false);
+	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const theme = useTheme();
 	const isMediumScreen = useMediaQuery(theme.breakpoints.down("lg"));
 	const [payload, setPayload] = useState(initialState);
@@ -93,12 +95,19 @@ const LoginForm: FC = () => {
 		{
 			onSuccess(data: any) {
 				setBackdropIsOpen(false);
-				dispatch(login(data?.data));
-				router.push(
-					data?.data?.role === "admin"
-						? "/auth/admin/dashboard"
-						: "/auth/customer/dashboard"
-				);
+				console.log(data?.data);
+				if (data?.data) {
+					if (data?.data?.isEmailVerified) {
+						dispatch(login(data?.data));
+						router.push(
+							data?.data?.role === "admin"
+								? "/auth/admin/dashboard"
+								: "/auth/customer/dashboard"
+						);
+					} else {
+						setModalIsOpen(true);
+					}
+				}
 			},
 			onError(error: any) {
 				console.error(error?.response);
@@ -355,6 +364,38 @@ const LoginForm: FC = () => {
 					</Backdrop>
 				</Stack>
 			</Stack>
+
+			<Modal open={modalIsOpen} sx={{ outline: "none" }}>
+				<Stack
+					spacing={2}
+					sx={{
+						position: "absolute",
+						top: "50%",
+						left: "50%",
+						transform: "translate(-50%, -50%)",
+						width: "95%",
+						maxWidth: 600,
+						bgcolor: "background.paper",
+						boxShadow: 24,
+						borderRadius: 5,
+						p: 4,
+						textAlign: "center"
+					}}
+				>
+					<Typography
+						variant='h5'
+						sx={{ fontWeight: "bold", textAlign: "center" }}
+					>
+						Confirm Email
+					</Typography>
+
+					<Typography>
+						You need to confirm you email address to continue. Check your email
+						for a link to confirm your email address. If you do not see the
+						email, kindly check your spam folder.
+					</Typography>
+				</Stack>
+			</Modal>
 		</Box>
 	);
 };

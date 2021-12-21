@@ -30,7 +30,12 @@ import Button from "../../../../common/Button";
 
 // Utils
 import { getRequest } from "../../../../utils/api/calls";
-import { GET_GAMES } from "../../../../utils/api/urls";
+import {
+	GET_GAMES,
+	GET_TOTAL_GAMES,
+	GET_TOTAL_GAMES_PLAYED,
+	GET_MOST_PROFITABLE_GAME
+} from "../../../../utils/api/urls";
 import queryKeys from "../../../../utils/api/queryKeys";
 
 // Store
@@ -53,7 +58,6 @@ const Games: NextPage = () => {
 	const { user } = useSelector((state: RootState) => state.user);
 	const router = useRouter();
 	const [drawerIsOpen, setDrawerIsOpen] = useState(false);
-	const [statistics, setStatistics] = useState<StatProps[]>([]);
 	const [games, setGames] = useState<GameProps[]>([]);
 	const [alertData, setAlertData] = useState<AlertProps>({
 		isOpen: false,
@@ -76,20 +80,6 @@ const Games: NextPage = () => {
 		{
 			onSuccess(data: any) {
 				if (data) {
-					setStatistics([
-						{
-							title: "Total Games",
-							value: `${data?.totalGames || ""}`
-						},
-						{
-							title: "Total Games Played",
-							value: `${data?.totalGamesPlayed || ""}`
-						},
-						{
-							title: "Most played game by",
-							value: `${data?.mostPlayedGameBy || ""}`
-						}
-					]);
 					setGames(data?.data || []);
 
 					setPagination({
@@ -150,17 +140,15 @@ const Games: NextPage = () => {
 				</Stack>
 			</Stack>
 
-			{isLoading || isFetching ? (
-				<Loader />
-			) : (
-				<Stack sx={{ pt: 5 }}>
-					<Statistics {...{ statistics }} />
+			<Stack sx={{ pt: 5 }}>
+				<Statistics />
+				{isLoading || isFetching ? (
+					<Loader />
+				) : (
 					<GameList {...{ games, setPagination, pagination }} />
-					<Drawer
-						{...{ drawerIsOpen, setDrawerIsOpen, refetch, setAlertData }}
-					/>
-				</Stack>
-			)}
+				)}
+				<Drawer {...{ drawerIsOpen, setDrawerIsOpen, refetch, setAlertData }} />
+			</Stack>
 
 			<Snackbar
 				anchorOrigin={{ vertical: "top", horizontal: "right" }}
