@@ -179,6 +179,8 @@ const GameCard = ({
 };
 
 const GameList = ({ games }: { games: Game[] }) => {
+	const isBigScreen = useMediaQuery("(min-width: 1500px)");
+
 	return (
 		<Box sx={{ display: "grid", width: "100%", mt: 3 }}>
 			<Typography variant='h4' sx={{ fontWeight: "bold", mb: 1 }}>
@@ -228,7 +230,7 @@ const GameList = ({ games }: { games: Game[] }) => {
 							justifyContent: "center"
 						}}
 						key={index}
-						lg={3}
+						lg={isBigScreen ? 3 : 4}
 						md={4}
 						sm={6}
 						xs={12}
@@ -241,7 +243,12 @@ const GameList = ({ games }: { games: Game[] }) => {
 								vrCost: game?.vrCost,
 								psFourCost: game?.psFourCost,
 								psFiveCost: game?.psFiveCost,
-								color: colors[index % index]
+								color:
+									colors[
+										index % games.length > colors.length - 1
+											? index % (colors.length - 1)
+											: index
+									]
 							}}
 						/>
 					</Grid>

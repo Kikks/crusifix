@@ -35,10 +35,9 @@ interface LinkProps {
 
 const NavLink = ({ href, children, index }: LinkProps) => {
 	return (
-		<a href={href}>
+		<a href={href} style={{ textDecoration: "none" }}>
 			<Typography
 				variant='body2'
-				component='a'
 				data-aos='fade-left'
 				data-aos-delay={(index + 0.5) * 100}
 				sx={{

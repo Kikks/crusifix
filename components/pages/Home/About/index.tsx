@@ -13,7 +13,13 @@ const About = () => {
 
 	return (
 		<Box
-			sx={{ width: "100%", mt: 15, display: "flex", justifyContent: "center" }}
+			sx={{
+				width: "100%",
+				mt: 0,
+				pt: 15,
+				display: "flex",
+				justifyContent: "center"
+			}}
 			id='about-us'
 		>
 			<Container>

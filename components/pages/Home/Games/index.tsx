@@ -202,7 +202,8 @@ const Games = () => {
 				justifyContent: "center",
 				alignItems: "center",
 				alignContent: "center",
-				mt: 15,
+				mt: 0,
+				pt: 15,
 				px: 3
 			}}
 			id='games'

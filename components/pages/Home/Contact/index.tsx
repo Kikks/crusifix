@@ -34,7 +34,13 @@ const Contact = () => {
 
 	return (
 		<Box
-			sx={{ mt: 15, width: "100%", display: "flex", justifyContent: "center" }}
+			sx={{
+				mt: 0,
+				pt: 15,
+				width: "100%",
+				display: "flex",
+				justifyContent: "center"
+			}}
 			id='location'
 		>
 			<Container>
