@@ -16,7 +16,7 @@ import {
 	useTheme
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import CancelIcon from "@mui/icons-material/Close";
 
 // Common
 import Button from "../../common/Button";
@@ -30,14 +30,17 @@ import links from "./links";
 interface LinkProps {
 	href: string;
 	children: ReactNode;
+	index: number;
 }
 
-const NavLink = ({ href, children }: LinkProps) => {
+const NavLink = ({ href, children, index }: LinkProps) => {
 	return (
 		<Link passHref href={href}>
 			<Typography
 				variant='body2'
 				component='a'
+				data-aos='fade-left'
+				data-aos-delay={(index + 0.5) * 100}
 				sx={{
 					mx: 2,
 					p: 0.5,
@@ -75,14 +78,19 @@ const Navigation = () => {
 				left: 0,
 				width: "100%",
 				bgcolor: "#fff",
-				zIndex: "tooltip"
+				zIndex: 1000
 			}}
 		>
 			{smallScreens ? (
-				<Stack direction='row' alignItems='center' justifyContent="space-between" sx={{ p: 1 }}>
+				<Stack
+					direction='row'
+					alignItems='center'
+					justifyContent='space-between'
+					sx={{ p: 1, width: "100%" }}
+				>
 					<div />
-					<IconButton onClick={() => setDrawerIsOpen(true)}>
-						<MenuIcon />
+					<IconButton onClick={() => setDrawerIsOpen(prevState => !prevState)}>
+						{drawerIsOpen ? <CancelIcon /> : <MenuIcon />}
 					</IconButton>
 				</Stack>
 			) : (
@@ -108,17 +116,17 @@ const Navigation = () => {
 								alignItems: "center"
 							}}
 						>
-							{links.map(({ title, url }) => (
-								<NavLink href={url} key={title}>
+							{links.map(({ title, url }, index) => (
+								<NavLink href={url} key={title} index={index}>
 									{title}
 								</NavLink>
 							))}
-							<Box sx={{ ml: 5 }}>
+							<Box sx={{ ml: 5 }} data-aos='fade-left' data-aos-delay={400}>
 								<Button
 									variant='outlined'
 									onClick={() => router.push("/register")}
 								>
-									Sign Up
+									Sign Up/Sign In
 								</Button>
 							</Box>
 						</Box>
@@ -140,23 +148,12 @@ const Navigation = () => {
 					"& .MuiDrawer-paper": {
 						width: "100%",
 						boxSizing: "border-box",
-						border: "none"
+						border: "none",
+						zIndex: 2000
 					}
 				}}
 			>
-				<Stack
-					direction='row'
-					justifyContent='space-between'
-					alignItems='center'
-					sx={{ p: 2, pb: 0 }}
-				>
-					<div />
-					<IconButton onClick={() => setDrawerIsOpen(false)}>
-						<ChevronLeftIcon />
-					</IconButton>
-				</Stack>
-
-				<List>
+				<List sx={{ mt: 10 }}>
 					{links.map(({ title, url }) => (
 						<Link href={url} passHref key={title}>
 							<ListItem disablePadding>
@@ -175,12 +172,12 @@ const Navigation = () => {
 						</Link>
 					))}
 					<ListItem disablePadding>
-						<Box sx={{ ml: 5 }}>
+						<Box sx={{ ml: 2, mt: 2 }}>
 							<Button
 								variant='outlined'
 								onClick={() => router.push("/register")}
 							>
-								Sign Up
+								Sign Up/Sign In
 							</Button>
 						</Box>
 					</ListItem>

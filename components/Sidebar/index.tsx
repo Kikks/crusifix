@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import LogoutIcon from "@mui/icons-material/Logout";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { useSelector, useDispatch } from "react-redux";
 
 // Components
@@ -29,19 +30,25 @@ import { customerLinks, adminLinks } from "./links";
 import { RootState } from "../../store";
 import { logout } from "../../store/user";
 
+type SidebarProps = {
+	drawerIsOpen: boolean;
+	setDrawerIsOpen: (value: boolean) => void;
+};
+
 const DRAWER_WIDTH = 250;
 
-const Sidebar = () => {
+const Sidebar = ({ drawerIsOpen, setDrawerIsOpen }: SidebarProps) => {
 	const user = useSelector((state: RootState) => state.user);
 	const dispatch = useDispatch();
 	const theme = useTheme();
 	const mediumScreen = useMediaQuery(theme.breakpoints.down("md"));
-	const [drawerIsOpen, setDrawerIsOpen] = useState(true);
 	const router = useRouter();
 
 	useEffect(() => {
 		if (!mediumScreen) {
 			setDrawerIsOpen(true);
+		} else {
+			setDrawerIsOpen(false);
 		}
 	}, [mediumScreen]);
 
@@ -50,10 +57,11 @@ const Sidebar = () => {
 			variant={mediumScreen ? "temporary" : "persistent"}
 			anchor='left'
 			open={drawerIsOpen}
+			onClose={() => setDrawerIsOpen(false)}
 			sx={{
 				width: DRAWER_WIDTH,
 				boxShadow: "15px 15px 35px rgba(0,0,0,0.1)",
-				zIndex: 20,
+				zIndex: "tooltip",
 				display: "flex",
 				flexDirection: "column",
 
@@ -78,20 +86,31 @@ const Sidebar = () => {
 				/>
 
 				<Hidden mdUp>
-					<IconButton onClick={() => setDrawerIsOpen(false)}>
+					<IconButton
+						onClick={() => {
+							if (mediumScreen) {
+								setDrawerIsOpen(false);
+							}
+						}}
+					>
 						<ChevronLeftIcon />
 					</IconButton>
 				</Hidden>
 			</Stack>
 
 			<List sx={{ px: 4, flex: 1 }}>
-				{user?.user?.role === "admin"
+				{user?.user?.role === ("admin" || "staff")
 					? adminLinks.map(({ name, icon, href }) => (
 							<SidebarLink
 								key={name}
 								href={`/auth/admin/${href}`}
 								name={name}
 								icon={icon}
+								onClick={() => {
+									if (mediumScreen) {
+										setDrawerIsOpen(false);
+									}
+								}}
 							/>
 					  ))
 					: customerLinks.map(({ name, icon, href }) => (
@@ -100,8 +119,25 @@ const Sidebar = () => {
 								href={`/auth/customer/${href}`}
 								name={name}
 								icon={icon}
+								onClick={() => {
+									if (mediumScreen) {
+										setDrawerIsOpen(false);
+									}
+								}}
 							/>
 					  ))}
+				{user?.user?.role === "admin" && (
+					<SidebarLink
+						href='/auth/admin/staffs'
+						name='Staffs'
+						icon={<PeopleAltIcon />}
+						onClick={() => {
+							if (mediumScreen) {
+								setDrawerIsOpen(false);
+							}
+						}}
+					/>
+				)}
 			</List>
 
 			<Stack sx={{ px: 4, mb: 2 }}>
@@ -111,7 +147,7 @@ const Sidebar = () => {
 						onClick={() => {
 							localStorage.removeItem("token");
 							dispatch(logout());
-								router.push("/login");
+							router.push("/login");
 						}}
 					>
 						<ListItemIcon sx={{ color: "secondary.main" }}>

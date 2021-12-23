@@ -68,6 +68,7 @@ const LoginForm: FC = () => {
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const theme = useTheme();
 	const isMediumScreen = useMediaQuery(theme.breakpoints.down("lg"));
+	const smallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 	const [payload, setPayload] = useState(initialState);
 	const [errors, setErrors] = useState(initialState);
 	const dispatch = useDispatch();
@@ -82,7 +83,7 @@ const LoginForm: FC = () => {
 	useEffect(() => {
 		if (user.user) {
 			router.push(
-				user?.user?.role === "admin"
+				user?.user?.role === ("admin" || "staff")
 					? "/auth/admin/dashboard"
 					: "/auth/customer/dashboard"
 			);
@@ -202,7 +203,7 @@ const LoginForm: FC = () => {
 				spacing={5}
 				alignItems='center'
 				sx={{
-					p: 5,
+					p: smallScreen ? 2 : 5,
 					bgcolor: "#fff",
 					flex: isMediumScreen ? 1 : 0.65,
 					height: "100vh",
@@ -212,6 +213,7 @@ const LoginForm: FC = () => {
 				<Stack
 					direction='row'
 					justifyContent='space-between'
+					alignItems='center'
 					sx={{ width: "100%" }}
 				>
 					<Link href='/' passHref>
@@ -254,7 +256,11 @@ const LoginForm: FC = () => {
 						</Typography>
 					</Stack>
 
-					<Grid container spacing={5}>
+					<Grid
+						container
+						spacing={5}
+						sx={{ ml: smallScreen ? "-40px !important" : 0 }}
+					>
 						<Grid item lg={12} md={12} sm={12} xs={12}>
 							<TextField
 								fullWidth

@@ -1,5 +1,12 @@
 import Image from "next/image";
-import { Box, Stack, Typography, Grid } from "@mui/material";
+import {
+	Box,
+	Stack,
+	Typography,
+	Grid,
+	useTheme,
+	useMediaQuery
+} from "@mui/material";
 import Location from "@mui/icons-material/LocationOn";
 import GoogleMapReact from "google-map-react";
 
@@ -14,6 +21,8 @@ const Marker = ({ text }: { text: string }) => (
 );
 
 const Contact = () => {
+	const theme = useTheme();
+	const mediumScreen = useMediaQuery(theme.breakpoints.down("md"));
 	const apiKey = process.env.MAP_API_KEY || "";
 	const mapOptions = {
 		center: {
@@ -28,16 +37,29 @@ const Contact = () => {
 			sx={{ mt: 15, width: "100%", display: "flex", justifyContent: "center" }}
 		>
 			<Container>
-				<Stack spacing={3} alignContent='center' alignItems='center'>
+				<Stack
+					spacing={3}
+					alignContent='center'
+					alignItems='center'
+					data-aos='fade-up'
+				>
 					<Typography variant='h3' sx={{ fontWeight: "bold" }}>
 						Contact Us
 					</Typography>
 
-					<Stack sx={{ width: "100%" }} direction='row' spacing={3}>
+					<Stack
+						sx={{ width: "100%" }}
+						direction={mediumScreen ? "column" : "row"}
+						spacing={3}
+					>
 						<Stack
-							flex={0.3}
+							flex={mediumScreen ? "" : 0.3}
 							spacing={3}
-							sx={{ p: 3, borderRadius: 5, border: "solid 1px #E5EAF4" }}
+							sx={{
+								p: mediumScreen ? 1 : 3,
+								borderRadius: 5,
+								border: "solid 1px #E5EAF4"
+							}}
 							alignItems='flex-start'
 						>
 							<Image
@@ -87,7 +109,10 @@ const Contact = () => {
 							</Grid>
 						</Stack>
 
-						<Stack flex={0.7} sx={{ position: "relative", height: 400 }}>
+						<Stack
+							flex={mediumScreen ? "" : 0.7}
+							sx={{ position: "relative", height: 400 }}
+						>
 							<GoogleMapReact
 								bootstrapURLKeys={{ key: apiKey }}
 								defaultCenter={mapOptions.center}

@@ -14,7 +14,7 @@ const Stat = ({ title, value }: StatProps) => (
 			<Typography sx={{ color: "#9fa2b4", fontWeight: "bold" }}>
 				{title}
 			</Typography>
-			<Typography sx={{ fontWeight: "bold" }}>{value}</Typography>
+			<Typography sx={{ fontWeight: "bold" }}>{value || "N/A"}</Typography>
 		</Stack>
 	</Card>
 );

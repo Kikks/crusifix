@@ -1,6 +1,14 @@
 import * as React from "react";
 import Image from "next/image";
-import { Box, Typography, Stack, Paper } from "@mui/material";
+import {
+	Box,
+	Typography,
+	Stack,
+	Paper,
+	Hidden,
+	useTheme,
+	useMediaQuery
+} from "@mui/material";
 import InputUnstyled, { InputUnstyledProps } from "@mui/core/InputUnstyled";
 import { styled } from "@mui/system";
 import GoogleIcon from "@mui/icons-material/Google";
@@ -16,7 +24,8 @@ import Button from "../../common/Button";
 import Container from "../Container";
 
 const StyledInputElement = styled("input")`
-	width: 320px;
+	width: 45vw;
+	max-width: 320px;
 	font-size: 1rem;
 	font-family: Open Sans, sans-serif;
 	font-weight: 400;
@@ -54,6 +63,9 @@ const TextField = React.forwardRef(function CustomInput(
 });
 
 const Footer = () => {
+	const theme = useTheme();
+	const mediumScreen = useMediaQuery(theme.breakpoints.down("md"));
+
 	return (
 		<Box
 			sx={{
@@ -61,8 +73,8 @@ const Footer = () => {
 				mt: 15,
 				display: "flex",
 				justifyContent: "center",
-				p: 5,
-				pt: 30,
+				p: mediumScreen ? 2 : 5,
+				pt: mediumScreen ? 15 : 30,
 				position: "relative",
 				overflow: "hidden"
 			}}
@@ -73,7 +85,7 @@ const Footer = () => {
 					width: "200%",
 					bgcolor: "#fff",
 					position: "absolute",
-					top: "-45%",
+					top: mediumScreen ? "-70%" : "-45%",
 					left: "50%",
 					borderRadius: "100%",
 					transform: "translate(-50%, -50%)",
@@ -85,9 +97,13 @@ const Footer = () => {
 					direction='row'
 					spacing={5}
 					sx={{ py: 8 }}
-					justifyContent='space-between'
+					justifyContent={mediumScreen ? "center" : "space-between"}
 				>
-					<Stack spacing={5} flex={0.5}>
+					<Stack
+						spacing={5}
+						flex={mediumScreen ? "" : 0.5}
+						alignItems={mediumScreen ? "center" : "flex-start"}
+					>
 						<Typography
 							variant='h4'
 							sx={{ color: "#fff", fontWeight: "bold", maxWidth: 500 }}
@@ -99,7 +115,7 @@ const Footer = () => {
 						<Stack spacing={1} direction='row'>
 							<TextField placeholder='Your Email' />
 							<Button sx={{ bgcolor: "#1565D8" }} variant='contained'>
-								Get Started
+								{mediumScreen ? "Submit" : "Get Started"}
 							</Button>
 						</Stack>
 
@@ -118,7 +134,7 @@ const Footer = () => {
 									sx={{
 										fontSize: 18,
 										color: "#5A7184",
-										transition: 'color .2s',
+										transition: "color .2s",
 										":hover": { color: "secondary.main" }
 									}}
 								/>
@@ -126,7 +142,7 @@ const Footer = () => {
 									sx={{
 										fontSize: 18,
 										color: "#5A7184",
-										transition: 'color .2s',
+										transition: "color .2s",
 										":hover": { color: "secondary.main" }
 									}}
 								/>
@@ -134,7 +150,7 @@ const Footer = () => {
 									sx={{
 										fontSize: 18,
 										color: "#5A7184",
-										transition: 'color .2s',
+										transition: "color .2s",
 										":hover": { color: "secondary.main" }
 									}}
 								/>
@@ -142,7 +158,7 @@ const Footer = () => {
 									sx={{
 										fontSize: 18,
 										color: "#5A7184",
-										transition: 'color .2s',
+										transition: "color .2s",
 										":hover": { color: "secondary.main" }
 									}}
 								/>
@@ -150,7 +166,7 @@ const Footer = () => {
 									sx={{
 										fontSize: 18,
 										color: "#5A7184",
-										transition: 'color .2s',
+										transition: "color .2s",
 										":hover": { color: "secondary.main" }
 									}}
 								/>
@@ -158,65 +174,67 @@ const Footer = () => {
 						</Stack>
 					</Stack>
 
-					<Stack flex={0.4}>
-						<Paper
-							sx={{
-								p: 5,
-								borderRadius: 5,
-								boxShadow: "-50px 50px 50px rgba(0,0,0,.15)",
-								mb: -3,
-								ml: -5,
-								zIndex: 500,
-								maxWidth: 450
-							}}
-						>
-							<Stack direction='row' spacing={2}>
-								<div>
-									<Image
-										src='/assets/icons/footer-icon-1.svg'
-										alt='pricing'
-										height={100}
-										width={100}
-									/>
-								</div>
+					<Hidden mdDown>
+						<Stack flex={0.4}>
+							<Paper
+								sx={{
+									p: 5,
+									borderRadius: 5,
+									boxShadow: "-50px 50px 50px rgba(0,0,0,.15)",
+									mb: -3,
+									ml: -5,
+									zIndex: 500,
+									maxWidth: 450
+								}}
+							>
+								<Stack direction='row' spacing={2}>
+									<div>
+										<Image
+											src='/assets/icons/footer-icon-1.svg'
+											alt='pricing'
+											height={100}
+											width={100}
+										/>
+									</div>
 
-								<Stack spacing={2}>
-									<Typography variant='h6' sx={{ fontWeight: "bold" }}>
-										We have the best prices
-									</Typography>
+									<Stack spacing={2}>
+										<Typography variant='h6' sx={{ fontWeight: "bold" }}>
+											We have the best prices
+										</Typography>
 
-									<Typography>
-										Our game prices are affordable and allows you play to your
-										satisfaction.
-									</Typography>
+										<Typography>
+											Our game prices are affordable and allows you play to your
+											satisfaction.
+										</Typography>
+									</Stack>
 								</Stack>
-							</Stack>
-						</Paper>
+							</Paper>
 
-						<Paper sx={{ p: 5, borderRadius: 5, maxWidth: 450, zIndex: 400 }}>
-							<Stack direction='row' spacing={2}>
-								<div>
-									<Image
-										src='/assets/icons/footer-icon-2.svg'
-										alt='like'
-										height={70}
-										width={70}
-									/>
-								</div>
+							<Paper sx={{ p: 5, borderRadius: 5, maxWidth: 450, zIndex: 400 }}>
+								<Stack direction='row' spacing={2}>
+									<div>
+										<Image
+											src='/assets/icons/footer-icon-2.svg'
+											alt='like'
+											height={70}
+											width={70}
+										/>
+									</div>
 
-								<Stack spacing={2}>
-									<Typography variant='h6' sx={{ fontWeight: "bold" }}>
-										We make gaming fun
-									</Typography>
+									<Stack spacing={2}>
+										<Typography variant='h6' sx={{ fontWeight: "bold" }}>
+											We make gaming fun
+										</Typography>
 
-									<Typography>
-										We&apos;re committed to making gaming as fun engaging for
-										you.
-									</Typography>
+										<Typography>
+											We&apos;re committed to making gaming as fun engaging for
+											you.
+										</Typography>
+									</Stack>
 								</Stack>
-							</Stack>
-						</Paper>
-					</Stack>
+							</Paper>
+						</Stack>
+					</Hidden>
 				</Stack>
 			</Container>
 		</Box>

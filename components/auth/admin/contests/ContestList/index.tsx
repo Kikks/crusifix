@@ -26,6 +26,7 @@ export type ContestProps = {
 	contestAmount: number;
 	amountToPoints: number;
 	pointsToAmount: number;
+	isActive: boolean;
 };
 
 const headings = [
@@ -74,7 +75,8 @@ const ContestList = ({ contests }: { contests: ContestProps[] }) => {
 									endDate,
 									contestAmount,
 									amountToPoints,
-									pointsToAmount
+									pointsToAmount,
+									isActive
 								}) => (
 									<TableRow key={_id}>
 										<Link href={`/auth/admin/contests/${_id}`} passHref>
@@ -116,7 +118,13 @@ const ContestList = ({ contests }: { contests: ContestProps[] }) => {
 
 										<Link href={`/auth/admin/contests/${_id}`} passHref>
 											<TableCell sx={{ cursor: "pointer" }}>
-												<Stack direction='row' alignItems='center' spacing={1}>
+												<Stack
+													direction='row'
+													alignItems='center'
+													justifyContent='space-between'
+													sx={{ width: "100%" }}
+													spacing={1}
+												>
 													<Typography sx={{ fontWeight: "bold" }}>
 														{`${amountToPoints.toLocaleString("en-US") || ""}:${
 															pointsToAmount.toLocaleString("en-US") || ""
@@ -124,7 +132,7 @@ const ContestList = ({ contests }: { contests: ContestProps[] }) => {
 													</Typography>
 													<Box
 														sx={{
-															bgcolor: "#eb5757",
+															bgcolor: isActive ? "#219653" : "#eb5757",
 															p: 1,
 															display: "flex",
 															alignItems: "center",

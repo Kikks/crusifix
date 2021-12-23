@@ -25,7 +25,7 @@ const TestimonialCard = ({
 	}
 
 	return (
-		<Grid item lg={3} md={3} sm={6} xs={6}>
+		<Grid item lg={3} md={3} sm={6} xs={12} data-aos='fade-up'>
 			<Stack spacing={3}>
 				<Stack direction='row' spacing={1} alignItems='center'>
 					{ratingArray.map(index => (
@@ -132,12 +132,14 @@ const Testimonials = () => {
 					<Typography
 						variant='button'
 						sx={{ textAlign: "center", fontWeight: "bold" }}
+						data-aos='fade-up'
 					>
 						Testimonials
 					</Typography>
 					<Typography
 						variant='h3'
 						sx={{ fontWeight: "bold", textAlign: "center" }}
+						data-aos='fade-up'
 					>
 						What our customers have to say
 					</Typography>

@@ -55,7 +55,16 @@ const CheckAuth: FC = ({ children }) => {
 
 	useEffect(() => {
 		if (user.user) {
-			if (router.pathname.split("/")[2] !== user.user?.role) {
+			if (
+				router.pathname.split("/")[2] === "admin" &&
+				user.user?.role !== ("admin" || "staff")
+			) {
+				router.push("/login");
+			}
+			if (
+				router.pathname.split("/")[2] === "customer" &&
+				user?.user?.role !== "customer"
+			) {
 				router.push("/login");
 			}
 		}

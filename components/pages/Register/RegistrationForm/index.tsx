@@ -68,6 +68,7 @@ const RegistrationForm: FC = () => {
 	const [errorMessage, setErrorMessage] = useState("");
 	const theme = useTheme();
 	const isMediumScreen = useMediaQuery(theme.breakpoints.down("lg"));
+	const smallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 	const [payload, setPayload] = useState(initialState);
 	const [errors, setErrors] = useState({ ...initialState, checkbox: "" });
 	const router = useRouter();
@@ -164,7 +165,7 @@ const RegistrationForm: FC = () => {
 				spacing={5}
 				alignItems='center'
 				sx={{
-					p: 5,
+					p: smallScreen ? 2 : 5,
 					bgcolor: "#fff",
 					flex: isMediumScreen ? 1 : 0.65,
 					height: "100vh",
@@ -174,6 +175,7 @@ const RegistrationForm: FC = () => {
 				<Stack
 					direction='row'
 					justifyContent='space-between'
+					alignItems='center'
 					sx={{ width: "100%" }}
 				>
 					<Link href='/' passHref>
@@ -216,7 +218,11 @@ const RegistrationForm: FC = () => {
 						</Typography>
 					</Stack>
 
-					<Grid container spacing={5}>
+					<Grid
+						container
+						spacing={5}
+						sx={{ ml: smallScreen ? "-40px !important" : 0 }}
+					>
 						<Grid item lg={6} md={6} sm={6} xs={12}>
 							<TextField
 								fullWidth
@@ -415,7 +421,7 @@ const RegistrationForm: FC = () => {
 					</Typography>
 
 					<Typography>
-						You have craeted an account successfully. Kindly check your email
+						You have created an account successfully. Kindly check your email
 						for a link to verify your account.
 					</Typography>
 

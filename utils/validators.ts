@@ -102,18 +102,23 @@ export const validateCreateAccountInput = ({
 	email,
 	firstName,
 	lastName,
-	phoneNumber
+	phoneNumber,
+	mode,
+	password
 }: {
 	email: string;
 	firstName: string;
 	lastName: string;
 	phoneNumber: string;
+	mode: string;
+	password: string;
 }) => {
 	const errors = {
 		email: "",
 		firstName: "",
 		lastName: "",
-		phoneNumber: ""
+		phoneNumber: "",
+		password: ""
 	};
 	let valid = true;
 
@@ -136,6 +141,12 @@ export const validateCreateAccountInput = ({
 
 	if (phoneNumber.trim() === "") {
 		errors.phoneNumber = "Phone number cannot be empty";
+	}
+
+	if (mode === "create") {
+		if (password.trim() === "") {
+			errors.password = "Password must not be empty";
+		}
 	}
 
 	for (const item of Object.values(errors)) {

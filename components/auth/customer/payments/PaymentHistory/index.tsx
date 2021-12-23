@@ -17,7 +17,9 @@ import moment from "moment";
 import Card from "../../../Card";
 
 export type PaymentsProps = {
-	gamePlayed: string;
+	gamePlayed: {
+		name: string;
+	};
 	amount: number;
 	createdAt: string;
 }[];
@@ -78,8 +80,10 @@ const PaymentHistory = ({ payments }: { payments: PaymentsProps }) => {
 							{payments.map(({ gamePlayed, amount, createdAt }, index) => (
 								<TableRow key={index}>
 									<TableCell align='center' sx={{ border: "none", py: 3 }}>
-										<Typography sx={{ fontWeight: "bold" }}>
-											{gamePlayed}
+										<Typography
+											sx={{ fontWeight: "bold", textTransform: "capitalize" }}
+										>
+											{gamePlayed?.name || ""}
 										</Typography>
 									</TableCell>
 									<TableCell align='center' sx={{ border: "none", py: 3 }}>

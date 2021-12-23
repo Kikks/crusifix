@@ -11,10 +11,19 @@ import Container from "../../../Container";
 interface PointProps {
 	title: string;
 	subtitle: string;
+	index: number;
 }
 
-const Point = ({ title, subtitle }: PointProps) => (
-	<Grid item lg={6} md={6} sm={6} xs={12}>
+const Point = ({ title, subtitle, index }: PointProps) => (
+	<Grid
+		item
+		lg={6}
+		md={6}
+		sm={6}
+		xs={12}
+		data-aos='fade-up'
+		data-aos-delay={(index + 2) * 100}
+	>
 		<Stack spacing={2} sx={{ mb: 3 }} direction='row'>
 			<Image
 				src='/assets/icons/header-bullet.svg'
@@ -76,12 +85,15 @@ const Header = () => {
 						flex={0.5}
 						sx={{ position: "relative", borderRadius: 5, overflow: "hidden" }}
 					>
-						<Image
-							src='/assets/images/header-image.gif'
-							height={661}
-							width={650}
-							alt='Gamer'
-						/>
+						<div data-aos='zoom-in'>
+							<Image
+								src='/assets/images/header-image.gif'
+								height={661}
+								width={650}
+								alt='Gamer'
+							/>
+						</div>
+
 						<div
 							style={{
 								position: "absolute",
@@ -97,21 +109,30 @@ const Header = () => {
 
 					<Box sx={{ flex: 0.5 }}>
 						<Stack spacing={3} alignItems='flex-start'>
-							<Typography variant='h2'>
+							<Typography variant='h2' data-aos='fade-left'>
 								Get your game on now.
 							</Typography>
-							<Typography sx={{ mb: 2, maxWidth: 450 }}>
+							<Typography
+								sx={{ mb: 2, maxWidth: 450 }}
+								data-aos='fade-left'
+								data-aos-delay={100}
+							>
 								Whether you are a hardcore gamer or just someone who loves to
 								have fun and relax, Crusifix is the place for you.
 							</Typography>
 
 							<Grid container>
-								{points.map(({ title, subtitle }) => (
-									<Point key={title} {...{ title, subtitle }} />
+								{points.map(({ title, subtitle }, index) => (
+									<Point key={title} {...{ title, subtitle, index }} />
 								))}
 							</Grid>
 
-							<Button variant='contained' size='large'>
+							<Button
+								variant='contained'
+								size='large'
+								data-aos='zoom-in'
+								data-aos-delay={100}
+							>
 								See Games
 							</Button>
 						</Stack>

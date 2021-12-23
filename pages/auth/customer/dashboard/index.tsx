@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 
 // Components
 import Greeting from "../../../../components/auth/customer/dashboard/Greeting";
+import { Game } from "../../../../components/auth/MostPlayed";
 import Statistics, {
 	StatProps
 } from "../../../../components/auth/customer/dashboard/Statistics";
@@ -28,11 +29,13 @@ const Dashboard: NextPage = () => {
 	const { user } = useSelector((state: RootState) => state.user);
 	const [statistics, setStatistics] = useState<StatProps[]>([]);
 	const [standings, setStandings] = useState<StandingsProps>([]);
+	const [mostPlayedGames, setMostPlayedGames] = useState<Game[]>([]);
 	const { isLoading } = useQuery(
 		queryKeys.getCustomerDashboard,
 		() => getRequest({ url: GET_CUSTOMER_DASHBOARD({ id: user?._id || "" }) }),
 		{
 			onSuccess(data) {
+				setMostPlayedGames(data?.mostPlayedGame || []);
 				setStatistics([
 					{
 						title: "Total games played",
@@ -69,8 +72,8 @@ const Dashboard: NextPage = () => {
 				<Loader />
 			) : (
 				<Stack>
-					<Greeting />
-					<Statistics statistics={statistics} />
+					<Greeting mostPlayedGames={mostPlayedGames} />
+					<Statistics statistics={statistics} isLoading={isLoading} />
 					<PotentialWinners />
 					<Standings standings={standings} />
 				</Stack>

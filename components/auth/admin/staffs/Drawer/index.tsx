@@ -3,9 +3,9 @@ import {
 	Drawer as MUIDrawer,
 	Stack,
 	Grid,
-	InputAdornment,
 	IconButton,
 	Typography,
+	InputAdornment,
 	CircularProgress
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -20,7 +20,7 @@ import Button from "../../../../../common/Button";
 
 // Utils
 import { postRequest, putRequest } from "../../../../../utils/api/calls";
-import { CREATE_USER, UPDATE_USER } from "../../../../../utils/api/urls";
+import { CREATE_STAFF, UPDATE_STAFF } from "../../../../../utils/api/urls";
 import { validateCreateAccountInput } from "../../../../../utils/validators";
 
 // Types
@@ -93,7 +93,7 @@ const Drawer = ({
 				setErrors(emptyData);
 				setAlertData({
 					isOpen: true,
-					message: "The user has been updated successfully",
+					message: "The staff has been updated successfully",
 					severity: "success"
 				});
 			},
@@ -102,7 +102,7 @@ const Drawer = ({
 				setErrors(emptyData);
 				setAlertData({
 					isOpen: true,
-					message: error?.response?.data?.error || error?.response?.message,
+					message: error?.response?.data?.error,
 					severity: "error"
 				});
 			}
@@ -123,7 +123,7 @@ const Drawer = ({
 				});
 				setAlertData({
 					isOpen: true,
-					message: "The user has been created successfully",
+					message: "The staff has been created successfully",
 					severity: "success"
 				});
 			},
@@ -133,7 +133,7 @@ const Drawer = ({
 				setErrors(emptyData);
 				setAlertData({
 					isOpen: true,
-					message: error?.response?.message,
+					message: error?.response?.data?.error || error?.response?.message,
 					severity: "error"
 				});
 			}
@@ -150,17 +150,17 @@ const Drawer = ({
 		} else {
 			if (mode === "edit") {
 				update({
-					url: UPDATE_USER({ id: payload._id }),
+					url: UPDATE_STAFF({ id: payload._id }),
 					data: {
 						firstName: payload.firstName,
 						lastName: payload.lastName,
 						email: payload.email,
-						phoneNumber: payload.phoneNumber
+						phoneNumber: payload.phoneNumber,
 					}
 				});
 			} else {
 				create({
-					url: CREATE_USER,
+					url: CREATE_STAFF,
 					data: {
 						firstName: payload.firstName,
 						lastName: payload.lastName,
@@ -207,7 +207,7 @@ const Drawer = ({
 				variant='h5'
 				sx={{ textAlign: "center", fontWeight: "bold", my: 3 }}
 			>
-				{`${drawerMode === "create" ? "Create" : "Edit"} customer account`}
+				{`${drawerMode === "create" ? "Create" : "Edit"} staff account`}
 			</Typography>
 
 			<Grid container spacing={3} sx={{ width: "100%", mb: 5, ml: -1 }}>

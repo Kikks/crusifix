@@ -79,9 +79,11 @@ const Contests: NextPage = () => {
 						},
 						{
 							title: "Recent Winner",
-							value: `${data?.getMostRecentWinner?.firstName || ""} ${
-								data?.getMostRecentWinner?.lastName || ""
-							}`
+							value: data?.getMostRecentWinner
+								? `${data?.getMostRecentWinner?.firstName || ""} ${
+										data?.getMostRecentWinner?.lastName || ""
+								  }`
+								: "N/A"
 						}
 					]);
 					setContests(data?.data || []);

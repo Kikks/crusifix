@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography, useTheme, useMediaQuery } from "@mui/material";
 
 // Components
 import Container from "../../../../components/Container";
@@ -8,20 +8,35 @@ import Container from "../../../../components/Container";
 import styles from "../../../../styles/Home.module.scss";
 
 const About = () => {
+	const theme = useTheme();
+	const mediumScreen = useMediaQuery(theme.breakpoints.down("md"));
+
 	return (
 		<Box
 			sx={{ width: "100%", mt: 15, display: "flex", justifyContent: "center" }}
 		>
 			<Container>
-				<Box sx={{ display: "flex", position: "relative", pl: 5 }}>
+				<Box
+					sx={{
+						display: "flex",
+						position: "relative",
+						flexDirection: mediumScreen ? "column" : "row",
+						alignItems: "center",
+						pl: mediumScreen ? 0 : 5
+					}}
+				>
 					<Box
 						sx={{
 							overflow: "hidden",
 							borderRadius: 5,
 							position: "relative",
-							flex: 0.7,
-							height: 500
+							flex: mediumScreen ? "" : 0.7,
+							height: mediumScreen ? "50vw" : 500,
+							width: mediumScreen ? "85vw" : "auto",
+							mb: mediumScreen ? 5 : 0,
+							maxWidth: 754
 						}}
+						data-aos='fade-right'
 					>
 						<Image
 							src='/assets/images/home-about-image.jpg'
@@ -36,17 +51,18 @@ const About = () => {
 
 					<Stack
 						spacing={2}
+						data-aos='fade-left'
 						sx={{
-							position: "absolute",
+							position: mediumScreen ? "static" : "absolute",
 							right: 70,
 							bgcolor: "#fff",
 							p: 5,
 							border: "1px solid #121354",
-							width: "35vw",
-							minWidth: 400,
+							width: mediumScreen ? "85vw" : "35vw",
+							minWidth: mediumScreen ? "85vw" : 400,
 							maxWidth: 563,
 							borderRadius: 5,
-							mt: -5,
+							mt: mediumScreen ? 0 : -5,
 							boxShadow: "-50px 50px 50px rgba(0,0,0,.05)",
 							zIndex: 10
 						}}

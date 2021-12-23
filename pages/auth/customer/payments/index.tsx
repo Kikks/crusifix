@@ -30,7 +30,8 @@ const Payments: NextPage = () => {
 		() => getRequest({ url: GET_USER_PAYMENTS({ id: user?._id || "" }) }),
 		{
 			onSuccess(data) {
-				setPayments(data?.data?.payments || []);
+				console.log(data);
+				setPayments(data?.data || []);
 			},
 			onError(error: any) {
 				console.error(error?.response?.data);

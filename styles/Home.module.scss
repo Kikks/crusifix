@@ -9,6 +9,11 @@
 		left: 50%;
 		transform: translate(-50%, -50%);
 
+		@media screen and (max-width: 900px) {
+			height: 10vw;
+			width: 10vw;
+		}
+
 		&::before {
 			content: "";
 			position: absolute;

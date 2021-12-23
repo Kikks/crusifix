@@ -1,8 +1,9 @@
 import Image from "next/image";
-import { FC } from "react";
-import { Typography, Stack, Box } from "@mui/material";
+import { ReactNode } from "react";
+import { Typography, Stack, Box, useTheme, useMediaQuery } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import Marquee from "react-fast-marquee";
 
 // Common
 import Button from "../../../../common/Button";
@@ -16,8 +17,18 @@ interface MasonryImageProps {
 	rows: string;
 }
 
-const ListItem: FC = ({ children }) => (
-	<Stack direction='row' spacing={2}>
+type ListItemProps = {
+	children: ReactNode;
+	index: number;
+};
+
+const ListItem = ({ children, index }: ListItemProps) => (
+	<Stack
+		direction='row'
+		spacing={2}
+		data-aos='fade-up'
+		data-aos-delay={(index + 0.5) * 100}
+	>
 		<Box
 			sx={{
 				bgcolor: "#36be7e",
@@ -47,6 +58,8 @@ const MasonryImage = ({ index, rows, columns }: MasonryImageProps) => (
 			gridColumn: columns,
 			gridRow: rows
 		}}
+		data-aos='zoom-in'
+		data-aos-delay={(index + 1) * 100}
 	>
 		<Image
 			layout='fill'
@@ -59,52 +72,101 @@ const MasonryImage = ({ index, rows, columns }: MasonryImageProps) => (
 const images = [
 	{
 		columns: "7/16",
-		rows: "2/7"
+		rows: "2/7",
+		sColumns: "1/5"
 	},
 	{
 		columns: "16/26",
-		rows: "1/7"
+		rows: "1/7",
+		sColumns: "5/10"
 	},
 	{
 		columns: "3/18",
-		rows: "7/15"
+		rows: "7/15",
+		sColumns: "10/15"
 	},
 	{
 		columns: "18/26",
-		rows: "7/17"
+		rows: "7/17",
+		sColumns: "15/17"
 	},
 	{
 		columns: "1/7",
-		rows: "15/22"
+		rows: "15/22",
+		sColumns: "17/21"
 	},
 	{
 		columns: "7/18",
-		rows: "15/23"
+		rows: "15/23",
+		sColumns: "21/25"
 	},
 	{
 		columns: "18/26",
-		rows: "17/24"
+		rows: "17/24",
+		sColumns: "25/28"
 	}
 ];
 
 const Masonry = () => {
+	const mediumScreen = useMediaQuery("(max-width: 1000px)");
+
 	return (
 		<Box
 			sx={{ width: "100%", mt: 15, display: "flex", justifyContent: "center" }}
 		>
 			<Container>
 				<Stack direction='row' alignItems='center'>
-					<Stack spacing={5} flex={0.5} alignItems='flex-start'>
+					<Stack
+						spacing={5}
+						flex={mediumScreen ? 1 : 0.5}
+						alignItems='flex-start'
+					>
 						<Stack spacing={1}>
-							<Typography variant='h2' sx={{ maxWidth: 450 }}>
+							<Typography
+								variant='h2'
+								sx={{ maxWidth: 450 }}
+								data-aos='fade-left'
+							>
 								Play To Win NGN 500,000!!!
 							</Typography>
-							<Typography>
+							<Typography sx={{ maxWidth: 600 }} data-aos='fade-left'>
 								We have organized an engaging contest for our awesome customers,
 								play any of these games to earn points. Customer with the
 								highest points at the end of the contest wins!
 							</Typography>
 						</Stack>
+
+						{mediumScreen && (
+							<Marquee pauseOnHover gradient={false}>
+								<Box
+									sx={{
+										display: "grid",
+										gridTemplateColumns: "repeat(27, 10vw)",
+										gridTemplateRows: "35vw",
+										gap: "10px"
+									}}
+								>
+									{images.map(({sColumns}, index) => (
+										<Box
+											key={index}
+											sx={{
+												borderRadius: 3,
+												overflow: "hidden",
+												position: "relative",
+												gridColumn: sColumns,
+												gridRow: "1/2"
+											}}
+										>
+											<Image
+												layout='fill'
+												src={`/assets/images/masonry-image-${index + 1}.jpg`}
+												alt='Gamers'
+											/>
+										</Box>
+									))}
+								</Box>
+							</Marquee>
+						)}
 
 						<Stack spacing={1}>
 							{[
@@ -113,29 +175,35 @@ const Masonry = () => {
 								"virtual reality games",
 								"just dance & karaoke",
 								"snooker and many more"
-							].map(item => (
-								<ListItem key={item}>{item}</ListItem>
+							].map((item, index) => (
+								<ListItem key={item} index={index}>
+									{item}
+								</ListItem>
 							))}
 						</Stack>
 
-						<Button variant='outlined' endIcon={<ArrowForwardIcon />}>
-							Register Now
-						</Button>
+						<div data-aos='fade-up' data-aos-delay={500}>
+							<Button variant='outlined' endIcon={<ArrowForwardIcon />}>
+								Register Now
+							</Button>
+						</div>
 					</Stack>
 
-					<Box
-						sx={{
-							flex: 0.5,
-							display: "grid",
-							gridTemplateColumns: "repeat(25, 20px)",
-              gridTemplateRows: "repeat(23, 20px)",
-              gap: '10px'
-						}}
-					>
-						{images.map((image, index) => (
-							<MasonryImage key={index} index={index + 1} {...image} />
-						))}
-					</Box>
+					{!mediumScreen && (
+						<Box
+							sx={{
+								flex: 0.5,
+								display: "grid",
+								gridTemplateColumns: "repeat(25, 20px)",
+								gridTemplateRows: "repeat(23, 20px)",
+								gap: "10px"
+							}}
+						>
+							{images.map((image, index) => (
+								<MasonryImage key={index} index={index + 1} {...image} />
+							))}
+						</Box>
+					)}
 				</Stack>
 			</Container>
 		</Box>

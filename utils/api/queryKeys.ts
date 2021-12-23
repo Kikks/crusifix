@@ -17,7 +17,9 @@ const queryKeys = {
 	getGames: "getGames",
 	getTotalCustomers: "getTotalCustomers",
 	getMostProfitableGame: "getMostProfitableGame",
-	getTotalAmountEarned: "getTotalAmountEarned"
+	getTotalAmountEarned: "getTotalAmountEarned",
+	getAllStaffs: "getAllStaffs",
+	getMostPlayedGames: "getMostPlayedGames"
 };
 
 export default queryKeys;

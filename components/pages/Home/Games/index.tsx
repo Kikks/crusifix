@@ -209,13 +209,21 @@ const Games = () => {
 			<Typography
 				variant='button'
 				sx={{ fontWeight: "bold", textAlign: "center" }}
+				data-aos='fade-up'
 			>
 				Check out the games we&apos;ve got for you
 			</Typography>
-			<Typography variant='h3' sx={{ fontWeight: "bold", textAlign: "center" }}>
+			<Typography
+				variant='h3'
+				sx={{ fontWeight: "bold", textAlign: "center" }}
+				data-aos='fade-up'
+			>
 				Play the best and latest games
 			</Typography>
-			<Typography sx={{ maxWidth: 450, textAlign: "center" }}>
+			<Typography
+				sx={{ maxWidth: 450, textAlign: "center" }}
+				data-aos='fade-up'
+			>
 				We make sure our game library is up to date with the latest and trendy
 				games just for your satisfaction.
 			</Typography>

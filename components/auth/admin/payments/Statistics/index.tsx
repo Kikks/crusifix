@@ -125,7 +125,7 @@ const Statistics = ({ sx }: { sx?: any }) => {
 			/>
 			<Stat
 				title='Most Valuable Customer'
-				value={mostProfitbleGame}
+				value={mvc}
 				loading={mvcIsLoading || mvcIsLoadingFetching}
 			/>
 		</Grid>

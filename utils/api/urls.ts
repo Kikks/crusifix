@@ -21,6 +21,14 @@ export const UPDATE_USER_STATUS = ({ id }: { id: string }) =>
 export const GET_USER_PAYMENTS = ({ id }: { id: string }) =>
 	`${process.env.API_URL}/users/paymenthistory/${id}`;
 
+// Staff
+export const GET_STAFFS = `${process.env.API_URL}/users/staff`;
+export const CREATE_STAFF = `${process.env.API_URL}/users/staff/create`;
+export const UPDATE_STAFF = ({ id }: { id: string }) =>
+	`${process.env.API_URL}/users/${id}`;
+export const DELETE_STAFF = ({ id }: { id: string }) =>
+	`${process.env.API_URL}/users/${id}`;
+
 // Game
 export const CREATE_GAME = `${process.env.API_URL}/games`;
 export const UPDATE_GAME = ({ id }: { id: string }) =>

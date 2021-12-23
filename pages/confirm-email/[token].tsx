@@ -43,7 +43,8 @@ const ConfirmEMail: NextPage = () => {
 	}, [user, router]);
 
 	const { mutate } = useMutation(putRequest, {
-		onSuccess() {
+		onSuccess(data: any) {
+			setErrorOccured(false);
 			setBackdropIsOpen(false);
 			setModalIsOpen(true);
 		},
@@ -60,10 +61,14 @@ const ConfirmEMail: NextPage = () => {
 	});
 
 	useEffect(() => {
-		mutate({
-			url: CONFIRM_EMAIL({ token: typeof token === "string" ? token : "" }),
-			data: {}
-		});
+		if (typeof token === "string") {
+			if (token.trim() !== "") {
+				mutate({
+					url: CONFIRM_EMAIL({ token: typeof token === "string" ? token : "" }),
+					data: {}
+				});
+			}
+		}
 	}, [mutate, token]);
 
 	return (
