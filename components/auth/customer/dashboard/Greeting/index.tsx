@@ -30,7 +30,7 @@ const Greeting = ({
 			</Grid>
 
 			<Grid item lg={5} md={5} sm={6} xs={12}>
-				<MostPlayed games={mostPlayedGames} isLoadin={isLoading} />
+				<MostPlayed games={mostPlayedGames} isLoading={isLoading} />
 			</Grid>
 		</Grid>
 	);

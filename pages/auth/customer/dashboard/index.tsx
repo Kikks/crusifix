@@ -72,8 +72,8 @@ const Dashboard: NextPage = () => {
 				<Loader />
 			) : (
 				<Stack>
-					<Greeting mostPlayedGames={mostPlayedGames} />
-					<Statistics statistics={statistics} isLoading={isLoading} />
+					<Greeting mostPlayedGames={mostPlayedGames} isLoading={isLoading} />
+					<Statistics statistics={statistics} />
 					<PotentialWinners />
 					<Standings standings={standings} />
 				</Stack>
