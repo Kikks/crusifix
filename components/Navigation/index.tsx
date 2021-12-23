@@ -155,9 +155,12 @@ const Navigation = () => {
 			>
 				<List sx={{ mt: 10 }}>
 					{links.map(({ title, url }) => (
-						<Link href={url} passHref key={title}>
+						<a href={url} key={title}>
 							<ListItem disablePadding>
-								<ListItemButton sx={{ justifyContent: "center" }}>
+								<ListItemButton
+									sx={{ justifyContent: "center" }}
+									onClick={() => setDrawerIsOpen(false)}
+								>
 									<ListItemText
 										sx={{
 											"& span": {
@@ -169,7 +172,7 @@ const Navigation = () => {
 									/>
 								</ListItemButton>
 							</ListItem>
-						</Link>
+						</a>
 					))}
 					<ListItem disablePadding>
 						<Box sx={{ ml: 2, mt: 2 }}>
