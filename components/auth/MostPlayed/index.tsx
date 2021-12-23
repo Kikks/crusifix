@@ -48,6 +48,25 @@ const MostPlayed = ({
 			sx={{ borderRadius: 5 }}
 			height={220}
 		/>
+	) : games.length === 0 ? (
+		<Stack
+			justifyContent='flex-end'
+			sx={{
+				width: "100%",
+				height: "100%",
+				background: `linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.4)), url("https://via.placeholder.com/300.png?text=Crusifix"}) center center`,
+				backgroundSize: "cover",
+				borderRadius: 5,
+				boxShadow: "0 10px 30px rgba(209,213,223,0.5)",
+				minHeight: 220
+			}}
+		>
+			<Stack spacing={1} sx={{ p: 3 }}>
+				<Typography variant='h6' sx={{ color: "#fff", fontWeight: "bold" }}>
+					You haven&apos;t played any game yet
+				</Typography>
+			</Stack>
+		</Stack>
 	) : (
 		<AutoPlaySwipeableViews
 			axis={theme.direction === "rtl" ? "x-reverse" : "x"}

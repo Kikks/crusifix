@@ -17,14 +17,13 @@ import {
 } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import LogoutIcon from "@mui/icons-material/Logout";
-import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { useSelector, useDispatch } from "react-redux";
 
 // Components
 import SidebarLink from "./Link";
 
 // Links
-import { customerLinks, adminLinks } from "./links";
+import { customerLinks, adminLinks, staffLinks } from "./links";
 
 // Store
 import { RootState } from "../../store";
@@ -51,7 +50,6 @@ const Sidebar = ({ drawerIsOpen, setDrawerIsOpen }: SidebarProps) => {
 			setDrawerIsOpen(false);
 		}
 	}, [mediumScreen]);
-
 	return (
 		<Drawer
 			variant={mediumScreen ? "temporary" : "persistent"}
@@ -61,7 +59,7 @@ const Sidebar = ({ drawerIsOpen, setDrawerIsOpen }: SidebarProps) => {
 			sx={{
 				width: DRAWER_WIDTH,
 				boxShadow: "15px 15px 35px rgba(0,0,0,0.1)",
-				zIndex: "tooltip",
+				zIndex: 50,
 				display: "flex",
 				flexDirection: "column",
 
@@ -99,11 +97,25 @@ const Sidebar = ({ drawerIsOpen, setDrawerIsOpen }: SidebarProps) => {
 			</Stack>
 
 			<List sx={{ px: 4, flex: 1 }}>
-				{user?.user?.role === ("admin" || "staff")
+				{user?.user?.role === "admin"
 					? adminLinks.map(({ name, icon, href }) => (
 							<SidebarLink
 								key={name}
 								href={`/auth/admin/${href}`}
+								name={name}
+								icon={icon}
+								onClick={() => {
+									if (mediumScreen) {
+										setDrawerIsOpen(false);
+									}
+								}}
+							/>
+					  ))
+					: user?.user?.role === "staff"
+					? staffLinks.map(({ name, icon, href }) => (
+							<SidebarLink
+								key={name}
+								href={`/auth/staff/${href}`}
 								name={name}
 								icon={icon}
 								onClick={() => {
@@ -126,18 +138,6 @@ const Sidebar = ({ drawerIsOpen, setDrawerIsOpen }: SidebarProps) => {
 								}}
 							/>
 					  ))}
-				{user?.user?.role === "admin" && (
-					<SidebarLink
-						href='/auth/admin/staffs'
-						name='Staffs'
-						icon={<PeopleAltIcon />}
-						onClick={() => {
-							if (mediumScreen) {
-								setDrawerIsOpen(false);
-							}
-						}}
-					/>
-				)}
 			</List>
 
 			<Stack sx={{ px: 4, mb: 2 }}>

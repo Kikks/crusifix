@@ -82,11 +82,7 @@ const LoginForm: FC = () => {
 
 	useEffect(() => {
 		if (user.user) {
-			router.push(
-				user?.user?.role === ("admin" || "staff")
-					? "/auth/admin/dashboard"
-					: "/auth/customer/dashboard"
-			);
+			router.push(`/auth/${user?.user?.role}/dashboard`);
 		}
 	}, [user.user, router]);
 
@@ -96,15 +92,10 @@ const LoginForm: FC = () => {
 		{
 			onSuccess(data: any) {
 				setBackdropIsOpen(false);
-				console.log(data?.data);
 				if (data?.data) {
 					if (data?.data?.isEmailVerified) {
 						dispatch(login(data?.data));
-						router.push(
-							data?.data?.role === "admin"
-								? "/auth/admin/dashboard"
-								: "/auth/customer/dashboard"
-						);
+						router.push(`/auth/${data?.data?.role}/dashboard`);
 					} else {
 						setModalIsOpen(true);
 					}

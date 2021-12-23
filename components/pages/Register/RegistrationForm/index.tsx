@@ -314,21 +314,22 @@ const RegistrationForm: FC = () => {
 							<Typography>
 								By creating an account means you agree to the{" "}
 								<Typography component='span'>
-									<MUILink
-										color='primary.main'
-										underline='hover'
-										href='https://drive.google.com/file/d/1gX2ihW0ubXv7S3nA4g5gM-cEEcR4V3A3/view?usp=sharing'
-										target='_blank'
-										rel='noopener'
-										sx={{
-											fontWeight: "bold",
-											":hover": {
-												cursor: "pointer"
-											}
-										}}
-									>
-										Terms and Conditions
-									</MUILink>
+									<Link href='/terms-and-conditions' passHref>
+										<MUILink
+											color='primary.main'
+											underline='hover'
+											target='_blank'
+											rel='noopener'
+											sx={{
+												fontWeight: "bold",
+												":hover": {
+													cursor: "pointer"
+												}
+											}}
+										>
+											Terms and Conditions
+										</MUILink>
+									</Link>
 								</Typography>
 								, and our{" "}
 								<Typography component='span'>

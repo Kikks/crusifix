@@ -1,20 +1,20 @@
 const links = [
 	{
 		title: "Home",
-		url: "/"
+		url: "#header"
 	},
 	{
 		title: "About Us",
-		url: "/"
+		url: "#about-us"
 	},
 	{
 		title: "Games",
-		url: "/"
+		url: "#games"
 	},
 	{
 		title: "Location",
-		url: "/"
+		url: "#location"
 	}
 ];
 
-export default links
+export default links;

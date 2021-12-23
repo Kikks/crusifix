@@ -74,6 +74,7 @@ const Header = () => {
 					? "linear-gradient(to right, #fff 0%, #fff 100%)"
 					: "linear-gradient(to right, rgba(18, 19, 84, .5) 0%, rgba(18, 19, 84, .5) 30%, rgba(255, 255, 255, 1) 30%, rgba(255, 255, 255, 1) 100%)"
 			}}
+			id='header'
 		>
 			<Container>
 				<Stack
@@ -84,15 +85,14 @@ const Header = () => {
 					<Stack
 						flex={0.5}
 						sx={{ position: "relative", borderRadius: 5, overflow: "hidden" }}
+						data-aos='zoom-in'
 					>
-						<div data-aos='zoom-in'>
-							<Image
-								src='/assets/images/header-image.gif'
-								height={661}
-								width={650}
-								alt='Gamer'
-							/>
-						</div>
+						<Image
+							src='/assets/images/header-image.gif'
+							height={661}
+							width={650}
+							alt='Gamer'
+						/>
 
 						<div
 							style={{

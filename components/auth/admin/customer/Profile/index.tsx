@@ -5,6 +5,7 @@ import {
 	Typography,
 	Divider,
 	Grid,
+	CircularProgress,
 	useMediaQuery
 } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
@@ -29,13 +30,20 @@ type ProfileCardProps = {
 	capitalize?: boolean;
 };
 
-export type ProfileProps = {
+export type ProfileType = {
 	image?: string;
 	lastPlayed?: string;
 	firstName: string;
 	lastName: string;
 	phoneNumber: string;
 	email: string;
+	isActive: boolean;
+};
+
+export type ProfileProps = {
+	profile: ProfileType;
+	loading: boolean;
+	update: () => void;
 };
 
 const ProfileCard = ({ icon, title, value, capitalize }: ProfileCardProps) => {
@@ -66,12 +74,17 @@ const ProfileCard = ({ icon, title, value, capitalize }: ProfileCardProps) => {
 };
 
 const Profile = ({
-	image,
-	lastPlayed,
-	firstName,
-	lastName,
-	phoneNumber,
-	email
+	profile: {
+		image,
+		lastPlayed,
+		firstName,
+		lastName,
+		phoneNumber,
+		email,
+		isActive
+	},
+	loading,
+	update
 }: ProfileProps) => {
 	const largeScreenDown = useMediaQuery("(max-width: 1024px)");
 
@@ -106,11 +119,18 @@ const Profile = ({
 
 				<Button
 					variant='contained'
-					color='secondary'
-					onClick={() => alert("Heyo")}
+					color={isActive ? "secondary" : "primary"}
 					endIcon={<ArrowForwardIcon />}
+					disabled={loading}
+					onClick={update}
 				>
-					Deactivate user
+					{loading ? (
+						<CircularProgress size={30} />
+					) : isActive ? (
+						"Deactivate user"
+					) : (
+						"Activate user"
+					)}
 				</Button>
 			</Stack>
 

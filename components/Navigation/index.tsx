@@ -35,7 +35,7 @@ interface LinkProps {
 
 const NavLink = ({ href, children, index }: LinkProps) => {
 	return (
-		<Link passHref href={href}>
+		<a href={href}>
 			<Typography
 				variant='body2'
 				component='a'
@@ -56,7 +56,7 @@ const NavLink = ({ href, children, index }: LinkProps) => {
 			>
 				{children}
 			</Typography>
-		</Link>
+		</a>
 	);
 };
 

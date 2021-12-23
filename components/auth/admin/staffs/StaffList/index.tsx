@@ -179,61 +179,53 @@ const StaffList = ({
 											</Typography>
 										</TableCell>
 
-										<Link href={`/auth/admin/staffs/${_id}`} passHref>
-											<TableCell>
-												<Stack direction='row' alignItems='center' spacing={3}>
-													<Avatar src={image}>
-														{getInitials(`${firstName} ${lastName}`)}
-													</Avatar>
-													<Typography
-														sx={{
-															fontWeight: "bold",
-															textTransform: "capitalize"
-														}}
-													>
-														{`${firstName} ${lastName}`}
-													</Typography>
-												</Stack>
-											</TableCell>
-										</Link>
-
-										<Link href={`/auth/admin/staffs/${_id}`} passHref>
-											<TableCell>
-												<Typography sx={{ fontWeight: "bold" }}>
-													{email}
+										<TableCell>
+											<Stack direction='row' alignItems='center' spacing={3}>
+												<Avatar src={image}>
+													{getInitials(`${firstName} ${lastName}`)}
+												</Avatar>
+												<Typography
+													sx={{
+														fontWeight: "bold",
+														textTransform: "capitalize"
+													}}
+												>
+													{`${firstName} ${lastName}`}
 												</Typography>
-											</TableCell>
-										</Link>
+											</Stack>
+										</TableCell>
 
-										<Link href={`/auth/admin/staffs/${_id}`} passHref>
-											<TableCell>
+										<TableCell>
+											<Typography sx={{ fontWeight: "bold" }}>
+												{email}
+											</Typography>
+										</TableCell>
+
+										<TableCell>
+											<Typography sx={{ fontWeight: "bold" }}>
+												{phoneNumber}
+											</Typography>
+										</TableCell>
+
+										<TableCell>
+											<Stack direction='row' alignItems='center' spacing={1}>
 												<Typography sx={{ fontWeight: "bold" }}>
-													{phoneNumber}
+													{moment(createdAt).format("DD/MM/YYYY")}
 												</Typography>
-											</TableCell>
-										</Link>
-
-										<Link href={`/auth/admin/staffs/${_id}`} passHref>
-											<TableCell>
-												<Stack direction='row' alignItems='center' spacing={1}>
-													<Typography sx={{ fontWeight: "bold" }}>
-														{moment(createdAt).format("DD/MM/YYYY")}
-													</Typography>
-													<Box
-														sx={{
-															bgcolor: "#219653",
-															p: 1,
-															display: "flex",
-															alignItems: "center",
-															justifyContent: "center",
-															borderRadius: 2
-														}}
-													>
-														<HeartIcon sx={{ fontSize: 15, color: "#fff" }} />
-													</Box>
-												</Stack>
-											</TableCell>
-										</Link>
+												<Box
+													sx={{
+														bgcolor: "#219653",
+														p: 1,
+														display: "flex",
+														alignItems: "center",
+														justifyContent: "center",
+														borderRadius: 2
+													}}
+												>
+													<HeartIcon sx={{ fontSize: 15, color: "#fff" }} />
+												</Box>
+											</Stack>
+										</TableCell>
 									</TableRow>
 								)
 							)}

@@ -205,6 +205,7 @@ const Games = () => {
 				mt: 15,
 				px: 3
 			}}
+			id='games'
 		>
 			<Typography
 				variant='button'

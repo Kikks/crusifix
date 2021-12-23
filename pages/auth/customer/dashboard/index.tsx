@@ -11,7 +11,9 @@ import { Game } from "../../../../components/auth/MostPlayed";
 import Statistics, {
 	StatProps
 } from "../../../../components/auth/customer/dashboard/Statistics";
-import PotentialWinners from "../../../../components/auth/customer/dashboard/PotentialWinners";
+import PotentialWinners, {
+	Topper
+} from "../../../../components/auth/customer/dashboard/PotentialWinners";
 import Standings, {
 	StandingsProps
 } from "../../../../components/auth/customer/dashboard/Standings";
@@ -30,21 +32,26 @@ const Dashboard: NextPage = () => {
 	const [statistics, setStatistics] = useState<StatProps[]>([]);
 	const [standings, setStandings] = useState<StandingsProps>([]);
 	const [mostPlayedGames, setMostPlayedGames] = useState<Game[]>([]);
+	const [toppers, setToppers] = useState<Topper[]>([]);
 	const { isLoading } = useQuery(
 		queryKeys.getCustomerDashboard,
 		() => getRequest({ url: GET_CUSTOMER_DASHBOARD({ id: user?._id || "" }) }),
 		{
 			onSuccess(data) {
+				console.log(data);
 				setMostPlayedGames(data?.mostPlayedGame || []);
 				setStatistics([
 					{
 						title: "Total games played",
-						value: `${data?.userTotalPointsAndTotalGames[0]?.totalGames}` || ""
+						value: `${
+							data?.userTotalPointsAndTotalGames[0]?.totalGames || "N/A"
+						}`
 					},
 					{
 						title: "Total points earned",
-						value:
-							`${data?.userTotalPointsAndTotalGames[0]?.totalPoints} pts` || ""
+						value: `${
+							data?.userTotalPointsAndTotalGames[0]?.totalPoints || "N/A"
+						} pts`
 					},
 					{
 						title: "Current position",
@@ -52,6 +59,29 @@ const Dashboard: NextPage = () => {
 					}
 				]);
 				setStandings(data?.leaderBoard || []);
+				if (
+					data?.potentialFirstWinner &&
+					data?.potentialSecondWinner &&
+					data?.potentialThirdWinner
+				) {
+					setToppers([
+						{
+							rank: 1,
+							points: data?.potentialFirstWinner?.FirstWinnerTotalPoints || 0,
+							...data?.potentialFirstWinner[0]
+						},
+						{
+							rank: 2,
+							points: data?.potentialSecondWinner?.FirstWinnerTotalPoints || 0,
+							...data?.potentialSecondWinner[0]
+						},
+						{
+							rank: 3,
+							points: data?.potentialThirdWinner?.FirstWinnerTotalPoints || 0,
+							...data?.potentialThirdWinner[0]
+						}
+					]);
+				}
 			},
 			onError(error: any) {
 				console.error(error?.response);
@@ -74,7 +104,7 @@ const Dashboard: NextPage = () => {
 				<Stack>
 					<Greeting mostPlayedGames={mostPlayedGames} isLoading={isLoading} />
 					<Statistics statistics={statistics} />
-					<PotentialWinners />
+					<PotentialWinners toppers={toppers} />
 					<Standings standings={standings} />
 				</Stack>
 			)}

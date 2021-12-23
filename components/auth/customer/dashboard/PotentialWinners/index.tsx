@@ -7,7 +7,16 @@ import Card from "../../../Card";
 type WinnerCardProps = {
 	name: string;
 	email: string;
-	image: string;
+	image?: string;
+	points: number;
+	rank: number;
+};
+
+export type Topper = {
+	firstName: string;
+	lastName: string;
+	email: string;
+	image?: string;
 	points: number;
 	rank: number;
 };
@@ -45,9 +54,9 @@ const WinnerCard = ({ name, email, image, points, rank }: WinnerCardProps) => {
 
 					<Stack direction='row' alignItems='center'>
 						<Stack flex={1}>
-							<Typography
-								sx={{ fontWeight: "bold" }}
-							>{`${points} points`}</Typography>
+							<Typography sx={{ fontWeight: "bold" }}>{`${points.toLocaleString(
+								"en-US"
+							)} points`}</Typography>
 							<Typography>{`For ${formattedRank} place in rank`}</Typography>
 						</Stack>
 						<StarsIcon sx={{ color, fontSize: 50 }} />
@@ -58,31 +67,7 @@ const WinnerCard = ({ name, email, image, points, rank }: WinnerCardProps) => {
 	);
 };
 
-const winners = [
-	{
-		name: "Matt Damon",
-		email: "matt@mail.com",
-		image: "/assets/images/avatar-1.png",
-		points: 540,
-		rank: 1
-	},
-	{
-		name: "John Doe",
-		email: "john@mail.com",
-		image: "/assets/images/avatar-1.png",
-		points: 510,
-		rank: 2
-	},
-	{
-		name: "Laty Doe",
-		email: "larry@mail.com",
-		image: "/assets/images/avatar-1.png",
-		points: 410,
-		rank: 3
-	}
-];
-
-const PotentialWinners = () => {
+const PotentialWinners = ({ toppers }: { toppers: Topper[] }) => {
 	return (
 		<Box sx={{ mt: 5 }}>
 			<Typography variant='h4' sx={{ mb: 3, fontWeight: "bold" }}>
@@ -90,8 +75,17 @@ const PotentialWinners = () => {
 			</Typography>
 
 			<Grid container spacing={3}>
-				{winners.map(({ name, email, image, points, rank }) => (
-					<WinnerCard key={name} {...{ name, email, image, points, rank }} />
+				{toppers.map(({ firstName, lastName, email, image, points, rank }) => (
+					<WinnerCard
+						key={rank}
+						{...{
+							name: `${firstName || ""} ${lastName || ""}`,
+							email,
+							image,
+							points,
+							rank
+						}}
+					/>
 				))}
 			</Grid>
 		</Box>

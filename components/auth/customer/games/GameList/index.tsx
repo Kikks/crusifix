@@ -18,102 +18,43 @@ import Button from "../../../../../common/Button";
 
 interface GameCardProps {
 	platform: string;
-	bgImage: string;
 	mainImage: string;
 	name: string;
-	tags: string[];
+	vrCost?: number;
+	psFourCost?: number;
+	psFiveCost?: number;
 	color: string;
 }
 
-const games = [
-	{
-		platform: "ps",
-		bgImage: "/assets/images/games/fifa-bg.jpg",
-		mainImage: "/assets/images/games/fifa-main.jpg",
-		name: "FIFA 21",
-		tags: ["NGN 1000 ON PS5", "NGN 500 ON PS4"],
-		color: "#2F2E39"
-	},
-	{
-		platform: "ps",
-		bgImage: "/assets/images/games/mortal-kombat-bg.jpg",
-		mainImage: "/assets/images/games/mortal-kombat-main.jpg",
-		name: "Mortal Kombat",
-		tags: ["NGN 1000 ON PS5", "NGN 500 ON PS4"],
-		color: "#162C45"
-	},
-	{
-		platform: "ps",
-		bgImage: "/assets/images/games/pes-bg.jpg",
-		mainImage: "/assets/images/games/pes-main.jpg",
-		name: "PES 21",
-		tags: ["NGN 1000 ON PS5", "NGN 500 ON PS4"],
-		color: "#01004E"
-	},
-	{
-		platform: "ps",
-		bgImage: "/assets/images/games/gta-bg.jpg",
-		mainImage: "/assets/images/games/gta-main.jpg",
-		name: "GTA V",
-		tags: ["NGN 1000 ON PS5", "NGN 500 ON PS4"],
-		color: "#756777"
-	},
-	{
-		platform: "ps",
-		bgImage: "/assets/images/games/god-of-war-bg.jpg",
-		mainImage: "/assets/images/games/god-of-war-main.png",
-		name: "God of War",
-		tags: ["NGN 1000 ON PS5", "NGN 500 ON PS4"],
-		color: "#364A52"
-	},
-	{
-		platform: "vr",
-		bgImage: "/assets/images/games/beat-saber-bg.png",
-		mainImage: "/assets/images/games/beat-saber-main.jpg",
-		name: "Beat Saber",
-		tags: ["NGN 1000"],
-		color: "#091E2F"
-	},
-	{
-		platform: "vr",
-		bgImage: "/assets/images/games/sonic-bg.jpg",
-		mainImage: "/assets/images/games/sonic-main.jpg",
-		name: "Sonic Car Racing",
-		tags: ["NGN 1000"],
-		color: "#324D82"
-	},
-	{
-		platform: "vr",
-		bgImage: "/assets/images/games/bravo-team-bg.png",
-		mainImage: "/assets/images/games/bravo-team-main.jpg",
-		name: "Bravo Team",
-		tags: ["NGN 1000"],
-		color: "#412821"
-	},
-	{
-		platform: "vr",
-		bgImage: "/assets/images/games/vr-car-racing-bg.jpg",
-		mainImage: "/assets/images/games/vr-car-racing-main.jpg",
-		name: "VR Car Racing",
-		tags: ["NGN 1000"],
-		color: "#30262F"
-	},
-	{
-		platform: "vr",
-		bgImage: "/assets/images/games/arizona-bg.jpg",
-		mainImage: "/assets/images/games/arizona-main.jpg",
-		name: "Arizona Sunshine",
-		tags: ["NGN 1000"],
-		color: "#371D14"
-	}
+export type Game = {
+	name: string;
+	platform: string;
+	gameImage: string;
+	vrCost?: number;
+	psFourCost?: number;
+	psFiveCost?: number;
+};
+
+const colors = [
+	"#2F2E39",
+	"#162C45",
+	"#01004E",
+	"#756777",
+	"#364A52",
+	"#091E2F",
+	"#324D82",
+	"#412821",
+	"#30262F",
+	"#371D14"
 ];
 
 const GameCard = ({
 	platform,
-	bgImage,
 	mainImage,
 	name,
-	tags,
+	psFourCost,
+	psFiveCost,
+	vrCost,
 	color
 }: GameCardProps) => {
 	const theme = useTheme();
@@ -126,7 +67,6 @@ const GameCard = ({
 			sx={{
 				borderRadius: 2,
 				p: 2,
-				backgroundImage: `url(${bgImage})`,
 				backgroundSize: "cover",
 				backgroundPosition: "center center",
 				position: "relative",
@@ -179,7 +119,11 @@ const GameCard = ({
 			<Box
 				sx={{ width: "100%", height: 140, position: "relative", zIndex: 100 }}
 			>
-				<Image src={mainImage} alt={name} layout='fill' />
+				<Image
+					src={mainImage || "https://via.placeholder.com/300.png?text=Crusifix"}
+					alt={name}
+					layout='fill'
+				/>
 			</Box>
 
 			<Typography
@@ -194,10 +138,9 @@ const GameCard = ({
 				spacing={1}
 				sx={{ zIndex: 100, width: "100%", flexWrap: "wrap" }}
 			>
-				{tags.map(tag => (
+				{psFourCost && (
 					<Chip
-						key={tag}
-						label={tag}
+						label={`N${psFourCost} on PS4`}
 						size='small'
 						variant='outlined'
 						sx={{
@@ -205,13 +148,37 @@ const GameCard = ({
 							mb: smallScreen ? 0 : mediumScreen ? 2 : 0
 						}}
 					/>
-				))}
+				)}
+
+				{psFiveCost && (
+					<Chip
+						label={`N${psFiveCost} on PS5`}
+						size='small'
+						variant='outlined'
+						sx={{
+							color: "#fff !important",
+							mb: smallScreen ? 0 : mediumScreen ? 2 : 0
+						}}
+					/>
+				)}
+
+				{vrCost && (
+					<Chip
+						label={`N${vrCost}`}
+						size='small'
+						variant='outlined'
+						sx={{
+							color: "#fff !important",
+							mb: smallScreen ? 0 : mediumScreen ? 2 : 0
+						}}
+					/>
+				)}
 			</Stack>
 		</Stack>
 	);
 };
 
-const GameList = () => {
+const GameList = ({ games }: { games: Game[] }) => {
 	return (
 		<Box sx={{ display: "grid", width: "100%", mt: 3 }}>
 			<Typography variant='h4' sx={{ fontWeight: "bold", mb: 1 }}>
@@ -266,7 +233,17 @@ const GameList = () => {
 						sm={6}
 						xs={12}
 					>
-						<GameCard {...game} />
+						<GameCard
+							{...{
+								platform: game?.platform,
+								mainImage: game?.gameImage,
+								name: game?.name,
+								vrCost: game?.vrCost,
+								psFourCost: game?.psFourCost,
+								psFiveCost: game?.psFiveCost,
+								color: colors[index % index]
+							}}
+						/>
 					</Grid>
 				))}
 			</Grid>

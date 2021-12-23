@@ -60,5 +60,43 @@ export const adminLinks = [
 		name: "Settings",
 		href: "settings",
 		icon: <Settings />
+	},
+	{
+		name: "Staffs",
+		href: "staffs",
+		icon: <PeopleAlt />
+	}
+];
+
+export const staffLinks = [
+	{
+		name: "Dashboard",
+		href: "dashboard",
+		icon: <Dashboard />
+	},
+	{
+		name: "Customers",
+		href: "customers",
+		icon: <PeopleAlt />
+	},
+	{
+		name: "Payments",
+		href: "payments",
+		icon: <CreditScore />
+	},
+	{
+		name: "Contests",
+		href: "contests",
+		icon: <SportsKabaddi />
+	},
+	{
+		name: "Games",
+		href: "games",
+		icon: <VideogameAsset />
+	},
+	{
+		name: "Settings",
+		href: "settings",
+		icon: <Settings />
 	}
 ];
