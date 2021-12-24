@@ -16,7 +16,7 @@ const Home: NextPage = () => {
 			<Head>
 				<title>Crusifix</title>
 				<meta name='description' content='Welcome to Crusifix' />
-				<link rel='icon' href='/favicon.ico' />
+				<link rel='icon' href='/assets/images/logo.png' />
 			</Head>
 
 			<main className={styles.main}>

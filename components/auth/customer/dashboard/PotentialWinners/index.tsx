@@ -71,7 +71,7 @@ const PotentialWinners = ({ toppers }: { toppers: Topper[] }) => {
 	return (
 		<Box sx={{ mt: 5 }}>
 			<Typography variant='h4' sx={{ mb: 3, fontWeight: "bold" }}>
-				Potential winners for November Dream Contest
+				Potential winners for Gamer Passion Contest
 			</Typography>
 
 			<Grid container spacing={3}>

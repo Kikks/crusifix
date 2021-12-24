@@ -10,8 +10,11 @@ const ForgotPassword: NextPage = () => {
 		<div className={styles.container}>
 			<Head>
 				<title>Forgot Password - Crusifix</title>
-				<meta name='description' content="Forgot Password? We've got you covered" />
-				<link rel='icon' href='/favicon.ico' />
+				<meta
+					name='description'
+					content="Forgot Password? We've got you covered"
+				/>
+				<link rel='icon' href='/assets/images/logo.png' />
 			</Head>
 
 			<main className={styles.main}>

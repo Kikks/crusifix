@@ -79,7 +79,7 @@ const ConfirmEMail: NextPage = () => {
 					name='description'
 					content='Confirm the email you have used to register for an account'
 				/>
-				<link rel='icon' href='/favicon.ico' />
+				<link rel='icon' href='/assets/images/logo.png' />
 			</Head>
 
 			<main className={styles.main}>

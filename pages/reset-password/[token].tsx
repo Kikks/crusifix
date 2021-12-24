@@ -10,11 +10,8 @@ const ResetPassword: NextPage = () => {
 		<div className={styles.container}>
 			<Head>
 				<title>Reset Password - Crusifix</title>
-				<meta
-					name='description'
-					content="Reset your password"
-				/>
-				<link rel='icon' href='/favicon.ico' />
+				<meta name='description' content='Reset your password' />
+				<link rel='icon' href='/assets/images/logo.png' />
 			</Head>
 
 			<main className={styles.main}>

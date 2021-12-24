@@ -11,7 +11,7 @@ const Login: NextPage = () => {
 			<Head>
 				<title>Login - Crusifix</title>
 				<meta name='description' content='Login to your account' />
-				<link rel='icon' href='/favicon.ico' />
+				<link rel='icon' href='/assets/images/logo.png' />
 			</Head>
 
 			<main className={styles.main}>

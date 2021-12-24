@@ -11,7 +11,7 @@ const Register: NextPage = () => {
 			<Head>
 				<title>Create an account - Crusifix</title>
 				<meta name='description' content='Create an account with Crusifix' />
-				<link rel='icon' href='/favicon.ico' />
+				<link rel='icon' href='/assets/images/logo.png' />
 			</Head>
 
 			<main className={styles.main}>

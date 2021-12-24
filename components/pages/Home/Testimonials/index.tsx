@@ -1,9 +1,23 @@
-import { Stack, Box, Typography, Avatar, Grid } from "@mui/material";
+import { useState } from "react";
+import {
+	Stack,
+	Box,
+	Typography,
+	Avatar,
+	IconButton,
+	useTheme
+} from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import CheckIcon from "@mui/icons-material/Check";
+import ChevronRight from "@mui/icons-material/ChevronRight";
+import ChevronLeft from "@mui/icons-material/ChevronLeft";
+import SwipeableViews from "react-swipeable-views";
 
 // Components
 import Container from "../../../Container";
+
+// Testimonials
+import { testimonials } from "./testimonials";
 
 interface TestimonialCardProps {
 	rating: number;
@@ -25,8 +39,17 @@ const TestimonialCard = ({
 	}
 
 	return (
-		<Grid item lg={3} md={3} sm={6} xs={12} data-aos='fade-up'>
-			<Stack spacing={3}>
+		<Stack
+			direction='row'
+			alignItems='center'
+			justifyContent='center'
+			sx={{ width: "100%" }}
+		>
+			<Stack
+				spacing={3}
+				sx={{ width: "100%", maxWidth: 400 }}
+				alignItems='center'
+			>
 				<Stack direction='row' spacing={1} alignItems='center'>
 					{ratingArray.map(index => (
 						<Box
@@ -46,7 +69,7 @@ const TestimonialCard = ({
 					))}
 				</Stack>
 
-				<Typography>{description}</Typography>
+				<Typography sx={{ textAlign: "center" }}>{description}</Typography>
 
 				<Stack direction='row' spacing={2} alignItems='center'>
 					<Avatar alt={name} src={image} />
@@ -87,42 +110,39 @@ const TestimonialCard = ({
 					</Stack>
 				</Stack>
 			</Stack>
-		</Grid>
+		</Stack>
 	);
 };
 
-const testimonials = [
-	{
-		rating: 5,
-		description:
-			"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aspernatur explicabo nesciunt, voluptatum minus quia quis.",
-		image: "/assets/images/avatar-1.png",
-		name: "Viola Manisa"
-	},
-	{
-		rating: 5,
-		description:
-			"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aspernatur explicabo nesciunt, voluptatum minus quia quis.",
-		image: "/assets/images/avatar-2.png",
-		name: "Bryon Arnoldy"
-	},
-	{
-		rating: 5,
-		description:
-			"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aspernatur explicabo nesciunt, voluptatum minus quia quis.",
-		image: "/assets/images/avatar-3.png",
-		name: "Joshua William"
-	},
-	{
-		rating: 5,
-		description:
-			"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aspernatur explicabo nesciunt, voluptatum minus quia quis.",
-		image: "/assets/images/avatar-4.png",
-		name: "George Scott"
-	}
-];
-
 const Testimonials = () => {
+	const [activeStep, setActiveStep] = useState(0);
+	const maxSteps = testimonials.length;
+	const theme = useTheme();
+
+	const handleNext = () => {
+		setActiveStep(prevState => {
+			if (prevState + 1 > maxSteps - 1) {
+				return 0;
+			} else {
+				return prevState + 1;
+			}
+		});
+	};
+
+	const handlePrevious = () => {
+		setActiveStep(prevState => {
+			if (prevState - 1 < 0) {
+				return maxSteps - 1;
+			} else {
+				return prevState - 1;
+			}
+		});
+	};
+
+	const handleStepChange = (step: number) => {
+		setActiveStep(step);
+	};
+
 	return (
 		<Box
 			sx={{ width: "100%", mt: 15, display: "flex", justifyContent: "center" }}
@@ -144,11 +164,52 @@ const Testimonials = () => {
 						What our customers have to say
 					</Typography>
 
-					<Grid container spacing={4}>
-						{testimonials.map(testimonial => (
-							<TestimonialCard key={testimonial.name} {...testimonial} />
-						))}
-					</Grid>
+					<Stack data-aos='fade-up' sx={{ width: "100%", my: 10 }}>
+						<SwipeableViews
+							axis={theme.direction === "rtl" ? "x-reverse" : "x"}
+							index={activeStep}
+							onChangeIndex={handleStepChange}
+							enableMouseEvents
+						>
+							{testimonials.map(
+								(
+									testimonial: JSX.IntrinsicAttributes & TestimonialCardProps
+								) => (
+									<TestimonialCard key={testimonial.name} {...testimonial} />
+								)
+							)}
+						</SwipeableViews>
+					</Stack>
+					<Stack
+						direction='row'
+						alignItems='center'
+						justifyContent='space-between'
+						spacing={3}
+						sx={{ mt: 5, width: "100%", maxWidth: 400 }}
+						data-aos='fade-up'
+					>
+						<IconButton onClick={() => handlePrevious()}>
+							<ChevronLeft />
+						</IconButton>
+
+						<Stack direction='row' alignItems='center' spacing={1}>
+							{testimonials.map((_, index) => (
+								<Box
+									key={index}
+									sx={{
+										height: 10,
+										width: 10,
+										borderRadius: "50%",
+										bgcolor: index === activeStep ? "primary.main" : "#eee"
+									}}
+								/>
+							))}
+						</Stack>
+
+						<IconButton onClick={() => handleNext()}>
+							<ChevronRight />
+						</IconButton>
+					</Stack>
 				</Stack>
 			</Container>
 		</Box>
