@@ -1,10 +1,17 @@
 export const testimonials = [
 	{
-		rating: 5,
+		rating: 4,
 		description:
 			"Such an amazing place to have fun, cool games and all working perfectly. Very amazing workers as well.",
 		image: "https://res.cloudinary.com/dh2w0dqug/image/upload/v1640416230/crusifix/testimonial%20photos/Screenshot_2021-12-25_at_8.08.31_AM_xvqvrc.png",
 		name: "Olatunde Fafolahan"
+	},
+	{
+		rating: 5,
+		description:
+			"Awesome place to be, i tried the virtual reality games, console games, karaoke and pool. TIme spent there was mad awesome and will i will visit over and over again",
+		image: "https://res.cloudinary.com/dh2w0dqug/image/upload/v1640417362/crusifix/testimonial%20photos/Screenshot_2021-12-25_at_8.28.38_AM_oizuml.png",
+		name: "Bisi Spectre"
 	},
 	{
 		rating: 5,
@@ -17,16 +24,16 @@ export const testimonials = [
 		rating: 5,
 		description:
 			"It is very condusive and fun",
-		image: "/assets/images/avatar-2.png",
-		name: "https://res.cloudinary.com/dh2w0dqug/image/upload/v1640416220/crusifix/testimonial%20photos/Screenshot_2021-12-25_at_8.04.32_AM_isxtj0.png"
+		image: "https://res.cloudinary.com/dh2w0dqug/image/upload/v1640416220/crusifix/testimonial%20photos/Screenshot_2021-12-25_at_8.04.32_AM_isxtj0.png",
+		name: "Dayo Adebowale"
 	},
 
 	{
-		rating: 5,
+		rating: 4,
 		description:
 			"A fun place with a variety of games for everyone to play and an open terrace for people who want to chill while their friends are game. Very cool environment and if you want to get beaten at pool,just call me.",
-		image: "/assets/images/avatar-1.png",
-		name: "https://res.cloudinary.com/dh2w0dqug/image/upload/v1640416212/crusifix/testimonial%20photos/parker_osaji_k82yjc.png"
+		image: "https://res.cloudinary.com/dh2w0dqug/image/upload/v1640416212/crusifix/testimonial%20photos/parker_osaji_k82yjc.png",
+		name: "Parker Osaji"
 	},
 	{
 		rating: 5,
@@ -42,5 +49,13 @@ export const testimonials = [
 			"Perfect!, just what i have been looking for",
 		image: "https://res.cloudinary.com/dh2w0dqug/image/upload/v1640416216/crusifix/testimonial%20photos/Screenshot_2021-12-25_at_8.02.28_AM_mx1mej.png",
 		name: "Uche Austin"
-	}
+	},
+	{
+		rating: 5,
+		description:
+			"Standard gaming outlet with vr games, console games and a pool, the best",
+		image: "https://res.cloudinary.com/dh2w0dqug/image/upload/v1640417366/crusifix/testimonial%20photos/Screenshot_2021-12-25_at_8.29.03_AM_w9jzsb.png",
+		name: "George Micheal"
+	},
+	
 ];
