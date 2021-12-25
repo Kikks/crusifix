@@ -24,7 +24,7 @@ export const testimonials = [
 		rating: 5,
 		description:
 			"It is very condusive and fun",
-		image: "https://res.cloudinary.com/dh2w0dqug/image/upload/v1640416220/crusifix/testimonial%20photos/Screenshot_2021-12-25_at_8.04.32_AM_isxtj0.png",
+		image: "https://res.cloudinary.com/dh2w0dqug/image/upload/v1640417783/crusifix/testimonial%20photos/Screenshot_2021-12-25_at_8.35.32_AM_tgtxw8.png",
 		name: "Dayo Adebowale"
 	},
 
@@ -47,7 +47,7 @@ export const testimonials = [
 		rating: 5,
 		description:
 			"Perfect!, just what i have been looking for",
-		image: "https://res.cloudinary.com/dh2w0dqug/image/upload/v1640416216/crusifix/testimonial%20photos/Screenshot_2021-12-25_at_8.02.28_AM_mx1mej.png",
+		image: "https://res.cloudinary.com/dh2w0dqug/image/upload/v1640417778/crusifix/testimonial%20photos/Screenshot_2021-12-25_at_8.35.13_AM_u6asvy.png",
 		name: "Uche Austin"
 	},
 	{
