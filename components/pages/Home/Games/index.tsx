@@ -146,7 +146,7 @@ const Games = () => {
 				We make sure our game library is up to date with the latest and trendy
 				games just for your satisfaction.
 			</Typography>
-			<Marquee pauseOnHover gradient={false}>
+			<Marquee pauseOnHover gradient={false} speed={35}>
 				<Stack direction='row' spacing={3} alignItems='center'>
 					{psGames.map((game, index) => (
 						<GameCard
@@ -157,7 +157,7 @@ const Games = () => {
 					))}
 				</Stack>
 			</Marquee>
-			<Marquee pauseOnHover gradient={false}>
+			<Marquee pauseOnHover gradient={false} speed={35}>
 				<Stack direction='row' spacing={3} alignItems='center'>
 					{vrGames.map((game, index) => (
 						<GameCard
