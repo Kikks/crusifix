@@ -179,7 +179,17 @@ const Drawer = ({
 		() => getRequest({ url: GET_CONTESTS }),
 		{
 			onSuccess(data) {
-				setContests(data?.data || []);
+				if (data?.data) {
+					const activeContests = [];
+
+					for (const item of data.data) {
+						if (item?.isActive) {
+							activeContests.push(item);
+						}
+					}
+
+					setContests(activeContests);
+				}
 			},
 			onError(error: any) {
 				console.error(error?.response);
