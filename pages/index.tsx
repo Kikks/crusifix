@@ -9,6 +9,7 @@ import Masonry from "../components/pages/Home/Masonry";
 import Games from "../components/pages/Home/Games";
 import Testimonials from "../components/pages/Home/Testimonials";
 import Contact from "../components/pages/Home/Contact";
+import Winner from "../components/pages/Home/Winner";
 
 const Home: NextPage = () => {
 	return (
@@ -23,6 +24,7 @@ const Home: NextPage = () => {
 				<Header />
 				<About />
 				<Masonry />
+				<Winner />
 				<Games />
 				<Testimonials />
 				<Contact />
