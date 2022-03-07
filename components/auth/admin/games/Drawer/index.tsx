@@ -43,6 +43,10 @@ const platforms = [
 	{
 		value: "ps",
 		key: "PlayStation"
+	},
+	{
+		value: 'other',
+		key: 'Other'
 	}
 ];
 
